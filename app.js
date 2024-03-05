@@ -8,12 +8,11 @@ const path = require('path')
 // })
 
 app.get('/', (req, res) => {
-  res.send('Hey Developers!');
+  return res.redirect('/index.html');
 });
 
 
 app.use(express.static('public'));
-
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
