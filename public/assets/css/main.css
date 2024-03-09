@@ -49,16 +49,16 @@ Description: Gerold - Personal Portfolio HTML5 Template
 	/* ----------------------------------
    @color declaration
   ------------------------------------ */
-	--tj-body: #dddddd;
-	--tj-white: #ffffff;
-	--tj-black: #000000;
-	--tj-black-2: #050709;
-	--tj-heading-primary: #102039;
+	--tj-body: #91b4a3;
+	--tj-white: #050709;
+	--tj-black: #dddddd;
+	--tj-black-2: #ffffff;
+	--tj-heading-primary: #9a8076;
 	--tj-heading-secondary: #ea1826;
-	--tj-theme-primary: #8750f7;
-	--tj-theme-secondary: #2a1454;
-	--tj-theme-accent-1: #0f0715;
-	--tj-theme-accent-2: #140c1c;
+	--tj-theme-primary: #81726c;
+	--tj-theme-secondary: #877e7a;
+	--tj-theme-accent-1: #f9f5f1;
+	--tj-theme-accent-2: #f9f5f18a;
 	--tj-grey-1: #747779;
 	--tj-grey-2: #d9d9d9;
 	--tj-grey-3: #dddddd;
@@ -712,7 +712,7 @@ body.loaded {
 }
 
 .tj-header-area .logo-box {
-	max-width: 60px;
+	max-width: 100px;
 	width: 100%;
 	margin-right: 35px;
 }
