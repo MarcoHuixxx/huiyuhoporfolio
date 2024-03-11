@@ -456,7 +456,7 @@ a h6:hover {
 .nice-select .option.focus,
 .nice-select .option.selected.focus,
 .nice-select .option {
-	color: var(--tj-theme-accent-1);
+	color:var(--tj-grey-1);
 }
 /* END: Theme Default CSS */
 
