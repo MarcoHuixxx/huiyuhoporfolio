@@ -7,8 +7,12 @@ const path = require('path')
 //   res.sendFile(__dirname + '/index.html')
 // })
 
+// set the view engine to ejs
+app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
-  return res.redirect('/index.html');
+  res.render('pages/index');
+  // return res.redirect('/index.html');
 });
 
 
