@@ -1,0 +1,100 @@
+.helpful-area-two {
+  .helpful-card-two {
+    padding: 30px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    @include transition(0.3s);
+    .number-watermark {
+      position: absolute;
+      top: 10px;
+      right: 30px;
+      .number {
+        font-size: 100px;
+        color: var(--number-one);
+        font-weight: 800;
+        line-height: 100px;
+        transition: .3s;
+      }
+    }
+    &:hover {
+      background-color: var(--primary);
+      cursor: pointer;
+
+      .helpful-card-icon {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      .helpful-card-caption {
+        .caption-title {
+          color: white;
+        }
+        .caption-para {
+          color: var(--info);
+        }
+        .caption-link {
+          color: var(--secondary);
+        }
+      }
+      .number {
+        color: var(--number-one-hover);
+      }
+    }
+    @include transition(0.3s);
+    .helpful-card-icon {
+      text-align: center;
+      margin-bottom: 30px;
+      border-radius: 40px;
+      width: 100px;
+      text-align: center;
+      margin-bottom: 30px;
+      border-radius: 40px;
+      background-color: var(--primary);
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--primary);
+      @media #{$xs} {
+        padding: 5px 20px;
+      }
+      i {
+        font-size: 30px;
+        color: white;
+        @media #{$xs} {
+          font-size: 24px;
+        }
+      }
+    }
+
+    .helpful-card-caption {
+      .caption-title {
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        color: var(--primary-title);
+        margin-bottom: 5px;
+        line-height: 30px;
+        @media #{$xs} {
+          font-size: 16px;
+        }
+      }
+      .caption-para {
+        color: var(--tertiary-title);
+        font-size: 16px;
+        font-weight: normal;
+        margin-bottom: 15px;
+        line-height: 25px;
+        @media #{$xs} {
+          font-size: 14px;
+        }
+      }
+      .caption-link {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 16px;
+        color: var(--primary);
+      }
+    }
+  }
+}

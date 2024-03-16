@@ -1,0 +1,202 @@
+.hero-area-three {
+  background-color: var(--hero-area-three-bg);
+  .multi-image-one {
+    width: 50px;
+    height: 50px;
+    background-color: var(--white);
+    padding: 2px;
+    border-radius: 50%;
+    transition: margin-left 0.3s ease;
+    img {
+      width: 100%;
+      border-radius: 50%;
+    }
+    &:hover{
+      cursor: pointer;
+     + .multi-image-two{
+        margin-left: -6px;
+      }
+    }
+  }
+  .multi-image-two {
+    width: 50px;
+    height: 50px;
+    background-color: var(--white);
+    padding: 2px;
+    margin-left: -20px;
+    border-radius: 50%;
+    transition: margin-left 0.3s ease;
+    img {
+      width: 100%;
+      border-radius: 50%;
+    }
+    &:hover{
+      cursor: pointer;
+     + .multi-image-three{
+        margin-left: -6px;
+      }
+    }
+  }
+  .multi-image-three {
+    width: 50px;
+    height: 50px;
+    background-color: var(--white);
+    padding: 2px;
+    margin-left: -20px;
+    border-radius: 50%;
+    transition: margin-left 0.3s ease;
+    img {
+      width: 100%;
+      border-radius: 50%;
+    }
+    &:hover{
+      cursor: pointer;
+     + .multi-image-four{
+        margin-left: -6px;
+      }
+    }
+  }
+  .multi-image-four {
+    margin-left: -20px;
+    transition: margin-left 0.3s ease;
+    .rounded-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .count {
+        font-size: 14px;
+        color: var(--white);
+        font-weight: 600;
+      }
+    }
+  }
+  .hero-image {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .hero-caption {
+    max-width: 568px;
+    .short-dec {
+      font-size: 28px;
+      margin-bottom: 18px;
+      display: block;
+      @media #{$xs} {
+        font-size: 22px;
+      }
+    }
+    .key-title {
+      color: var(--primary);
+      font-size: 20px;
+      line-height: 30px;
+      @media #{$xs} {
+        font-size: 16px;
+      }
+    }
+    .title {
+      display: block;
+      font-size: 60px;
+      line-height: 75px;
+      margin-bottom: 30px;
+      color: var(--primary-title);
+      @media #{$lg} {
+        font-size: 31px;
+        line-height: 65px;
+      }
+      @media #{$md} {
+        font-size: 40px;
+        line-height: 55px;
+      }
+      @media #{$sm} {
+        font-size: 45px;
+        line-height: 45px;
+      }
+      @media #{$xs} {
+        font-size: 28px;
+        line-height: 35px;
+      }
+    }
+
+    .pera {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 30px;
+      color: var(--secondary-title);
+
+      @media #{$lg} {
+        font-size: 14px;
+      }
+      @media #{$xs} {
+        font-size: 12px;
+      }
+    }
+  }
+  .hero-count-section {
+    padding-top: 60px;
+    padding-right: 100px;
+
+    @media #{$xs-to-md-max} {
+      padding-top: 30px;
+      padding-right: 0;
+    }
+    .hero-count {
+      position: relative;
+      h4 {
+        font-size: 50px;
+        font-style: normal;
+        font-weight: 700;
+        margin-bottom: 10px;
+        line-height: 50px;
+        @media #{$lg} {
+          font-size: 30px;
+        }
+
+        @media #{$xs-to-sm-max} {
+          font-size: 20px;
+        }
+      }
+      .pera {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        color: var(--secondary-title);
+        @media #{$xs-to-sm-max} {
+          font-size: 14px;
+        }
+      }
+      &:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        right: -30px;
+        top: 0;
+        background-color: var(--hero-area-three-bg3);
+        width: 1px;
+        height: 100%;
+        @media #{$xs}{
+          right: auto;
+          left: -20px;
+        }
+      }
+    }
+  }
+
+  .hero-padding-three {
+    padding: 110px 0 80px 0;
+    @media #{$lg} {
+      padding: 90px 0 80px 0;
+    }
+    @media #{$md} {
+      padding: 70px 0 80px 0;
+    }
+    @media #{$sm} {
+      padding: 50px 0 70px 0;
+    }
+    @media #{$xs} {
+      padding: 50px 0 50px 0;
+    }
+  }
+}

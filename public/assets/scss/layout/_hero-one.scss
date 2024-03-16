@@ -1,0 +1,139 @@
+.hero-caption-one {
+  max-width: 562px;
+  .short-dec {
+    font-size: 28px;
+    margin-bottom: 18px;
+    display: block;
+    @media #{$xs} {
+      font-size: 22px;
+    }
+  }
+  .key-title {
+    color: var(--primary);
+    font-size: 20px;
+    line-height: 30px;
+    @media #{$xs} {
+      font-size: 16px;
+    }
+
+  }
+  .title {
+    display: block;
+    font-size: 60px;
+    line-height: 75px;
+    margin-bottom: 30px;
+    color: var(--primary-title);
+    @media #{$lg} {
+      font-size: 45px;
+      line-height: 65px;
+    }
+    @media #{$md} {
+      font-size: 40px;
+      line-height: 55px;
+    }
+    @media #{$sm} {
+      font-size: 35px;
+      line-height: 45px;
+    }
+    @media #{$xs} {
+      font-size: 28px;
+      line-height: 35px;
+    }
+  }
+
+  .pera {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 30px;
+    color: var(--secondary-title);
+
+    @media #{$lg} {
+      font-size: 14px;
+    }
+    @media #{$xs} {
+      font-size: 12px;
+    }
+  }
+}
+.hero-count {
+  .title {
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 700;
+    @media #{$lg} {
+      font-size: 40px;
+    }
+
+    @media #{$xs-to-sm-max} {
+      font-size: 30px;
+    }
+  }
+  .pera {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    color: var(--secondary-title);
+    @media #{$xs-to-sm-max} {
+      font-size: 14px;
+    }
+  }
+}
+
+.hero-padding {
+  padding: 87px 0 110px 0;
+  @media #{$lg} {
+    padding: 87px 0 100px 0;
+  }
+  @media #{$md} {
+    padding: 70px 0 80px 0;
+  }
+  @media #{$sm} {
+    padding: 50px 0 70px 0;
+  }
+  @media #{$xs} {
+    padding: 50px 0 50px 0;
+  }
+  .hero-count-section{
+    @media #{$xs-to-md-max}{
+     display: none;
+    }
+ }
+}
+
+.line-brack {
+  display: block;
+}
+
+.mx-width-600 {
+  max-width: 600px;
+  display: block;
+  margin: auto;
+}
+.mx-width-780 {
+  max-width: 780px;
+  display: block;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 0;
+  &::before {
+    position: absolute;
+    content: "";
+    background-color: rgba(12, 12, 12, 0.75);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    background-repeat: no-repeat;
+  }
+}
+
+.slider-height {
+  height: 600px;
+}
+
+

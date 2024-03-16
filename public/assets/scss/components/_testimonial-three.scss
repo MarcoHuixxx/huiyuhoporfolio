@@ -1,0 +1,127 @@
+.testimonial-section-three {
+  .quote-with-img {
+    .testimonial-images {
+      img {
+        border-radius: 10px;
+        height: 100%;
+      }
+    }
+  }
+  .position-card{
+    position: absolute;
+    top: 20%;
+    right: -30%;
+    .single-testimonial-three {
+      width: 350px;
+      position: absolute;
+      right: 20%;
+      border-radius: 10px;
+      background-color: var(--white);
+      box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.15);
+      padding: 20px;
+      .client-info {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin-top: 15px;
+        .client-image {
+          width: 50px;
+          height: 50px;
+          img {
+            width: 100%;
+            border-radius: 50%;
+          }
+        }
+        .client-details {
+          .name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-title);
+            margin-bottom: 5px;
+            font-family: "open sans";
+            line-height: 16px;
+            @media #{$xs-to-md-max} {
+              font-size: 16px;
+            }
+          }
+  
+          .location {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--tertiary-title);
+            font-family: "inter";
+            @media #{$xs-to-md-max} {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+  
+      .pera {
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--tertiary-title);
+      }
+      .rating {
+        color: var(--ratting-color);
+        margin-bottom: 15px;
+      }
+  
+      .quote {
+        bottom: 35px;
+        right: 20px;
+      }
+    }
+  }
+  .testimonial-slider-three-active {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    .slick-slider img{
+      width: 100%;
+      border-radius: 15px;
+    }
+    .slick-slide {
+      position: relative;
+      height: auto !important;
+      transition: all 900ms ease;
+    }
+    .slick-list,
+    .slick-track {
+      height: 100%;
+    }
+    .slick-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 1rem 0;
+      position: absolute;
+      bottom: 8px;
+      width: 100%;
+      @media #{$xs-to-md-max} {
+        bottom: 10px;
+      }
+
+      list-style-type: none;
+      li {
+        margin: 0 0.25rem;
+      }
+      button {
+        display: block;
+        width: 48px;
+        height: 6px;
+        padding: 0;
+        border: none;
+        border-radius: 10px;
+        background-color: white;
+        text-indent: -9999px;
+      }
+      .slick-active button {
+        width: 25px;
+        height: 6px;
+        background-color: var(--primary);
+      }
+    }
+  }
+}

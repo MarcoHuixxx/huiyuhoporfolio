@@ -1,0 +1,100 @@
+.breadcrumb-bg {
+  background: var(--Gredient, linear-gradient(90deg, #00715d 27.6%, rgba(171, 185, 183, 0.13) 72.4%));
+  @media #{$xs} {
+    background: var(--Gredient, linear-gradient(90deg, #00715d 27.6%, rgb(83, 137, 129) 72.4%));
+  }
+  position: relative;
+  @media #{$md} {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  @media #{$sm} {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  @media #{$xs} {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../assets/images/gallery/breadcrumb-1.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    opacity: 1;
+    @media #{$xs} {
+      opacity: 0;
+    }
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+}
+
+.breadcrumb-text {
+  padding-top: 90px;
+  padding-bottom: 90px;
+  @media #{$xs-to-md-max} {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+
+
+  .breadcrumb-nav {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.19);
+    padding: 14px 26px;
+    display: inline-block;
+    margin-bottom: 25px;
+    @media #{$xs-to-md-max} {
+      margin-bottom: 12px;
+      padding: 7px 13px;
+    }
+  }
+  .breadcrumb {
+    &.listing {
+      margin-bottom: 0;
+    }
+    .single-list {
+      &:last-child {
+        &::before {
+          float: left;
+          padding-right: var(--bs-breadcrumb-item-padding-x);
+          content: "\ea6e";
+          font-family: "remixIcon";
+          font-size: 16px;
+          color: var(--white);
+        }
+      }
+      .single {
+        font-size: 18px;
+        font-weight: 600;
+        text-transform: uppercase;
+        line-height: 18px;
+        font-family: var(--Sans);
+        color: var(--white);
+        @media #{$xs-to-md-max} {
+          font-size: 14px;
+          line-height: 14px;
+        }
+      }
+    }
+  }
+  .title {
+    font-size: 40px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 40px;
+    color: var(--white);
+    @media #{$xs-to-md-max} {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+}

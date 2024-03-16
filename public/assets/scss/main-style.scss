@@ -1,0 +1,51 @@
+/*----------------------------------------------
+    Index Of Script
+------------------------------------------------
+
+    @version         : 1.0.0
+    @Template Name   : Charitfix
+    @Template author : initTheme
+    
+------------------------------------------------
+    End-of Script
+------------------------------------------------*/
+
+// Global SCSS
+  @import "global/mixins";
+  @import "global/variables";
+  @import "global/global";
+  @import "global/button";
+
+// Demo Default
+  @import "pages/select2";
+
+// layout
+  @import "layout/header-one";
+  @import "layout/header-two";
+  @import "layout/header-three";
+  @import "layout/footer";
+  @import "layout/hero-one";
+  @import "layout/hero-two";
+  @import "layout/hero-three";
+
+// Landing page
+  @import "pages/landing-page";
+
+// Sections
+  @import "sections/breadcrumb";
+  @import "sections/pagination";
+
+// Pages 
+  @import "pages/landing_one";
+  @import "pages/landing_two";
+  @import "pages/landing_three";
+  @import "pages/about";
+  @import "pages/payment";
+  @import "pages/blog";
+  @import "pages/donate";
+  @import "pages/volunteer_details";
+  @import "pages/terms-condition";
+  @import "pages/contact";
+  @import "pages/login";
+  @import "panel/progress";
+

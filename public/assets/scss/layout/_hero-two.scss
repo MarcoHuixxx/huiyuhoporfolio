@@ -1,0 +1,109 @@
+.hero-area-two {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.90) 0%, rgba(0, 0, 0, 0.90) 100%);
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../assets/images/hero/hero-bg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    opacity: 0.1; /* Adjust the opacity value as needed */
+    transition: opacity 0.3s ease;
+  }
+}
+
+  .hero-caption {
+    max-width: 615px;
+    .short-dec {
+      font-size: 28px;
+      margin-bottom: 18px;
+      display: block;
+      @media #{$xs} {
+        font-size: 22px;
+      }
+    }
+    .key-title {
+      color: var(--secondary);
+      font-size: 20px;
+      line-height: 30px;
+      @media #{$xs} {
+        font-size: 16px;
+      }
+  
+    }
+    .title {
+      display: block;
+      font-size: 60px;
+      line-height: 75px;
+      margin-bottom: 30px;
+      color: var(--white);
+      @media #{$lg} {
+        font-size: 31px;
+        line-height: 50px;
+      }
+      @media #{$md} {
+        font-size: 40px;
+        line-height: 55px;
+      }
+      @media #{$sm} {
+        font-size: 45px;
+        line-height: 45px;
+      }
+      @media #{$xs} {
+        font-size: 28px;
+        line-height: 35px;
+      }
+    }
+  
+    .pera {
+      font-size: 16px;
+      display: block;
+      margin-bottom: 30px;
+      color: var(--hero-two-subtitle);
+  
+      @media #{$lg} {
+        font-size: 14px;
+      }
+      @media #{$xs} {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .hero-padding-two {
+    position: relative;
+    padding: 184px 0 110px 0;
+    @media #{$lg} {
+      padding: 150px 0 100px 0;
+    }
+    @media #{$md} {
+      padding: 130px 0 80px 0;
+    }
+    @media #{$sm} {
+      padding: 130px 0 70px 0;
+    }
+    @media #{$xs} {
+      padding: 120px 0 50px 0;
+    }
+    .hero-count-section{
+      @media #{$xs-to-md-max}{
+       display: none;
+      }
+   }
+  }
+  
+  .line-brack {
+    display: block;
+  }
+  
+  
+  
+  .slider-height {
+    height: 600px;
+  }
+

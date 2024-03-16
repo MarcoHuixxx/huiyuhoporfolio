@@ -1,0 +1,471 @@
+.header-area-two {
+  .gap-144 {
+    gap: 144px;
+  }
+  .gap-164 {
+    gap: 164px;
+  }
+  .header-right{
+    @media #{$xs-to-lg-max}{
+      margin-right: 60px;
+    }
+  }
+  .menu-wrapper {
+    @media #{$xs-to-md-max}{
+      padding: 20px 0 15px 0;
+    }
+  }
+  .main-menu {
+    .listing {
+      .single-list {
+        display: inline-block;
+        position: relative;
+        z-index: 9;
+        margin: 0 16px;
+        cursor: pointer;
+        &:last-child {
+          margin-bottom: 0 !important;
+        }
+        .single {
+          @include transition(0.3s);
+          color: var(--white);
+          font-weight: 600;
+          display: block;
+          font-size: 16px;
+          padding: 43px 0;
+          text-transform: capitalize;
+          @media #{$xs-to-lg-max}{
+            font-size: 14px;
+          }
+          i{
+            font-size: 14px;
+          }
+          &.active {
+            position: relative;
+            transition: 0.3s;
+            color: var(--primary);
+            &::before {
+              transition: 0.4s;
+              width: 100%;
+              height: 2px;
+              content: "";
+              position: absolute;
+              left: 0px;
+              bottom: -4px;
+              z-index: 0;
+              background: var(--primary);
+            }
+            & > .single {
+              color: var(--primary);
+            }
+          }
+        }
+        &:hover {
+          & > .single {
+            color: var(--primary);
+          }
+          & > .submenu {
+            visibility: visible;
+            opacity: 1;
+            top: 100%;
+            & > .single-list {
+              & > .single {
+                color: var(--primary-title);
+                display: block;
+              }
+            }
+            .submenu {
+              left: 100%;
+              top: 0;
+            }
+          }
+        }
+      }
+      .submenu {
+        position: absolute;
+        width: 260px;
+        background: var(--white);
+        padding: 21px 0px;
+        left: 0;
+        right: 0;
+        top: 110%;
+        opacity: 0;
+        visibility: hidden;
+        // border-radius: 6px;
+        box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.05);
+        border-top: 3px solid var(--primary);
+        @include transition(0.2s);
+        z-index: 2;
+        @media #{$lg} {
+          right: 0;
+          left: auto;
+        }
+        & > .single-list {
+          margin: 0px;
+          display: block;
+          & > .single {
+            padding: 6px 18px !important;
+            font-size: 15px;
+            text-transform: capitalize;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 0;
+            color: var(--primary-paragraph) !important;
+
+            &:hover {
+              color: var(--primary) !important;
+              letter-spacing: 0.3px;
+            }
+            i {
+              margin-right: 0;
+              line-height: 1;
+              position: absolute;
+              right: 13px;
+              top: 9px;
+              color: var(--primary-paragraph);
+              font-size: 16px;
+              @media #{$xs-to-md-max} {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  //! Mobile Menu
+  .mobile_menu {
+    position: unset;
+    right: 0px;
+    width: 100%;
+    z-index: 99;
+    .slicknav_menu {
+      background: transparent;
+      margin-top: 0px !important;
+      .slicknav_btn {
+        top: -47px;
+        right: 0px;
+        // mobile Menu button color
+        .slicknav_icon-bar {
+          background-color: var(--primary) !important;
+          height: 2px !important;
+          margin: 7px 0 !important;
+        }
+      }
+      .slicknav_nav {
+        margin-top: 6px !important;
+        left: 0;
+        right: 0;
+        position: absolute;
+        z-index: 999;
+        padding: 19px
+        ul {
+          margin: 0 0 0 11px;
+        }
+        .btn-primary-fill {
+          color: var(--white);
+          padding: 11px 16px;
+        }
+        .single {
+          @include transition(0.3s);
+          color: var(--primary-title);
+          font-weight: 600;
+          display: block;
+          font-size: 16px;
+          text-transform: capitalize;
+
+          &.active {
+            position: relative;
+            transition: 0.3s;
+            color: var(--primary);
+            & > .single {
+              color: var(--primary);
+            }
+          }
+        }
+        a:hover {
+          background: transparent;
+          color: var(--primary);
+        }
+        .header-btn2 {
+          display: inline-block;
+          border-radius: 30px;
+          margin-left: 0;
+        }
+        // Dropdown Menu button Padding None
+        .slicknav_item a {
+          padding: 0 !important;
+          i {
+            display: none;
+          }
+        }
+        .slicknav_arrow {
+          color: var(--primary);
+          top: -30px;
+        }
+      }
+    }
+  }
+
+  .cart {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    @media #{$xs-to-xl-min} {
+      gap: 30px;
+    }
+    @media #{$xs-to-md-max} {
+      margin-right: 0px;
+    }
+    .header-btn {
+      background-color: var(--white);
+      padding: 17px 30px;
+      color: var(--primary-title);
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 16px;
+      text-transform: uppercase;
+      @media #{$xs-to-lg-max}{
+        font-size: 14px;
+        padding: 12px 20px;
+
+      }
+    }
+    .cart-list {
+      line-height: 1;
+      .transparent-icon {
+        font-size: 20px;
+        color: var(--white);
+      }
+      .divider {
+        width: 1px;
+        height: 18px;
+        margin-top: 0;
+        background-color: var(--white);
+        margin-bottom: 0;
+      }
+      .cart-items {
+        padding: 6px 11px;
+        color: var(--tertiary-title);
+        border: 1px solid transparent;
+        font-size: 20px;
+        font-weight: 500;
+        border-radius: 6px;
+        text-align: center;
+        display: block;
+        display: flex;
+        align-items: center;
+      }
+      .upload-btn {
+        padding: 7px 12px 11px 12px;
+        margin-left: 20px;
+        border-radius: 4px;
+        font-size: 14px;
+        color: var(--white);
+        margin-right: 20px;
+        @media #{$lg} {
+          span {
+            display: none;
+          }
+        }
+        @media #{$xs-to-sm-max} {
+          padding: 1px 5px 9px 5px;
+          span {
+            display: none;
+          }
+        }
+        &:hover {
+          color: var(--primary);
+          border: 1px solid var(--primary);
+          i {
+            left: 0;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+//! header Sticky  & Responsive
+.header-area-two{
+  .header-sticky {
+    &.sticky-bar {
+      z-index: 990 !important;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+    }
+  }
+}
+
+// After Login
+.onhover-dropdown {
+  cursor: pointer;
+  position: relative;
+  .onhover-dropdown-show {
+    @include transition(0.3s);
+    top: 53px;
+    position: absolute;
+    z-index: 8;
+
+    box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    visibility: hidden;
+    right: 0;
+  }
+  &:hover {
+    .onhover-dropdown-show {
+      opacity: 1;
+      top: 60px !important;
+      visibility: visible;
+    }
+  }
+}
+
+.light-mode {
+  .dark-logo {
+    display: none;
+  }
+  .light-logo {
+    display: block;
+  }
+
+  // Mobile Logo
+  .logo-mobile {
+    &.dark-logo {
+      display: none !important;
+    }
+    &.light-logo {
+      display: block;
+    }
+  }
+
+  &.dark-mode {
+    .dark-logo {
+      display: block;
+    }
+    .light-logo {
+      display: none !important;
+    }
+
+    // Mobile Logo
+    .logo-mobile {
+      &.dark-logo {
+        display: block !important;
+      }
+      &.light-logo {
+        display: block;
+      }
+    }
+  }
+}
+
+// Off Mobile Devices large logo
+.logo-large {
+  img {
+    max-width: 250px;
+    @media #{$xs-to-lg-max} {
+      max-width: 140px;
+    }
+    @media #{$xs} {
+      display: none !important;
+    }
+  }
+}
+
+.logo {
+  img {
+    max-width: 250px;
+    @media #{$xs-to-lg-max} {
+      max-width: 140px;
+    }
+  }
+}
+// Off large Devices Mobile logo
+.header-area .main-header .logo.logo-mobile {
+  @media #{$xs-to-sm-min} {
+    display: none !important;
+  }
+}
+
+// Menu Text Flip effect
+.hover-flip-item-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  @media (min-width: 1200px) {
+    opacity: 1;
+  }
+}
+.hover-flip-item {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  text-transform: capitalize;
+}
+@media (min-width: 1200px) {
+  .hover-flip-item {
+    span {
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+      color: transparent;
+      transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+      &:before {
+        top: 0;
+        transform: skewY(0);
+        transform-origin: right bottom;
+        transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1);
+      }
+      &:after {
+        top: 105%;
+        transform: skewY(7deg);
+        transform-origin: left top;
+        transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1);
+      }
+    }
+  }
+  .hover-flip-item span:after,
+  .hover-flip-item span:before {
+    content: attr(data-text);
+    display: block;
+    position: absolute;
+    color: var(--primary-title);
+  }
+}
+.hover-flip-item-wrapper {
+  &:hover {
+    opacity: 1;
+    .hover-flip-item span {
+      transform: translateY(-105%);
+      &:after {
+        transform: skewY(0);
+      }
+    }
+  }
+}
+@media (pointer: coarse) {
+  .hover-flip-item-wrapper:hover {
+    .hover-flip-item {
+      span {
+        transform: none;
+        &:before {
+          transform: skewY(7deg);
+          transform: none;
+        }
+        &:after {
+          transform: skewY(0);
+          transform: none;
+        }
+      }
+    }
+  }
+}
+// End-of Menu Text Flip effect

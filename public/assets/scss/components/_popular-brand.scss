@@ -1,0 +1,35 @@
+.popular-brand-section{
+    .brand-img-container{
+       border-radius: 10px;
+       border: 2px solid rgba(228, 228, 228, 0.15);
+       padding-top: 70px;
+       padding-bottom: 70px;
+       @media #{$xs-to-md-max}{
+        padding-top: 50px;
+        padding-bottom: 50px;
+       }
+    }
+    .slick-slide{
+        margin: 0 15px;
+        img{
+            margin: auto;
+        }
+    }
+    .slick-track{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+.favourite-section{
+    .slick-track{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .divider{
+        background: var(--primary-gray);
+        height: 2px;
+    }
+}

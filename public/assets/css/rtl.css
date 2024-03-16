@@ -1,0 +1,389 @@
+/* Home Page One */
+.header-area .main-menu .listing .submenu {
+	right: auto;
+	left: 0;
+}
+.header-area .main-menu .listing .submenu > .single-list > .single i {
+	right: auto;
+	transform: rotate(-180deg);
+    left: 13px;
+}
+
+
+.header-area .mobile_menu .slicknav_menu .slicknav_btn {
+    right: auto;
+    left: 50px;
+    margin-right: 100%;
+}
+
+.slicknav_nav .slicknav_arrow {
+	float: left;
+}
+.header-area .mobile_menu .slicknav_menu .slicknav_nav ul {
+	margin: 0 11px 0 0;
+}
+.urgent-area .image-right-card {
+	border-radius: 10px 0 0 10px;
+}
+
+.urgent-area-slide {
+	border-radius: 0 10px 10px 0;
+}
+.urgent-area .image-overlay-text {
+	left: auto;
+	right: 30px;
+}
+.custom-progress .progress-bar .pera {
+	left: auto;
+	right: 100%;
+}
+.question-area .accordion-item .accordion-button::after {
+	right: auto;
+	left: 21px;
+}
+.question-area .accordion-item .accordion-button {
+	padding: 20px 20px 20px 46px;
+}
+.question-area .accordion {
+	padding-right: 0;
+	padding-left: 60px;
+}
+.our-event .event-info i {
+	transform: rotate(180deg);
+	display: block;
+}
+
+
+
+/* Home Page Two */
+.header-area-two .main-menu .listing .submenu {
+	right: auto;
+	left: 0;
+}
+.header-area-two .main-menu .listing .submenu > .single-list > .single i {
+	right: auto;
+	transform: rotate(-180deg);
+    left: 13px;
+}
+.header-area-two .mobile_menu .slicknav_menu .slicknav_btn {
+    right: auto;
+    left: 50px;
+    margin-right: 100%;
+}
+.header-area-two .mobile_menu .slicknav_menu .slicknav_nav ul {
+	margin: 0 11px 0 0;
+}
+
+.header-area-two .select2-container--default .select2-selection--single .select2-selection__arrow b {
+	margin-left: -9px;
+}
+
+.helpful-area-two .helpful-card-two .number-watermark {
+	right: auto;
+	left: 30px;
+}
+.our-event-two .single-event .event-img .image-overlay-text {
+	left: auto;
+	right: 20px;
+}
+.donate-section .single-donate .donate-img .donate-badge {
+	left: auto;
+	right: 10px;
+}
+.donate-section .single-donate .donate-img::before {
+	right: auto;
+	left: 20px;
+}
+.donate-section .single-donate .donate-img::after {
+	right: auto;
+	left: 13px;
+}
+.donate-section .single-donate .forward-btn i {
+	transform: scaleX(1);
+}
+.testimonial-section-two .slick-next {
+	right: auto;
+	left: 0;
+}
+
+.testimonial-section-two .slick-prev {
+	right: auto;
+	left: 60px;
+}
+
+.testimonial-section-two .slick-next i{
+	transform: rotate(180deg);
+}
+.testimonial-section-two .slick-prev i{
+	transform: rotate(-180deg);
+}
+.testimonial-section-two .single-testimonial .quote {
+	right: auto;
+	left: 20px;
+}
+.blog-section-two .single-blog .blog-img .blog-badge {
+	left: auto;
+	right: 20px;
+}
+.blog-section-two .single-blog .blog-img .blog-img-overlay-text {
+	left: auto;
+	right: 24px;
+}
+
+
+
+
+/* Home Page Three */
+.header-area-three .main-header .main-menu .listing .submenu {
+	right: auto;
+	left: 0;
+}
+.header-area-three .main-header .main-menu .listing .submenu > .single-list > .single i {
+	right: auto;
+	transform: rotate(-180deg);
+    left: 13px;
+}
+.header-area-three .mobile_menu .slicknav_menu .slicknav_btn {
+    right: auto;
+    left: 50px;
+    margin-right: 100%;
+}
+.header-area-three .mobile_menu .slicknav_menu .slicknav_nav ul {
+	margin: 0 11px 0 0;
+}
+
+
+.hero-area-three .multi-image-two {
+	margin-left: 0;
+	margin-right: -20px;
+}
+.hero-area-three .multi-image-three {
+	margin-left: 0;
+	margin-right: -20px;
+}
+.hero-area-three .multi-image-four {
+	margin-left: 0;
+	margin-right: -20px;
+}
+.hero-area-three .hero-count-section {
+	padding-right: 0;
+	padding-left: 100px;
+}
+.hero-area-three .hero-count-section .hero-count:not(:last-child)::before {
+	right: auto;
+	left: -30px;
+}
+.helpful-area-three .helpful-card .number-watermark {
+	right: auto;
+	left: 20px;
+}
+.donate-section-two .single-donate .donate-info .custom-progress-two .percentage {
+	right: auto;
+	left: 20px;
+}
+.donate-section-two .single-donate .forward-btn i {
+	transform: scaleX(1);
+}
+.our-event-three .slick-slide .overlay-text .title {
+	left: auto;
+	right: 30px;
+	margin-right: 0;
+	margin-left: 100px;
+}
+.our-event-three .slick-slide .brush-bg {
+	left: auto;
+	right: 30px;
+}
+.testimonial-section-three .position-card {
+	left: 30%;
+	right: auto;
+}
+.testimonial-section-three .position-card .single-testimonial-three .quote {
+	right: auto;
+	left: 20px;
+}
+
+
+
+
+/* Inner Page */
+.breadcrumb-bg::before {
+	transform: scaleX(-1);
+}
+.breadcrumb-bg {
+    background: var(--Gredient, linear-gradient(-90deg, #00715d 27.6%, rgba(171, 185, 183, 0.13) 72.4%));
+}
+.breadcrumb-text .breadcrumb .single-list:last-child::before {
+	float: right;
+    padding-left: 7px;
+    transform: rotate(180deg);
+}
+.breadcrumb-item + .breadcrumb-item {
+	padding-left: 0;
+}
+.single-blog .blog-img .brush-bg {
+	right: 20px;
+	left: auto;
+}
+.search-section .search-box .search-icon {
+	right: auto;
+	left: 18px;
+}
+.related-post-section .related-box .single-post .post-info {
+	margin-left: 0;
+	margin-right: 15px;
+}
+.single-blog .another-blog-info .share-link .title {
+	margin-right: 0;
+	margin-left: 20px;
+}
+.single-blog .related-blog .single-blog .blog-img img {
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+.single-comment .comment-img {
+	margin-right: 30px;
+	margin-left: 30px;
+}
+.single-comment .comment-img {
+	margin-right: 0;
+}
+.single-blog .blog-info-title .donation-content .bullet-list {
+	padding-left: 0;
+	padding-right: 30px;
+}
+.single-comment.two {
+	margin-left: 0;
+	margin-right: 30px;
+}
+.blog-section-three .single-blog .blog-img .brush-bg {
+	left: auto;
+	right: 20px;
+}
+.pagination-nav .pagination .page-item .page-link.next i{
+	transform: rotate(180deg);
+}
+.donate-details .donate-info .donate-info-title .alert .alert-msg .title {
+	margin-right: 0;
+	margin-left: 10px;
+}
+.donate-details .donate-info .donate-info-title .alert .icon {
+	margin-right: 0;
+	margin-left: 20px;
+}
+.forward-btn i {
+	transform: scaleX(1);
+}
+.form-check .form-check-input {
+	float: right;
+	margin-right: 0;
+}
+.custom-check .form-check-label {
+	margin-left: 0;
+	margin-right: 26px;
+}
+.date-time .single:first-child {
+	margin-left: 10px;
+}
+.date-time .single:last-child {
+	margin-left: 0;
+}
+.experience.listing .single-list i {
+	margin-right: 0;
+	margin-left: 20px;
+}
+.toggle-password {
+	right: auto;
+	left: 16px;
+}
+
+.single-team .team-info-title .content::before {
+	right: auto;
+	left: -20px;
+}
+.education-section .education-box .key-points {
+	padding-left: 0;
+	padding-right: 20px;
+}
+
+
+
+
+
+/* Large XL */
+@media only screen and (min-width: 1199.99px) and (max-width: 1399.99px){
+
+}
+	
+/* Lg */
+@media only screen and (min-width: 992px) and (max-width: 1199.98px){
+	
+}
+
+/* MD */
+@media only screen and (min-width: 768px) and (max-width: 991.98px){
+
+}
+
+/* SM */
+@media only screen and (min-width: 576px) and (max-width: 767px){
+	
+}
+
+/* 0 - 991 */
+@media (max-width: 991.98px) {
+	.question-area .accordion {
+		padding-left: 0;
+	}
+	
+	.urgent-area-slide {
+		border-radius: 10px;
+	}
+    .header-area .header-right {
+        margin-right: 0px !important;
+        margin-left: 60px !important;
+    }
+    .header-area-two .header-right {
+        margin-right: 0px !important;
+        margin-left: 60px !important;
+    }
+    .header-area-three .header-right {
+        margin-right: 0px !important;
+        margin-left: 60px !important;
+    }
+
+    .hero-area-three .hero-count-section {
+        padding-top: 30px;
+        padding-left: 0;
+      }
+}
+
+/* 0 - 1199 */
+@media (max-width: 1199px) {
+    .header-area-two .main-menu .listing .single-list {
+        margin: 0 10px;
+    }
+    .header-area-three .main-menu .listing .single-list {
+        margin: 0 10px;
+    }
+}
+
+/* XS Device */
+@media (max-width: 575px){
+	
+    .hero-area-three .hero-count-section .hero-count:not(:last-child)::before {
+        right: auto;
+        left: -20px;
+    }
+    .our-event-three .slick-slide .brush-bg {
+        right: 70px;
+    }
+    .our-event-three .slick-slide .overlay-text .title {
+        right: 70px;
+    }
+}
+
+
+

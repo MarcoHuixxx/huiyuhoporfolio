@@ -1,440 +1,625 @@
-/*-----------------------------------------------------------------------------------
+/*----------------------------------------------
+    Index Of Script
+------------------------------------------------
 
-Theme Name: Gerold - Personal Portfolio HTML5 Template
-Theme URI: https://themejunction.net/html/gerold/demo/
-Author: Theme-Junction
-Author URI: https://themeforest.net/user/theme-junction
-Description: Gerold - Personal Portfolio HTML5 Template
+    @version         : 1.0.0
+    @Template Name   : Charitfix
+    @Template author : initTheme
+    
+    :: Preloader                    :: Nice Scroll js             
+    :: Data-background              :: Hover Tilt Effect        
+    ::  Search box                  :: Select 2                                  
+    :: Mobile Menu                  :: Slick Nav       
+    :: Animation                    :: Wow Animation      
+    :: Sticky And Scroll Up
+    :: slider - Urgent Area-active
+    :: slider - Event Area-active
+    :: slider - Testimonial Area-active
+    :: slider - Testimonial Area-active 02
+    :: slider - Gallery Area-active
+    :: slider - Popular Brand Area-active
+    :: slider - Blog Area-active
+    :: slider- Favorite Area-active
+    :: slider- Favorite Area-active
 
------------------------------------------------------------------------------------
 
-/***************************************************
-==================== JS INDEX ======================
-****************************************************
-// Data js
-// Sidebar Navigation
-// Sticky Header
-// Hamburger Menu
-// Scroll To Section
-// OnePage Active Class
-// Portfolio Filter
-// Portfolio Gallery Carousel
-// Testimonial Carousel
-// Nice Select
-// ALL Popup
-// Preloader
-// Sidebar Hover BG Color
-// Services Hover BG
-// Portfolio Filter BG Color
-// Funfact
-// WoW Js
-
-****************************************************/
+------------------------------------------------
+    End-of Script
+------------------------------------------------*/
 
 (function ($) {
-	"use strict";
+  "use strict";
 
-	/*------------------------------------------------------
-  /  Data js
-  /------------------------------------------------------*/
-	$("[data-bg-image]").each(function () {
-		$(this).css(
-			"background-image",
-			"url(" + $(this).attr("data-bg-image") + ")"
-		);
-	});
+  /*----------------------------------------------
+      Preloader
+  ----------------------------------------------*/
+  $(window).on('load', function () {
+      $('#preloader-active').delay(450).fadeOut('slow');
+      $('body').delay(450).css({
+          'overflow': 'visible'
+      });
+      var counter = 0;
+      var c = 0;
+      var i = setInterval(function () {
+          $(".loading-page .counter .number").html(c + "%");
+          $(".loading-page .counter .line").css("width", c + "%");
 
-	$("[data-bg-color]").each(function () {
-		$(this).css("background-color", $(this).attr("data-bg-color"));
-	});
+          counter++; c++;
+          if (counter == 101) {
+              clearInterval(i);
+          }
+      }, 10);
+  });
 
-	$(document).ready(function ($) {
+  /*-----------------------------------
+    Sticky And Scroll Up
+  -----------------------------------*/
+  $(window).on("scroll", function () {
+    var scroll = $(window).scrollTop();
+    if (scroll < 400) {
+      $(".header-sticky").removeClass("sticky-bar");
+      $("#back-top").fadeOut(500);
+    } else {
+      $(".header-sticky").addClass("sticky-bar");
+      $("#back-top").fadeIn(500);
+    }
+  });
 
-		/*------------------------------------------------------
-  	/  Sticky Header
-  	/------------------------------------------------------*/
-	var lastScrollTop = 0;
-	$(window).scroll(function () {
-		var scroll = $(window).scrollTop();
+  /*-----------------------------------
+    Data-background
+  -----------------------------------*/
+  $("[data-background]").each(function () {
+    $(this).css("background-image", "url(" + $(this).attr("data-background") + ")");
+  });
 
-		if (scroll > 300) {
-			$(".tj-header-area.header-sticky").addClass("sticky");
-			$(".tj-header-area.header-sticky").removeClass("sticky-out");
-		} else if (scroll < lastScrollTop) {
-			if (scroll < 500) {
-				$(".tj-header-area.header-sticky").addClass("sticky-out");
-				$(".tj-header-area.header-sticky").removeClass("sticky");
-			}
-		} else {
-			$(".tj-header-area.header-sticky").removeClass("sticky");
-		}
+  /*-----------------------------------
+    slider-active
+  -----------------------------------*/
+  function mainSlider() {
+    var BasicSlider = $(".slider-active");
+    BasicSlider.on("init", function (e, slick) {
+      var $firstAnimatingElements = $(".single-slider:first-child").find("[data-animation]");
+      doAnimations($firstAnimatingElements);
+    });
+    BasicSlider.on("beforeChange", function (e, slick, currentSlide, nextSlide) {
+      var $animatingElements = $('.single-slider[data-slick-index="' + nextSlide + '"]').find("[data-animation]");
+      doAnimations($animatingElements);
+    });
+    BasicSlider.slick({
+      autoplay: true,
+      autoplaySpeed: 4000,
+      dots: false,
+      fade: true,
+      arrows: false,
+      // rtl: true, // Enable RTL support
+      prevArrow: '<button type="button" class="slick-prev"><i class="ti-angle-left"></i></button>',
+      nextArrow: '<button type="button" class="slick-next"><i class="ti-angle-right"></i></button>',
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            infinite: true,
+          },
+        },
+        {
+          breakpoint: 991,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+          },
+        },
+        {
+          breakpoint: 767,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+          },
+        },
+      ],
+    });
 
-		lastScrollTop = scroll;
-	});
-		
+    function doAnimations(elements) {
+      var animationEndEvents = "webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend";
+      elements.each(function () {
+        var $this = $(this);
+        var $animationDelay = $this.data("delay");
+        var $animationType = "animated " + $this.data("animation");
+        $this.css({
+          "animation-delay": $animationDelay,
+          "-webkit-animation-delay": $animationDelay,
+        });
+        $this.addClass($animationType).one(animationEndEvents, function () {
+          $this.removeClass($animationType);
+        });
+      });
+    }
+  }
+  mainSlider();
 
-		/*------------------------------------------------------
-  	/  Hamburger Menu
-  	/------------------------------------------------------*/
-		$(".menu-bar").on("click", function () {
-			$(".menu-bar").toggleClass("menu-bar-toggeled");
-			$(".header-menu").toggleClass("opened");
-			$("body").toggleClass("overflow-hidden");
-		});
+  /*----------------------------------------------
+    slider - urgent area-active
+  ----------------------------------------------*/
+  $(".urgent-area-slide").slick({
+    dots: true,
+    infinite: true,
+    autoplaySpeed: 400,
+    arrows: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    // rtl: true, // Enable RTL support
+  });
 
-		$(".header-menu ul li a").on("click", function () {
-			$(".menu-bar").removeClass("menu-bar-toggeled");
-			$(".header-menu").removeClass("opened");
-			$("body").removeClass("overflow-hidden");
-		});
+ /*----------------------------------------------
+    slider - Event Area-active
+  ----------------------------------------------*/
 
-		/*------------------------------------------------------
-  	/  OnePage Active Class
-  	/------------------------------------------------------*/
-		function onPageNav(switchName) {
-			const navSwitch = $(switchName);
-			const deductHeight = 60;
-			let navArr = [];
+  $(".center-slider-active").slick({
+    centerMode: true,
+    infinite: true,
+    centerPadding: "0px",
+    speed: 500,
+    variableWidth: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    dots: true,
+    arrows: false,
+    // rtl: true, // Enable RTL support
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          arrows: false,
+          centerMode: true,
+          centerPadding: "0px",
+          Infinity: true,
+          slidesToShow: 1,
+        },
+      },
+    ],
+  });
 
-			navSwitch.each(function (i) {
-				let navSwitchHref = $(this).attr("href");
-				let tgtOff = $(navSwitchHref).offset().top - deductHeight;
-				navArr.push([]);
-				navArr[i].switch = $(this);
-				navArr[i].tgtOff = tgtOff;
-			});
-			//        console.log(navArr);
-			$(window).scroll(function () {
-				for (let i = 0; i < navArr.length; i++) {
-					let scroll = $(window).scrollTop();
-					let tgtKey = navArr[i];
-					let tgtSwitch = tgtKey.switch;
-					let tgtOff = tgtKey.tgtOff;
-					if (scroll >= tgtOff) {
-						navSwitch.parent().removeClass("is-current");
-						tgtSwitch.parent().addClass("is-current");
-					} else {
-						tgtSwitch.parent().removeClass("is-current");
-					}
-				}
-			});
-		}
-		$(window).on("load resize", function () {
-			onPageNav(".side-navbar a");
-		});
+  /*----------------------------------------------
+    slider- testimonial area-active
+  ----------------------------------------------*/
+  // $('.testimonial-slider').length > 0 &&
+  $(".testimonial-slider").slick({
+    dots: true,
+    infinite: true,
+    autoplaySpeed: 400,
+    arrows: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    // rtl: true, // Enable RTL support
+    prevArrow: '<button type="button" class="slick-prev slick-arrow"><i class="ri-arrow-left-line"></i></button>',
+    nextArrow: '<button type="button" class="slick-next slick-arrow"><i class="ri-arrow-right-line"></i></button>',
+    customPaging: function (slider, i) {
+      // Custom content for each dot
+      return `<div class="slick-custom-dot">
+                  <div class="testimonial-img-horizontal">
+                      <img class="w-100" src="assets/images/gallery/testimonial-${i + 1}.png" alt="image">
+                  </div>
+              </div>`;
+    },
+  });
 
-		$(".header-menu nav ul").onePageNav({
-			currentClass: "current-menu-ancestor",
-			changeHash: false,
-			easing: "swing",
-		});
+  /*----------------------------------------------
+    slider - Testimonial Area-active 02
+  ----------------------------------------------*/
+  $(".testimonial-slider-two").slick({
+    dots: false,
+    infinite: true,
+    arrows: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: false,
+    // rtl: true, // Enable RTL support
+    prevArrow: '<button type="button" class="slick-prev slick-arrow"><i class="ri-arrow-left-s-line"></i></button>',
+    nextArrow: '<button type="button" class="slick-next slick-arrow"><i class="ri-arrow-right-s-line"></i></button>',
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          autoplay: true,
+          autoplaySpeed: 1000,
+          arrows: false,
+        },
+      },
+    ],
+  });
 
-		/*------------------------------------------------------
-  	/  Portfolio Filter
-  	/------------------------------------------------------*/
-		var $grid = $(".portfolio-box").isotope({
-			// options
-			masonry: {
-				columnWidth: ".portfolio-box .portfolio-sizer",
-				gutter: ".portfolio-box .gutter-sizer",
-			},
-			itemSelector: ".portfolio-box .portfolio-item",
-			percentPosition: true,
-		});
+  /*----------------------------------------------
+    slider - Testimonial Area-active 03
+  ----------------------------------------------*/
+  $(".testimonial-slider-three-active").slick({
+    dots: true,
+    infinite: true,
+    arrows: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    // rtl: true, // Enable RTL support
+    prevArrow: '<button type="button" class="slick-prev slick-arrow"><i class="ri-arrow-left-s-line"></i></button>',
+    nextArrow: '<button type="button" class="slick-next slick-arrow"><i class="ri-arrow-right-s-line"></i></button>',
+  });
 
-		// filter items on button click
-		$(".filter-button-group").on("click", "button", function () {
-			$(".filter-button-group button").removeClass("active");
-			$(this).addClass("active");
+  /*----------------------------------------------
+    slider - Gallery Area-active
+  ----------------------------------------------*/
+  $(".gallery-slider").slick({
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    infinite: true,
+    arrows: false,
+    // rtl: true, // Enable RTL support
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 575,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+    ],
+  });
 
-			var filterValue = $(this).attr("data-filter");
-			$grid.isotope({ filter: filterValue });
-		});
+  /*----------------------------------------------
+    slider - Popular Brand Area-active
+  ----------------------------------------------*/
+  $(".brand-img-slider").slick({
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    infinite: true,
+    arrows: false,
+    // rtl: true, // Enable RTL support
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 575,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  });
 
-		/*------------------------------------------------------
-  	/  Portfolio Gallery Carousel
-  	/------------------------------------------------------*/
-		$(".portfolio_gallery.owl-carousel").owlCarousel({
-			items: 2,
-			loop: true,
-			lazyLoad: true,
-			center: true,
-			// autoWidth: true,
-			autoplayHoverPause: true,
-			autoplay: false,
-			autoplayTimeout: 5000,
-			smartSpeed: 800,
-			margin: 30,
-			nav: false,
-			dots: true,
-			responsive: {
-				// breakpoint from 0 up
-				0: {
-					items: 1,
-					margin: 0,
-				},
-				// breakpoint from 768 up
-				768: {
-					items: 2,
-					margin: 20,
-				},
-				992: {
-					items: 2,
-					margin: 30,
-				},
-			},
-		});
+  /*----------------------------------------------
+    slider - Blog Area-active
+  ----------------------------------------------*/
+  $(".related-blog-slider").slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    autoplaySpeed: 2000,
+    infinite: true,
+    arrows: true,
+    // rtl: true, // Enable RTL support
+    prevArrow: '<button type="button" class="slick-arrow-prev"><p class="arrow-text">Previews</p><div class="slick-prev"><i class="ri-arrow-left-line"></i></div></button>',
+    nextArrow: '<button type="button" class="slick-arrow-next"><p class="arrow-text">Next Previews</p><div class="slick-next"><i class="ri-arrow-right-line"></i></div></button>',
+  });
 
-		/*------------------------------------------------------
-  	/ Testimonial Carousel
-  	/------------------------------------------------------*/
-		$(".testimonial-carousel.owl-carousel").owlCarousel({
-			loop: true,
-			margin: 30,
-			nav: false,
-			dots: true,
-			autoplay: false,
-			active: true,
-			smartSpeed: 1000,
-			autoplayTimeout: 7000,
-			responsive: {
-				0: {
-					items: 1,
-				},
-				600: {
-					items: 2,
-				},
-				1000: {
-					items: 2,
-				},
-			},
-		});
+  /*----------------------------------------------
+    slider- Favorite Area-active
+  ----------------------------------------------*/
+  $(".favourite-slider").slick({
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: false,
+    autoplaySpeed: 2000,
+    infinite: true,
+    // rtl: true, // Enable RTL support
+    arrows: false,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 575,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  });
 
-		/*------------------------------------------------------
-  	/ Post Gallery Carousel
-  	/------------------------------------------------------*/
-		$(".tj-post__gallery.owl-carousel").owlCarousel({
-			items: 1,
-			loop: true,
-			margin: 30,
-			dots: false,
-			nav: true,
-			navText: [
-				'<i class="fal fa-arrow-left"></i>',
-				'<i class="fal fa-arrow-right"></i>',
-			],
-			autoplay: false,
-			smartSpeed: 1000,
-			autoplayTimeout: 3000,
-		});
+  /*----------------------------------------------
+    Select 2
+  ----------------------------------------------*/
+  $(".select2").select2({
+    placeholder: "Choose one",
+    width: "100%",
+  });
 
-		/*------------------------------------------------------
-  	/  Nice Select
-  	/------------------------------------------------------*/
-		$("select").niceSelect();
 
-		/*------------------------------------------------------
-  	/  ALL Popup
-  	/------------------------------------------------------*/
-		if ($(".popup_video").length > 0) {
-			$(`.popup_video`).lightcase({
-				transition: "elastic",
-				showSequenceInfo: false,
-				slideshow: false,
-				swipe: true,
-				showTitle: false,
-				showCaption: false,
-				controls: true,
-			});
-		}
+  /*----------------------------------------------
+    Custom click expand icon
+  ----------------------------------------------*/
+  document.addEventListener("DOMContentLoaded", function () {
+    const hoverIcons = document.querySelectorAll(".hover-icon");
+    hoverIcons.forEach((hoverIcon) => {
+      hoverIcon.addEventListener("click", function () {
+        const socialIcons = this.nextElementSibling;
+        socialIcons.classList.toggle("active");
+      });
+    });
+  });
 
-		$(".modal-popup").magnificPopup({
-			type: "inline",
-			fixedContentPos: false,
-			fixedBgPos: true,
-			overflowY: "auto",
-			closeBtnInside: true,
-			preloader: false,
-			midClick: true,
-			removalDelay: 300,
-			mainClass: "popup-mfp",
-		});
-	});
 
-	$(window).on("load", function () {
-		/*------------------------------------------------------
-  	/  WoW Js
-  	/------------------------------------------------------*/
-		var wow = new WOW({
-			boxClass: "wow", // default
-			animateClass: "animated", // default
-			offset: 100, // default
-			mobile: true, // default
-			live: true, // default
-		});
-		wow.init();
+  /*-----------------------------------
+    Slick Nav [ Mobile Menu ]
+  -----------------------------------*/
+  var slickNavInitialized = false;
+  $(document).ready(function () {
+    if (!slickNavInitialized) {
+      var menu = $("#navigation");
+      if (menu.length) {
+        menu.slicknav({
+          prependTo: ".mobile_menu",
+          closedSymbol: "+",
+          openedSymbol: "-",
+        });
+        slickNavInitialized = true;
+      }
+    }
+  });
+  
 
-		/*------------------------------------------------------
-  	/  Preloader
-  	/------------------------------------------------------*/
-		const svg = document.getElementById("preloaderSvg");
-		const tl = gsap.timeline();
-		const curve = "M0 502S175 272 500 272s500 230 500 230V0H0Z";
-		const flat = "M0 2S175 1 500 1s500 1 500 1V0H0Z";
+  /*-----------------------------------
+    Search box
+  -----------------------------------*/
+  var $hamburgerIcon = $(".hamburger-icon");
+  var $searchIcon = $(".search-bar");
+  var $searchContainer = $(".search-container");
+  var $overlay = $(".overlay");
+  var $closeSearchBtn = $("#closeSearch");
 
-		tl.to(".preloader-heading .load-text , .preloader-heading .cont", {
-			delay: 1.5,
-			y: -100,
-			opacity: 0,
-		});
-		tl.to(svg, {
-			duration: 0.5,
-			attr: { d: curve },
-			ease: "power2.easeIn",
-		}).to(svg, {
-			duration: 0.5,
-			attr: { d: flat },
-			ease: "power2.easeOut",
-		});
-		tl.to(".preloader", {
-			y: -1500,
-		});
-		tl.to(".preloader", {
-			zIndex: -1,
-			display: "none",
-		});
+  $hamburgerIcon.click(function () {
+    $searchContainer.hide();
+    $overlay.hide();
+  });
 
-		/*------------------------------------------------------
-  	/  Sidebar Hover BG Color
-  	/------------------------------------------------------*/
-		if ($(".side-navbar").length > 0) {
-			function sidebar_animation() {
-				var active_bg = $(".side-navbar ul .active-bg");
+  $searchIcon.click(function () {
+    $searchContainer.toggle();
+    $overlay.toggle();
+  });
 
-				$(".side-navbar ul li").on("mouseenter", function () {
-					var element = $(this);
-					activeSidebar(active_bg, element);
-				});
+  $closeSearchBtn.click(function () {
+    $searchContainer.hide();
+    $overlay.hide();
+  });
 
-				$(".side-navbar ul").on("mouseleave", function () {
-					var element = $(".side-navbar ul li.is-current");
-					activeSidebar(active_bg, element);
-					element.closest("li").siblings().removeClass("mleave");
-				});
+  $(document).click(function (event) {
+    if (!$(event.target).closest($searchIcon).length && !$(event.target).closest($searchContainer).length) {
+      $searchContainer.hide();
+      $overlay.hide();
+    }
+  });
 
-				// Use MutationObserver to detect changes in the is-current class
-				var observer = new MutationObserver(function (mutations) {
-					mutations.forEach(function (mutation) {
-						if (
-							mutation.attributeName === "class" &&
-							mutation.target.classList.contains("is-current")
-						) {
-							var element = $(".side-navbar ul li.is-current");
-							activeSidebar(active_bg, element);
-						}
-					});
-				});
+  /*-----------------------------------
+    nav tab
+  -----------------------------------*/
 
-				observer.observe(document.querySelector(".side-navbar ul"), {
-					attributes: true,
-					subtree: true,
-				});
+  $(".tab-section-one").show();
 
-				// Initial setup
-				var initialElement = $(".side-navbar ul li.is-current");
-				activeSidebar(active_bg, initialElement);
-			}
+  $(".tab-btn a").on("click", function () {
+    $(".tab-btn a").removeClass("active");
 
-			sidebar_animation();
+    $(this).addClass("active");
 
-			function activeSidebar(active_bg, e) {
-				if (!e.length) {
-					return false;
-				}
-				var topOff = e.offset().top;
-				var height = e.outerHeight();
-				var menuTop = $(".side-navbar ul").offset().top;
-				e.closest("li").removeClass("mleave");
-				e.closest("li").siblings().addClass("mleave");
-				active_bg.css({ top: topOff - menuTop + "px", height: height + "px" });
-			}
-		}
+    $(".tab-section").hide();
+    var tabId = $(this).data("tab-id");
+    $("#" + tabId).show();
+  });
 
-		/*------------------------------------------------------
-  	/  Services Hover BG
-  	/------------------------------------------------------*/
-		function service_animation() {
-			var active_bg = $(".services-widget .active-bg");
-			var element = $(".services-widget .current");
-			$(".services-widget .service-item").on("mouseenter", function () {
-				var e = $(this);
-				activeService(active_bg, e);
-			});
-			$(".services-widget").on("mouseleave", function () {
-				element = $(".services-widget .current");
-				activeService(active_bg, element);
-				element.closest(".service-item").siblings().removeClass("mleave");
-			});
-			activeService(active_bg, element);
-		}
-		service_animation();
+  /*-----------------------------------
+    WOW active
+  -----------------------------------*/
+  new WOW().init();
 
-		function activeService(active_bg, e) {
-			if (!e.length) {
-				return false;
-			}
-			var topOff = e.offset().top;
-			var height = e.outerHeight();
-			var menuTop = $(".services-widget").offset().top;
-			e.closest(".service-item").removeClass("mleave");
-			e.closest(".service-item").siblings().addClass("mleave");
-			active_bg.css({ top: topOff - menuTop + "px", height: height + "px" });
-		}
 
-		$(".services-widget .service-item").on("click", function () {
-			$(".services-widget .service-item").removeClass("current");
-			$(this).addClass("current");
-		});
+  /*-----------------------------------
+    Hover Tilt Effect
+  -----------------------------------*/
+  $(".tilt-effect").tilt({
+    maxTilt: 6,
+    easing: "cubic-bezier(.03,.98,.52,.99)",
+    speed: 500,
+    transition: true,
+  });
 
-		/*------------------------------------------------------
-  	/  Portfolio Filter BG Color
-  	/------------------------------------------------------*/
-		function filter_animation() {
-			var active_bg = $(".portfolio-filter .button-group .active-bg");
-			var element = $(".portfolio-filter .button-group .active");
-			$(".portfolio-filter .button-group button").on("click", function () {
-				var e = $(this);
-				activeFilterBtn(active_bg, e);
-			});
-			activeFilterBtn(active_bg, element);
-		}
-		filter_animation();
+  /*-----------------------------------
+    Password Show Hide
+  -----------------------------------*/
+  $(document).ready(function () {
+    $(".toggle-password").click(function () {
+        var passwordInput = $($(this).siblings(".password-input"));
+        var icon = $(this);
+        if (passwordInput.attr("type") == "password") {
+            passwordInput.attr("type", "text");
+            icon.removeClass("ri-eye-line").addClass("ri-eye-off-line");
+        } else {
+            passwordInput.attr("type", "password");
+            icon.removeClass("ri-eye-off-line").addClass("ri-eye-line");
+        }
+    });
+  })
+  
+  /*-----------------------------------
+    Play video
+  -----------------------------------*/
+  $("#play-video").on("click", function (e) {
+    e.preventDefault();
+    $("#video-overlay").addClass("open");
+    $("#video-overlay").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/RK1RRVR9A2g" frameborder="0" allowfullscreen></iframe>');
+  });
 
-		function activeFilterBtn(active_bg, e) {
-			if (!e.length) {
-				return false;
-			}
-			var leftOff = e.offset().left;
-			var width = e.outerWidth();
-			var menuLeft = $(".portfolio-filter .button-group").offset().left;
-			e.closest("button").removeClass("active");
-			e.closest("button")
-				.siblings()
-				.addClass(".portfolio-filter .button-group");
-			active_bg.css({ left: leftOff - menuLeft + "px", width: width + "px" });
-		}
+  $(".video-overlay, .video-overlay-close").on("click", function (e) {
+    e.preventDefault();
+    close_video();
+  });
 
-		/*------------------------------------------------------
-  	/  Funfact
-  	/------------------------------------------------------*/
-		if ($(".odometer").length > 0) {
-			$(".odometer").appear(function () {
-				var odo = $(".odometer");
-				odo.each(function () {
-					var countNumber = $(this).attr("data-count");
-					$(this).html(countNumber);
-				});
-			});
-		}
-	});
+  $(document).keyup(function (e) {
+    if (e.keyCode === 27) {
+      close_video();
+    }
+  });
+
+  function close_video() {
+    $(".video-overlay.open").removeClass("open").find("iframe").remove();
+  }
+
+  $("#play-video-two").on("click", function (e) {
+    e.preventDefault();
+    $("#video-overlay").addClass("open");
+    $("#video-overlay").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/RK1RRVR9A2g" frameborder="0" allowfullscreen></iframe>');
+  });
+
+  $(".video-overlay, .video-overlay-close").on("click", function (e) {
+    e.preventDefault();
+    close_video();
+  });
+
+  $(document).keyup(function (e) {
+    if (e.keyCode === 27) {
+      close_video();
+    }
+  });
+
+  function close_video() {
+    $(".video-overlay.open").removeClass("open").find("iframe").remove();
+  }
+
+  /*-----------------------------------
+    Back To Top
+  -----------------------------------*/
+  (function () {
+    var progressPath = document.querySelector(".progressParent path");
+    var pathLength = progressPath?.getTotalLength();
+    if (pathLength) {
+      progressPath.style.transition = progressPath.style.WebkitTransition = "none";
+      progressPath.style.strokeDasharray = pathLength + " " + pathLength;
+      progressPath.style.strokeDashoffset = pathLength;
+      progressPath.getBoundingClientRect();
+      progressPath.style.transition = progressPath.style.WebkitTransition = "stroke-dashoffset 10ms linear";
+      var updateProgress = function () {
+        var scroll = $(window).scrollTop();
+        var height = $(document).height() - $(window).height();
+        var progress = pathLength - (scroll * pathLength) / height;
+        progressPath.style.strokeDashoffset = progress;
+      };
+      updateProgress();
+      $(window).scroll(updateProgress);
+      var offset = 50;
+      var duration = 550;
+      jQuery(window).on("scroll", function () {
+        if (jQuery(this).scrollTop() > offset) {
+          jQuery(".progressParent").addClass("rn-backto-top-active");
+        } else {
+          jQuery(".progressParent").removeClass("rn-backto-top-active");
+        }
+      });
+      jQuery(".progressParent").on("click", function (event) {
+        event.preventDefault();
+        jQuery("html, body").animate({ scrollTop: 0 }, duration);
+        return false;
+      });
+    }
+  })();
+
+
+  
+        
+    /*-----------------------------------
+        selectPricing , Tag
+    -----------------------------------*/
+    $(".selectPricing li, .selectTag li").click(function () {
+      $(this).toggleClass('active').siblings().removeClass('active');
+  });
+
+  /*------------------------------
+      payment gateway selection
+  -------------------------------*/
+  $(".payment-gateway-list li").on('click', function () {
+      $(".payment-gateway-list li").removeClass("selected");
+      $(this).addClass("selected");
+  })
+
+
+  // Count pricing
+  $(document).ready(function(){
+    let price_right_parent = $('.priceListing');
+    let left_default_amount = $('.left_default_amount').val();
+        price_right_parent.find('.total_donation_amount').text('$'+ left_default_amount);
+
+        $(document).on('click','.selectPricing li',function(){
+            let el = '$' + $(this).data('amount');
+            price_right_parent.find('.total_donation_amount').text(el);
+            $('.left_default_amount').val($(this).data('amount'))
+        });
+
+    $(document).on('keyup','.left_default_amount ',function(){
+        let el = $(this).val();
+        price_right_parent.find('.total_donation_amount').text('$'+ el);
+    });
+
+    $(document).on('click','.payment-gateway-list .single-gateway-item',function(){
+        $('#slected_gateway_from_helper').val($(this).data('gateway'))
+
+        let gateway = $(this).data('gateway');
+
+        if (gateway == 'manual_payment') {
+            $('.manual_payment_transaction_field').removeClass('d-none');
+        } else {
+            $('.manual_payment_transaction_field').addClass('d-none');
+        }
+    });
+  });
+    
 })(jQuery);

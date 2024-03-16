@@ -1,0 +1,172 @@
+.donate-section {
+  .single-donate {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--primary-gray);
+    @include transition(0.3s);
+    &:hover {
+      cursor: pointer;
+      background-color: var(--white);
+      border: 1px solid transparent;
+      box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.15);
+      .donate-img {
+        .donate-img-overlay {
+          opacity: 1;
+        }
+      }
+    }
+    .donate-img-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        0deg,
+        rgba(9, 14, 13, 0.6) 0%,
+        rgba(9, 14, 13, 0.6) 100%
+      );
+      opacity: 0; /* Initially hidden */
+      transition: opacity 0.3s ease;
+      border-radius: 10px;
+    }
+
+    .donate-img {
+      img{
+        border-radius: 10px;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        right: 13px;
+        border-top: 8px solid var(--secondary-light);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        height: 0;
+        width: 70px;
+        z-index: 2;
+      }
+      &::before {
+        content: "55%";
+        color: var(--primary-title);
+        font-size: 20px;
+        font-weight: 700;
+        /* padding: 7px 20px; */
+        padding-top: 5px;
+        padding-bottom: 5px;
+        position: absolute;
+        bottom: -8px;
+        right: 20px;
+        background-color: var(--secondary);
+        overflow: visible;
+        width: 55px;
+        text-align: center;
+        z-index: 5;
+      }
+      .donate-badge {
+        background-color: var(--primary);
+        padding: 12px 18px;
+        border-radius: 5px;
+        position: absolute;
+        font-family: var(--Sans);
+        top: 10px;
+        left: 10px;
+        z-index: 5;
+        .subtitle {
+          color: var(--white);
+          font-size: 15px;
+          font-weight: 700;
+          text-transform: uppercase;
+          line-height: 15px;
+          @media #{$xs-to-md-max} {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    .donate-info {
+      margin-top: 20px;
+      padding: 10px;
+      .donate-info-title {
+        .title {
+          font-size: 20px;
+          font-weight: 700;
+          line-height: 25px;
+          color: var(--primary-title);
+          margin-bottom: 20px;
+          @media #{$xs-to-md-max} {
+            font-size: 16px;
+          }
+        }
+        .subtitle {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 25px;
+          color: var(--tertiary-title);
+          margin-bottom: 15px;
+          @media #{$xs-to-md-max} {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    .forward-btn {
+      width: 40px;
+      height: 40px;
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      i {
+        font-size: 20px;
+        color: var(--primary);
+        transform: scaleX(-1);
+      }
+      &:hover {
+        background-color: var(--primary);
+        border: 1px solid transparent;
+        i {
+          color: var(--white);
+        }
+      }
+    }
+    .charges {
+      .pera {
+        font-size: 18px;
+        color: var(--primary-title);
+        font-weight: 700;
+        @media #{$xs} {
+          font-size: 16px;
+        }
+      }
+      .title {
+        font-size: 16px !important;
+        font-weight: 400 !important;
+        color: var(--primary) !important;
+        margin-bottom: 0px !important;
+        @media #{$xs} {
+          font-size: 14px !important;
+        }
+      }
+    }
+    .donate-btn {
+      padding: 17px;
+      border: 1px solid var(--primary-gray);
+      border-radius: 10px;
+      font-weight: 600;
+      color: var(--primary-title);
+      font-family: var(--Sans);
+      font-size: 16px;
+      line-height: 16px;
+      &:hover {
+        background-color: var(--primary);
+        color: var(--white);
+
+        border: 1px solid transparent;
+      }
+    }
+  }
+}

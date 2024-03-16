@@ -1,0 +1,60 @@
+const pageText = {
+    hk: {
+        home:"主頁",
+        about:"關於我們",
+        services:"服務",
+        coupons:"長者社區照顧服務券",
+        info:"資訊",
+        stroke:"中風",
+        parkinson:"帕金森",
+        contactus:"聯絡我們",
+        login:"登入",
+        captionEn:"WHERE COMPASSION MEETS COMPETENCE",
+        captionHk:"慈愛與專業並重",
+        captionDescription:"我們為長者和患有慢性疾病的人提供專業和慈愛的照顧。我們的服務包括家居護理、日間護理和康復服務。",
+        homePhysio:"上門物理治療",
+        homePhysioDescription:"我們的物理治療師會到您家中提供專業的物理治療服務。",
+        homeOccupational:"上門職業治療",
+        homeOccupationalDescription:"我們的職業治療師會到您家中提供專業的職業治療服務。",
+        homeSpeech:"上門言語治療",
+        homeSpeechDescription:"我們的言語治療師會到您家中提供專業的言語治療服務。",
+        homeNursing:"上門護理服務",
+        homeNursingDescription:"我們的護士會到您家中提供專業的護理服務。",
+        coorperatedOrganizations:"合作機構",
+        professionalTherapist:"專業治療師",
+        satisfiedClients:"滿意客戶",
+        joinMember:"加入會員",
+
+
+    },
+    en: {
+        home:"Home",
+        about:"About",
+        services:"Services",
+        coupons:"Voucher",
+        info:"Information",
+        stroke:"Stroke",
+        parkinson:"Parkinson",
+        contactus:"Contact Us",
+        login:"Login",
+        captionEn:"WHERE COMPASSION MEETS COMPETENCE",
+        captionHk:"慈愛與專業並重",
+        captionDescription:"We provide professional and compassionate care to the elderly and people with chronic diseases. Our services include home care, day care, and rehabilitation services.",
+        homePhysio:"Home Physiotherapy",
+        homePhysioDescription:"Our physiotherapists will provide professional physiotherapy services at your home.",
+        homeOccupational:"Home Occupational Therapy",
+        homeOccupationalDescription:"Our occupational therapists will provide professional occupational therapy services at your home.",
+        homeSpeech:"Home Speech Therapy",
+        homeSpeechDescription:"Our speech therapists will provide professional speech therapy services at your home.",
+        homeNursing:"Home Nursing",
+        homeNursingDescription:"Our nurses will provide professional nursing services at your home.",
+        coorperatedOrganizations:"Coorperated Organizations",
+        professionalTherapist:"Professional Therapists",
+        satisfiedClients:"Satisfied Clients",
+        joinMember:"Join Member",
+
+    }
+
+}
+
+module.exports = { pageText }

@@ -1,0 +1,116 @@
+.blog-section-three {
+  .single-blog {
+    @include transition(0.3s);
+    &:hover {
+
+      cursor: pointer;
+      .blog-img {
+        .brush-bg {
+            img{
+                // opacity: 0; // Hide the original content on hover
+                visibility: visible;
+                pointer-events: none; // Disable pointer events on the hidden content
+            }
+            &::after {
+              content: url("/assets/images/gallery/brush-bg-two.png");
+              display: block;
+              width: 100%; // Adjust as needed
+              height: 100%; // Adjust as needed
+              position: absolute;
+              top: 0;
+              left: 0;
+              z-index: 1;
+
+            }
+            &::before{
+                content: "30 Jun 2023";
+                color: var(--primary);
+            }          
+          }
+      }
+    }
+    .blog-img {
+      position: relative;
+      .brush-bg {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        &::before {
+          content: "30 Jun 2023";
+          color: var(--primary-title);
+          font-size: 14px;
+          font-weight: 700;
+          padding: 7px 14px;
+          position: absolute;
+          left: 24px;
+          top: 4px;
+          overflow: visible;
+          width: 72px;
+          text-align: center;
+          z-index: 2;
+        }
+      }
+
+      img {
+        border-radius: 10px;
+      }
+    }
+    .blog-info-title {
+      margin-top: 20px;
+
+      color: var(--primary-title);
+      i {
+        color: var(--primary);
+        font-size: 16px;
+      }
+      .info {
+        color: var(--tertiary-title);
+        font-size: 14px;
+      }
+      .title {
+        font-size: 20px;
+        line-height: 1.5;
+        font-weight: 700;
+        color: var(--primary-title);
+        margin-bottom: 15px;
+        @media #{$xs-to-sm-max} {
+          font-size: 16px;
+        }
+      }
+      .subtitle {
+        font-size: 16px;
+        line-height: 1.5;
+        font-weight: 400;
+        margin-bottom: 20px;
+        color: var(--tertiary-title);
+        @media #{$xs-to-sm-max} {
+          font-size: 14px;
+        }
+      }
+      
+    }
+  }
+  .button-section{
+    margin-bottom: 20px;
+    margin-top: 15px;
+    .read-btn{
+      border: 1px solid var(--info-gray);
+      border-radius: 40px;
+      padding: 17px 31px 17px 30px;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 16px;
+      color: var(--primary-title);
+      &:hover{
+        background-color: var(--primary);
+        color: var(--white);
+        border: 1px solid transparent;
+      }
+      @media #{$xs-to-sm-max} {
+        font-size: 14px;
+      }
+
+    }
+
+  }
+}

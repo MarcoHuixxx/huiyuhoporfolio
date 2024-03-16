@@ -1,0 +1,93 @@
+.blog-section-two{
+    .single-blog{
+        border-radius: 10px;
+        @include transition(0.3s);
+        background-color: var(--white);
+        cursor: pointer;
+        &:hover{
+            box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.15);
+            .blog-img{
+                .blog-badge{
+                    background-color: var(--secondary);
+                    .subtitle{
+                        color: var(--primary-title);
+                    }
+                }
+            }
+            .blog-info{
+                border-color: transparent;
+            }
+        }
+        .blog-img{
+            img{
+                border-radius: 10px 10px 0 0;
+            }
+            .blog-img-overlay-text{
+                position: absolute;
+                left: 24px;
+                bottom: 0px;
+                color: white;
+                font-size: 14px;
+                .info,i{
+                    color: var(--white);
+                    font-size: 14px;
+                }
+            }
+            .blog-badge{
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                background-color: var(--primary);
+                border-radius: 10px;
+                padding: 15px;
+                .subtitle{
+                    text-align: center;
+                    font-size: 14px;
+                    color: var(--white);
+                    font-weight: 700;
+                }
+
+            }
+        }
+        .blog-info{
+            @include transition(0.3s);
+            border-radius: 0 0 10px 10px;
+            border: 1px solid var(--primary-gray);
+            border-top: 0;
+        }
+        .blog-info-title{
+            padding: 20px;
+            margin-top: 6px;
+            color: var(--primary-title);
+            .title{
+                font-size: 20px;
+                line-height: 1.5;
+                font-weight: 700;
+                color: var(--primary-title);
+                margin-bottom: 15px;
+                @media #{$xs-to-sm-max} {
+                    font-size: 16px;
+                  }
+            }
+            .subtitle{
+                font-size: 16px;
+                line-height: 1.5;
+                font-weight: 400;
+                margin-bottom: 20px;
+                color: var(--tertiary-title);
+                @media #{$xs-to-sm-max} {
+                    font-size: 14px;
+                  }
+            }
+            .imp-link{
+                color: var(--primary-title);
+                font-size: 16px;
+                font-weight: 600;
+                &:hover{
+                    color: var(--primary);
+                }
+
+            }
+        }
+    }
+}

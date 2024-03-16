@@ -1,0 +1,127 @@
+.helpful-area-three {
+  .helpful-card {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 4px 40px -10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    @include transition(0.3s);
+    .number-watermark {
+      position: absolute;
+      bottom: 30px;
+      right: 20px;
+      .number {
+        font-size: 100px;
+        color: var(--number-two);
+        font-weight: 800;
+        transition: .3s;
+      }
+    }
+    &:hover {
+      background-color: var(--primary);
+      cursor: pointer;
+      .helpful-card-icon {
+        background-color: white !important;
+        i {
+          color: var(--primary-title);
+        }
+      }
+      .helpful-card-caption {
+        .caption-title {
+          color: white;
+        }
+        .caption-para {
+          color: var(--info);
+        }
+        .imp-link{
+          color: var(--white)
+        }
+      }
+      .number{
+        color: var(--number-two-hover);
+      }
+    }
+    @include transition(0.3s);
+    .helpful-card-icon {
+      min-width: 70px;
+      max-width: 70px;
+      height: 70px;
+      text-align: center;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      @media #{$xs} {
+        min-width: 50px;
+        max-width: 50px;
+        height: 50px;
+      }
+      i {
+        font-size: 30px;
+        color: white;
+        @media #{$xs} {
+          font-size: 24px;
+        }
+      }
+    }
+    .helpful-card-caption {
+      margin-top: 15px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      .caption-title {
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        color: var(--primary-title);
+        margin-bottom: 10px;
+        @media #{$xs} {
+          font-size: 16px;
+        }
+      }
+      .caption-para {
+        color: var(--tertiary-title);
+        font-size: 16px;
+        font-weight: normal;
+        margin-bottom: 20px;
+        @media #{$xs} {
+          font-size: 14px;
+        }
+      }
+      .imp-link{
+        color: var(--primary);
+        font-size: 15px;
+        font-weight: 600;
+        &:hover{
+          color: var(--white);
+        }
+      }
+    }
+  }
+  .col-xl-3:nth-child(1) .helpful-card-icon {
+    background-color: var(--helpful-card-bg-one);
+    i{
+      color: var(--helpful-card-icon-one);
+    }
+  }
+  .col-xl-3:nth-child(2) .helpful-card-icon {
+    background-color: var(--helpful-card-bg-two);
+    i{
+      color: var(--helpful-card-icon-two);
+    }
+  }
+  .col-xl-3:nth-child(3) .helpful-card-icon {
+    background-color: var(--helpful-card-bg-three);
+    i{
+      color: var(--helpful-card-icon-three);
+    }
+  }
+  .col-xl-3:nth-child(4) .helpful-card-icon {
+    background-color: var(--helpful-card-bg-four);
+    i{
+      color: var(--helpful-card-icon-four);
+    }
+  }
+}
