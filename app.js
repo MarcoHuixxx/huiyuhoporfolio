@@ -21,6 +21,16 @@ app.get('/:language', (req, res) => {
   // return res.redirect('/index.html');
 });
 
+app.get('/', (req, res) => {
+  const language = "hk";
+  res.render('pages/index', {
+    pageText: pageText[language],
+    language: language
+  }
+  );
+  // return res.redirect('/index.html');
+});
+
 
 app.use(express.static('public'));
 
