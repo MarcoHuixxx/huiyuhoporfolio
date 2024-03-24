@@ -56,7 +56,7 @@
   -----------------------------------*/
   $(window).on("scroll", function () {
     var scroll = $(window).scrollTop();
-    if (scroll < 400) {
+    if (scroll < 50) {
       $(".header-sticky").removeClass("sticky-bar");
       $("#back-top").fadeOut(500);
     } else {

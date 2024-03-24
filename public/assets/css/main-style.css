@@ -16623,7 +16623,7 @@ input[type=number] {
   margin-top: 0px !important;
 }
 .header-area .mobile_menu .slicknav_menu .slicknav_btn {
-  top: -53px;
+  top: -70px;
   right: 0px;
 }
 .header-area .mobile_menu .slicknav_menu .slicknav_btn .slicknav_icon-bar {
@@ -17160,11 +17160,18 @@ input[type=number] {
 }
 
 .logo img {
-  max-width: 250px;
+  margin: "20px 0";
+  max-width: 100px;
 }
 @media (max-width: 1199px) {
   .logo img {
-    max-width: 140px;
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 992px) {
+  .logo img {
+    max-width: 80px;
   }
 }
 
