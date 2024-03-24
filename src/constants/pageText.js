@@ -80,9 +80,7 @@ const pageText = {
         chargeDetail:"收費詳情",
         couponFAQ:"社區照顧服務券常見問題",
         aboutus:"關於我們",
-        address:"香港九龍旺角亞皆老街 123 號",
-
-
+        address:"新界屯門青山坊2號樂華大廈一號樓總站1樓272號鋪",
 
         
 
@@ -169,7 +167,8 @@ const pageText = {
         chargeDetail:"Charge Detail",
         couponFAQ:"Community Care Voucher FAQ",
         aboutus:"About Us",
-        address:"123 Argyle Street, Mong Kok, Kowloon, Hong Kong",
+        address:"Shop 272, 1/F, Block 1, Lok Wah House, 2 Tsing Shan Lane, Tuen Mun, New Territories",
+
         
     }
 

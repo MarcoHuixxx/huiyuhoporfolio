@@ -17166,6 +17166,7 @@ input[type=number] {
 }
 @media (max-width: 1199px) {
   .logo img {
+    margin:"20px 0";
     max-width: 100px;
   }
 }
@@ -17808,11 +17809,11 @@ input[type=number] {
   padding-bottom: 50px;
 }
 .footer-wrapper .footer-menu .logo img {
-  max-width: 250px;
+  max-width: 60px;
 }
 @media (max-width: 767px) {
   .footer-wrapper .footer-menu .logo img {
-    max-width: 140px;
+    max-width: 60px;
   }
 }
 @media (max-width: 767px) {
