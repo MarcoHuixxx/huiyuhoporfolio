@@ -17175,11 +17175,6 @@ input[type=number] {
   }
 }
 
-@media (max-width: 792px) {
-  .logo img {
-    max-width: 50px;
-  }
-}
 
 @media (min-width: 576px) {
   .header-area .main-header .logo.logo-mobile {
