@@ -81,6 +81,87 @@ const pageText = {
         couponFAQ:"社區照顧服務券常見問題",
         aboutus:"關於我們",
         address:"新界屯門青山坊2號樂華大廈一號樓總站1樓272號鋪",
+        ourVisionDesc:"我們的願景是成為香港最專業的康復服務提供者，為長者和患有慢性疾病的人提供專業和慈愛的照顧。",
+        ourMission1:"心賢復康德耆會是由一群既專業又充滿熱誠的專業醫護人員組成。我們從公立醫院、私營機構及非牟利機構工作的經驗中，體會到不少香港市民在公營醫療系統裏，遇過種種令人氣餒或納悶的情況。",
+        ourMission2:"我們希望透過提供專業和慈愛的照顧，協助長者和患有慢性疾病的人康復，並在家中安度晚年。",
+        ourMission3:"我們的服務包括家居護理、日間護理、康復服務等。",
+        team:"我們的專業團隊",
+        meetOurTeam:"認識我們的專業團隊",
+        teamName1:"物理治療師",
+        teamDesc1:"我們的物理治療師會到您家中提供專業的物理治療服務。",
+        teamName2:"職業治療師",
+        teamDesc2:"我們的職業治療師會到您家中提供專業的職業治療服務。",
+        teamName3:"言語治療師", 
+        teamDesc3:"我們的言語治療師會到您家中提供專業的言語治療服務。",
+        teamName4:"護士",
+        teamDesc4:"我們的護士會到您家中提供專業的護理服務。",
+        teamName5:"社工",
+        teamDesc5:"我們的社工會到您家中提供專業的社會工作服務。",
+        teamName6:"個案經理",
+        teamDesc6:"我們的個案經理會到您家中提供專業的個案管理服務。",
+        teamName7:"護理員",
+        teamDesc7:"我們的護理員會到您家中提供專業的護理服務。",
+        teamName8:"康復助理",
+        teamDesc8:"我們的康復助理會到您家中提供專業的康復服務。",
+        teamName9:"社區護士",
+        teamDesc9:"我們的社區護士會到您家中提供專業的護理服務。",
+        teamName10:"社區護理員",
+        teamDesc10:"我們的社區護理員會到您家中提供專業的護理服務。",
+        teamData:[
+            {
+                name:"物理治療師",
+                description:"我們的物理治療師會到您家中提供專業的物理治療服務。",
+                imageName:"physical-therapy.png"
+            },
+            {
+                name:"職業治療師",
+                description:"我們的職業治療師會到您家中提供專業的職業治療服務。",
+                imageName:"physiotherapist.png"
+            },
+            {
+                name:"言語治療師",
+                description:"我們的言語治療師會到您家中提供專業的言語治療服務。",
+                imageName:"therapy.png"
+            },
+            {
+                name:"護士",
+                description:"我們的護士會到您家中提供專業的護理服務。",
+                imageName:"medical-team.png"
+            },
+            {
+                name:"社工",
+                description:"我們的社工會到您家中提供專業的社會工作服務。",
+                imageName:"social-care.png"
+            },
+            {
+                name:"個案經理",
+                description:"我們的個案經理會到您家中提供專業的個案管理服務。",
+                imageName:"coordinator.png"
+            },
+            {
+                name:"營養師",
+                description:"我們的營養師會到您家中提供專業的營養諮詢服務。",
+                imageName:"dietitian.png"
+            },
+            {
+                name:"康復助理",
+                description:"我們的康復助理會到您家中提供專業的康復服務。",
+                imageName:"recovered.png"
+            },
+            {
+                name:"陪診員",
+                description:"我們的陪診員會到您家中提供專業的護理服務。",
+                imageName:"friendly.png"
+            },
+            {
+                name:"保健員",      
+                description:"我們的保健員會到您家中提供專業的護理服務。",
+                imageName:"worker.png"
+            }
+
+        ]
+
+
 
         
 
@@ -88,7 +169,7 @@ const pageText = {
     },
     en: {
         home:"Home",
-        about:"About",
+        about:"About Us",
         services:"Services",
         coupons:"Voucher",
         info:"Information",
@@ -168,6 +249,82 @@ const pageText = {
         couponFAQ:"Community Care Voucher FAQ",
         aboutus:"About Us",
         address:"Shop 272, 1/F, Block 1, Lok Wah House, 2 Tsing Shan Lane, Tuen Mun, New Territories",
+        ourVisionDesc:"Our vision is to become the most professional rehabilitation service provider in Hong Kong, providing professional and compassionate care to the elderly and people with chronic diseases.",
+        ourMission1:"Encompass Rehab is composed of a group of professional and passionate healthcare professionals. We have experienced various frustrating or puzzling situations that Hong Kong citizens have encountered in the public medical system, private institutions, and non-profit organizations.",
+        ourMission2:"We hope to help the elderly and people with chronic diseases recover and age at home through professional and compassionate care.",
+        ourMission3:"Our services include home care, day care, rehabilitation services, etc.",
+        team:"Our Professional Team",
+        meetOurTeam:"Meet Our Professional Team",
+        teamName1:"Physiotherapist",
+        teamDesc1:"Our physiotherapists will provide professional physiotherapy services at your home.",
+        teamName2:"Occupational Therapist",
+        teamDesc2:"Our occupational therapists will provide professional occupational therapy services at your home.",
+        teamName3:"Speech Therapist",
+        teamDesc3:"Our speech therapists will provide professional speech therapy services at your home.",
+        teamName4:"Nurse",
+        teamDesc4:"Our nurses will provide professional nursing services at your home.",
+        teamName5:"Social Worker",
+        teamDesc5:"Our social workers will provide professional social work services at your home.",
+        teamName6:"Case Manager",
+        teamDesc6:"Our case managers will provide professional case management services at your home.",
+        teamName7:"Nursing Assistant",
+        teamDesc7:"Our nursing assistants will provide professional nursing services at your home.",
+        teamName8:"Community Nurse",
+        teamDesc8:"Our community nurses will provide professional nursing services at your home.",
+        teamName9:"Community Nursing Assistant",
+        teamDesc9:"Our community nursing assistants will provide professional nursing services at your home.",
+        teamName10:"Rehabilitation Assistant",
+        teamDesc10:"Our rehabilitation assistants will provide professional rehabilitation services at your home.",
+        teamData:[
+            {
+                name:"Physiotherapist",
+                description:"Our physiotherapists will provide professional physiotherapy services at your home.",
+                imageName:"physical-therapy.png"
+            },
+            {
+                name:"Occupational Therapist",
+                description:"Our occupational therapists will provide professional occupational therapy services at your home.",
+                imageName:"physiotherapist.png"
+            },
+            {
+                name:"Speech Therapist",
+                description:"Our speech therapists will provide professional speech therapy services at your home.",
+                imageName:"therapy.png"
+            },
+            {
+                name:"Nurse",
+                description:"Our nurses will provide professional nursing services at your home.",
+                imageName:"medical-team.png"
+            },
+            {
+                name:"Social Worker",
+                description:"Our social workers will provide professional social work services at your home.",
+                imageName:"social-care.png"
+            },
+            {
+                name:"Case Manager",
+                description:"Our case managers will provide professional case management services at your home.",
+                imageName:"coordinator.png"
+            },
+            {
+                name:"Dietitian",
+                description:"Our dietitians will provide professional nutrition consultation services at your home.",
+                imageName:"dietitian.png"
+            },
+            {
+                name:"Nursing Assistant",
+                description:"Our nursing assistants will provide professional nursing services at your home.",
+                imageName:"recovered.png"
+            },
+            {
+                name:"Accompanying Officer",
+                description:"Our accompanying officers will provide professional nursing services at your home.",
+                imageName:"friendly.png"
+            },
+
+                
+
+        ]
 
         
     }

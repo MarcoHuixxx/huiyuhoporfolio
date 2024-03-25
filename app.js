@@ -15,7 +15,7 @@ app.set('layout', './layouts/layout')
 app.set('view engine', 'ejs');
 
 app.get('/:language', (req, res) => {
-  const language = req.params.language;
+  const language = req.params.language||"hk";
   res.render('pages/index', {
     pageText: pageText[language],
     language: language
@@ -25,7 +25,7 @@ app.get('/:language', (req, res) => {
 });
 
 app.get('/:language/about-us', (req, res) => {
-  const language = req.params.language;
+  const language = req.params.language||"hk";
   res.render('pages/about-us', {
     pageText: pageText[language],
     language: language
