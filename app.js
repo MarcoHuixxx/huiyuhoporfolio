@@ -21,7 +21,7 @@ app.get('/:language', (req, res) => {
     language: language
   }
   );
-  // return res.redirect('/index.html');
+
 });
 
 app.get('/:language/about-us', (req, res) => {
@@ -31,7 +31,26 @@ app.get('/:language/about-us', (req, res) => {
     language: language
   }
   );
-  // return res.redirect('/index.html');
+}
+);
+
+app.get('/:language/services', (req, res) => {
+  const language = req.params.language||"hk";
+  res.render('pages/service', {
+    pageText: pageText[language],
+    language: language
+  }
+  );
+}
+);
+
+app.get('/:language/voucher', (req, res) => {
+  const language = req.params.language||"hk";
+  res.render('pages/voucher', {
+    pageText: pageText[language],
+    language: language
+  }
+  );
 }
 );
 
@@ -42,7 +61,7 @@ app.get('/', (req, res) => {
     language: language
   }
   );
-  // return res.redirect('/index.html');
+
 });
 
 
