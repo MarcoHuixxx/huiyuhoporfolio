@@ -310,6 +310,10 @@ const pageText = {
         commonQuestion3Description: "Each community voucher can currently choose up to two service units per month, and the maximum face value of the community voucher remains unchanged. If the elderly or their family decides to choose the services provided by Encompass Rehab, our case manager will visit the elderly at home and explain the service details to the elderly and their family in detail. If you agree to use our services, the case manager will handle the relevant procedures with the elderly or their family.",
         commonQuestion4: "The minimum face value of the community voucher is $4,290, and the maximum face value is $10,260. What does this mean?",
         commonQuestion4Description: "In order to use the community voucher more effectively and help the elderly to recover and age at home, the monthly service fee amount of the elderly who have successfully applied for the community voucher must reach the minimum requirement of HK$4,290, and the maximum service fee amount must not exceed HK$10,260.",
+        commonQuestion5:"Is there an expiration date for the community voucher?",
+        commonQuestion5Description:"There is no expiration date for the community voucher, but the family must purchase services from any recognized institution within three months after receiving the community voucher, otherwise the community voucher will expire.",
+        commonQuestion6:"The social worker at the elderly community center told me that I can only apply for the 'Home Improvement Plan' and cannot apply for the community voucher?",
+        commonQuestion6Description:"The social worker at the elderly community center told me that I can only apply for the 'Home Improvement Plan' and cannot apply for the community voucher?",
         testimonial: "Testimonial",
         testimonialDescription: "Past clients' comments on our services.",
         testimonialName1: "Mrs. Chan",
@@ -520,7 +524,7 @@ const pageText = {
             to: "$4,104"
             }   
         ],
-        
+
 
 
 
