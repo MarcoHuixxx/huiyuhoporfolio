@@ -45,6 +45,10 @@ const pageText = {
         commonQuestion3Description: "每張社區券現時每月可以選擇最多兩間服務單位，而社區券最高面值則維持不變。如長者或其家人決定選用恩預復康提供服務，我們的個案經理會上門探訪長者，同時會向長者及其家人詳細講解服務細則。如果同意選用本公司服務，個案經理會與長者或其家人辦理有關手續。",
         commonQuestion4: "社區券之最低面值為$4,290， 而最高面值為$10,260， 這代表甚麼?",
         commonQuestion4Description: "為更有效使用社區券並協助長者居家復康及安老，已成功申請社區券之長者每月的服務費金額必須達到最低要求HK$4,290， 而最高服務費金額不得高於HK$10,260。 ",
+        commonQuestion5:"社區券有限期嗎？",
+        commonQuestion5Description:"社區券並沒有限期，但家屬必需於收到社區券後三個月內，向任何一間認可機構購買服務，否則該社區券將會失效。",
+        commonQuestion6:"長者社區中心的社工告訴我只能申請「改善家居計劃」，不能申請社區券？",
+        commonQuestion6Description:"長者社區中心的社工告訴我只能申請「改善家居計劃」，不能申請社區券？",
         testimonial: "客戶評價",
         testimonialDescription: "過往客戶對我們的服務的評價。",
         testimonialName1: "陳太",
@@ -206,6 +210,53 @@ const pageText = {
             }
         ],
         howToApply: "如何申請",
+        physio: "物理治療",
+        serviceHourPerMonth: "每月服務時數共",
+        fourHours: "4小時",
+        rehab: "康復治療",
+        case1Fee: "服務使用者付：$237 ～ $1,893*",
+        case1MonthFee: "（該月服務費金額：$4,732)",
+        eightHours: "8小時",
+        case2Fee: "服務使用者付：$474 ～ $3,786*",
+        case2MonthFee: "（該月服務費金額：$9,464)",
+        baseOnUserFee:"*視乎服務使用者獲批的「共同付款級別」而定",
+        chargeDetail: "收費詳情",
+        chargeDetailDesc: "「社區券」採用其持有人及政府資助形式共同付款，政府會根據「社區券」持有人及其同住家人的收入中位數，決定資助百份比。社區券金額的每月上限為港幣",
+        chargeDetailDescAmount: "HKD10,260",
+        chargeDetailDesc2: "由「社區券」持有人/家人支付之金額則由",
+        fivePercent: "5%",
+        chargeDetailDesc3: "至",
+        fortyPercent: "40%",
+        chargeDetailDesc4: "不等 (視乎服務使用者獲批的「共同付款級別」而定)",
+        serviceUserPay: "服務使用者付",
+        serviceUserPayDesc:"該月服務費金額: HK$4,290 ~ HK$10,260",
+        serviceUserPayData:[
+            {percentage: "5%",
+            from: "$215",
+            to: "$513"
+            },
+            {percentage: "8%",
+            from: "$343",
+            to: "$821"
+            },
+            {percentage: "12%",
+            from: "$515",
+            to: "$1,231"
+            },
+            {percentage: "16%",
+            from: "$686",
+            to: "$1,642"
+            },
+            {percentage: "25%",
+            from: "$1,073",
+            to: "$2,565"
+            },
+            {percentage: "40%",
+            from: "$1,716",
+            to: "$4,104"
+            }   
+        ]
+
         
 
 
@@ -423,7 +474,54 @@ const pageText = {
             }
         ],
         howToApply: "How to Apply",
+        physio: "Physiotherapy",
+        serviceHourPerMonth: "Total service hours per month",
+        fourHours: "4 hours",
+        rehab: "Rehabilitation",
+        case1Fee: "Service User Pay: $237 ~ $1,893*",
+        case1MonthFee: "(Monthly service fee amount: $4,732)",
+        eightHours: "8 hours",
+        case2Fee: "Service User Pay: $474 ~ $3,786*",
+        case2MonthFee: "(Monthly service fee amount: $9,464)",
+        baseOnUserFee:"*Based on the “Co-payment Level” approved by the service user",
+        chargeDetail: "Charge Detail",
+        chargeDetailDesc: "The “Community Voucher” adopts a form of co-payment by the holder and the government, and the government will determine the percentage of subsidy based on the median income of the “Community Voucher” holder and their cohabiting family. The monthly ceiling of the community voucher amount is HKD",
+        chargeDetailDescAmount: "HKD10,260",
+        chargeDetailDesc2: "The amount paid by the “Community Voucher” holder/family is from",
+        fivePercent: "5%",
+        chargeDetailDesc3: "to",
+        fortyPercent: "40%",
+        chargeDetailDesc4: " (depending on the “Co-payment Level” approved by the service user)",
+        serviceUserPay: "Service User Pay",
+        serviceUserPayDesc:"Monthly service fee amount: HK$4,290 ~ HK$10,260",
+        serviceUserPayData:[
+            {percentage: "5%",
+            from: "$215",
+            to: "$513"
+            },
+            {percentage: "8%",
+            from: "$343",
+            to: "$821"
+            },
+            {percentage: "12%",
+            from: "$515",
+            to: "$1,231"
+            },
+            {percentage: "16%",
+            from: "$686",
+            to: "$1,642"
+            },
+            {percentage: "25%",
+            from: "$1,073",
+            to: "$2,565"
+            },
+            {percentage: "40%",
+            from: "$1,716",
+            to: "$4,104"
+            }   
+        ],
         
+
 
 
 
