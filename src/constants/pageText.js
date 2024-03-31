@@ -255,8 +255,19 @@ const pageText = {
             from: "$1,716",
             to: "$4,104"
             }   
-        ]
-
+        ],
+        contact: "聯絡我們",
+        phone: "電話",
+        email: "電郵",
+        addressWord: "地址",
+        address:"新界屯門青山坊2號樂華大廈一號樓總站1樓272號鋪",
+        fullName: "姓名",
+        message: "留言",
+        messagePlaceHolder: "請輸入您的留言",
+        sendMessage: "發送",
+        contactUs: "聯絡我們",
+        case1:"案例1",
+        case2:"案例2",
         
 
 

@@ -34,10 +34,13 @@
       Preloader
   ----------------------------------------------*/
   $(window).on('load', function () {
+    console.log('loaded');
       $('#preloader-active').delay(450).fadeOut('slow');
+      console.log("1111")
       $('body').delay(450).css({
           'overflow': 'visible'
       });
+      console.log("22222")
       var counter = 0;
       var c = 0;
       var i = setInterval(function () {

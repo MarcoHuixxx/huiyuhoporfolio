@@ -33,7 +33,7 @@
         <div class="row justify-content-between ">
           <div class="col-lg-6 my-auto">
             <!-- Section Tittle -->
-            <div class="section-tittle mb-35  bg-light px-5 py-5">
+            <div class="section-tittle mb-35  bg-light px-5 py-5   shadow-lg  rounded-3">
               <span class="sub-tittle text-capitalize font-600">
                 <%=pageText.whatIsVoucher%>
               </span>
@@ -159,19 +159,28 @@
           <div class="col-lg-6 my-auto">
             <!-- Section Tittle -->
 
-            <div class="section-tittle mb-35  bg-light px-5 py-5">
-              <div class="d-flex">
-                <div class="col-6 col-lg-6 col-md-6 col-sm-6 view-wrapper text-center bg-secondary p-2">
+            <div class="section-tittle mb-35  bg-light px-5 py-5   shadow-lg  rounded-3">
+              <div class="d-flex ">
+                <div class="col-6 col-lg-6 col-md-6 col-sm-6 view-wrapper text-center bg-secondary p-2 ">
+                  <div class="case1Container">
+                    <span class="">
+                      <%=pageText.case1%>
+                    </span>
+
+                  </div>
                   <h5 class="sub-tittle text-capitalize font-400">
                     <%=pageText.physio%>
                   </h5>
                   <div class="container-fluid p-1 text-white d-flex align-items-center justify-content-center">
-                    <h6 class="font-300">
-                      <%=pageText.serviceHourPerMonth%>
-                    </h6>
-                    <h6 class="font-300 text-capitalize">
-                      <%=pageText.fourHours%>
-                    </h6>
+
+                    <p>
+                      <span class="font-300">
+                        <%=pageText.serviceHourPerMonth%>
+                      </span>
+                      <span class="font-300 text-capitalize">
+                        <%=pageText.fourHours%>
+                      </span>
+                    </p>
                   </div>
 
                 </div>
@@ -180,12 +189,14 @@
                     <%=pageText.rehab%>
                   </h5>
                   <div class="container-fluid p-1  text-white d-flex align-items-center justify-content-center">
-                    <h6 class="font-300">
-                      <%=pageText.serviceHourPerMonth%>
-                    </h6>
-                    <h6 class="font-300 text-capitalize">
-                      <%=pageText.fourHours%>
-                    </h6>
+                    <p>
+                      <span class="font-300">
+                        <%=pageText.serviceHourPerMonth%>
+                      </span>
+                      <span class="font-300 text-capitalize">
+                        <%=pageText.fourHours%>
+                      </span>
+                    </p>
                   </div>
 
                 </div>
@@ -207,18 +218,26 @@
 
               </div>
 
-              <div class="d-flex mt-5">
+              <div class="d-flex mt-5 border ">
+                <div class="case1Container">
+                  <span class="">
+                    <%=pageText.case2%>
+                  </span>
+
+                </div>
                 <div class="col-6 col-lg-6 col-md-6 col-sm-6 view-wrapper text-center bg-secondary p-2">
                   <h5 class="sub-tittle text-capitalize font-400">
                     <%=pageText.physio%>
                   </h5>
                   <div class="container-fluid p-1 text-white d-flex align-items-center justify-content-center">
-                    <h6 class="font-300">
-                      <%=pageText.serviceHourPerMonth%>
-                    </h6>
-                    <h6 class="font-300 text-capitalize">
-                      <%=pageText.eightHours%>
-                    </h6>
+                    <p>
+                      <span class="font-300">
+                        <%=pageText.serviceHourPerMonth%>
+                      </span>
+                      <span class="font-300 text-capitalize">
+                        <%=pageText.eightHours%>
+                      </span>
+                    </p>
                   </div>
 
                 </div>
@@ -227,12 +246,14 @@
                     <%=pageText.rehab%>
                   </h5>
                   <div class="container-fluid p-1  text-white d-flex align-items-center justify-content-center">
-                    <h6 class="font-300">
-                      <%=pageText.serviceHourPerMonth%>
-                    </h6>
-                    <h6 class="font-300 text-capitalize">
-                      <%=pageText.eightHours%>
-                    </h6>
+                    <p>
+                      <span class="font-300">
+                        <%=pageText.serviceHourPerMonth%>
+                      </span>
+                      <span class="font-300 text-capitalize">
+                        <%=pageText.eightHours%>
+                      </span>
+                    </p>
                   </div>
 
                 </div>
@@ -254,7 +275,7 @@
 
               </div>
 
-              <div class="w-100 mt-5 bg-primary text-white border-30">
+              <div class="w-100 mt-5 bg-primary text-white border border-secondary rounded-4 px-2 py-1 shadow-lg ">
                 <%=pageText.baseOnUserFee%>
               </div>
 
@@ -326,11 +347,6 @@
                     <%=item.to%>
                   </p>
                 </div>
-
-
-
-
-
                 <% }) %>
             </div>
 
@@ -458,31 +474,10 @@
     <!-- End-of Question Area -->
 
 
-
-
-
-
-
-
   </main>
 
   <!-- End-of Footer -->
-  <!-- Scroll Up  -->
-  <div class="progressParent" id="back-top">
-    <svg class="backCircle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
-      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-    </svg>
-  </div>
-  <!-- Add an overlay element -->
-  <div class="overlay"></div>
-  <!-- jquery-->
-  <script src="../../../assets/js/jquery-3.7.0.min.js"></script>
-  <script src="../../../assets/js/popper.min.js"></script>
-  <script src="../../../assets/js/bootstrap-5.3.0.min.js"></script>
-  <!-- Plugin -->
-  <script src="../../../assets/js/plugin.js"></script>
-  <!-- Main js-->
-  <script src="../../../assets/js/main.js"></script>
+
   </body>
 
 </html>
