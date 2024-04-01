@@ -268,6 +268,9 @@ const pageText = {
         contactUs: "聯絡我們",
         case1:"案例1",
         case2:"案例2",
+        blogDetails: "文章詳情",
+        blogDetailDesc: "最新的文章",
+
         
 
 
@@ -535,6 +538,21 @@ const pageText = {
             to: "$4,104"
             }   
         ],
+        contact: "Contact Us",
+        phone: "Phone",
+        email: "Email",
+        addressWord: "Address",
+        address:"Shop 272, 1/F, Block 1, Lok Wah House, 2 Tsing Shan Lane, Tuen Mun, New Territories",
+        fullName: "Full Name",
+        message: "Message",
+        messagePlaceHolder: "Please enter your message",
+        sendMessage: "Send",
+        contactUs: "Contact Us",
+        case1:"Case 1",
+        case2:"Case 2",
+        blogDetails: "Blog Detail",
+        blogDetailDesc: "The latest blog.",
+
 
 
 

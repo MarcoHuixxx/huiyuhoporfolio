@@ -4,7 +4,8 @@ const port = 1340
 const path = require('path')
 const { pageText } = require('./src/constants/pageText.js');
 const expressLayouts = require('express-ejs-layouts');
-
+const ejs = require('ejs');
+const fs = require('fs');
 // app.get('/', (req, res) => {
 //   res.sendFile(__dirname + '/index.html')
 // })
@@ -59,6 +60,21 @@ app.get('/:language/contact-us', (req, res) => {
   res.render('pages/contact-us', {
     pageText: pageText[language],
     language: language
+  }
+  );
+}
+);
+
+app.get('/:language/blog-details/:blogId', async(req, res) => {
+  const language = req.params.language||"hk";
+  const blogId = req.params.blogId;
+  // const getBlogViewById=await ejs.renderFile(path.join(__dirname, 'views',  `blogs/${blogId}.ejs`), {blogId:blogId});
+  res.render('pages/blog-details', {
+    pageText: pageText[language],
+    language: language,
+    blogId: blogId
+    // blogView: getBlogViewById
+
   }
   );
 }
