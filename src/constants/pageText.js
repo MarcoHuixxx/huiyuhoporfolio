@@ -24,17 +24,17 @@ const pageText = {
         professionalTherapist: "專業治療師",
         satisfiedClients: "滿意客戶",
         joinMember: "加入會員",
-        ourEvent: "活動",
-        ourComingEvent: "即將舉行的活動",
-        eventDate1: "2024年6月30日",
-        eventLocation1: "香港會議展覽中心",
-        eventTitle1: "2024年香港醫療展",
-        eventDate2: "2024年7月2日",
-        eventLocation2: "九龍灣國際貿易展覽中心",
-        eventTitle2: "2024年香港護理展",
-        eventDate3: "2024年7月4日",
-        eventLocation3: "香港文化中心",
-        eventTitle3: "2024年香港康復展",
+        ourEvent: "最新服務",
+        ourComingEvent: "我們最新的服務",
+        eventDate1: "2023年6月30日",
+        eventLocation1: "我們為各機構提供外展物理治療等服務",
+        eventTitle1: "外展機構及院舍",
+        eventDate2: "2023年7月2日",
+        eventLocation2: "了解更多社會福利署豁下的「社區券」資助計劃",
+        eventTitle2: "社區券計劃",
+        eventDate3: "2023年7月4日",
+        eventLocation3: "為計劃移民人士，提供相關專業評估服務及報告",
+        eventTitle3: "移民專用",
         commonQuestion: "常見問題",
         commonQuestionDescription: "我們的專業治療師會到您家中提供專業的物理治療服務。",
         commonQuestion1: "申請社區券是否等於要入住老人院？",
@@ -45,10 +45,10 @@ const pageText = {
         commonQuestion3Description: "每張社區券現時每月可以選擇最多兩間服務單位，而社區券最高面值則維持不變。如長者或其家人決定選用恩預復康提供服務，我們的個案經理會上門探訪長者，同時會向長者及其家人詳細講解服務細則。如果同意選用本公司服務，個案經理會與長者或其家人辦理有關手續。",
         commonQuestion4: "社區券之最低面值為$4,290， 而最高面值為$10,260， 這代表甚麼?",
         commonQuestion4Description: "為更有效使用社區券並協助長者居家復康及安老，已成功申請社區券之長者每月的服務費金額必須達到最低要求HK$4,290， 而最高服務費金額不得高於HK$10,260。 ",
-        commonQuestion5:"社區券有限期嗎？",
-        commonQuestion5Description:"社區券並沒有限期，但家屬必需於收到社區券後三個月內，向任何一間認可機構購買服務，否則該社區券將會失效。",
-        commonQuestion6:"長者社區中心的社工告訴我只能申請「改善家居計劃」，不能申請社區券？",
-        commonQuestion6Description:"長者社區中心的社工告訴我只能申請「改善家居計劃」，不能申請社區券？",
+        commonQuestion5: "社區券有限期嗎？",
+        commonQuestion5Description: "社區券並沒有限期，但家屬必需於收到社區券後三個月內，向任何一間認可機構購買服務，否則該社區券將會失效。",
+        commonQuestion6: "長者社區中心的社工告訴我只能申請「改善家居計劃」，不能申請社區券？",
+        commonQuestion6Description: "長者社區中心的社工告訴我只能申請「改善家居計劃」，不能申請社區券？",
         testimonial: "客戶評價",
         testimonialDescription: "過往客戶對我們的服務的評價。",
         testimonialName1: "陳太",
@@ -203,7 +203,7 @@ const pageText = {
                 title: "第三步",
                 description: "經評估後如長者適合申請「社區券」，社署會審批其申請及郵寄「發券通知書」予長者",
             },
-            { 
+            {
                 imageName: "如何申請04.webp",
                 title: "第四步",
                 description: "與我們聯絡安排服務",
@@ -219,7 +219,7 @@ const pageText = {
         eightHours: "8小時",
         case2Fee: "服務使用者付：$474 ～ $3,786*",
         case2MonthFee: "（該月服務費金額：$9,464)",
-        baseOnUserFee:"*視乎服務使用者獲批的「共同付款級別」而定",
+        baseOnUserFee: "*視乎服務使用者獲批的「共同付款級別」而定",
         chargeDetail: "收費詳情",
         chargeDetailDesc: "「社區券」採用其持有人及政府資助形式共同付款，政府會根據「社區券」持有人及其同住家人的收入中位數，決定資助百份比。社區券金額的每月上限為港幣",
         chargeDetailDescAmount: "HKD10,260",
@@ -229,49 +229,55 @@ const pageText = {
         fortyPercent: "40%",
         chargeDetailDesc4: "不等 (視乎服務使用者獲批的「共同付款級別」而定)",
         serviceUserPay: "服務使用者付",
-        serviceUserPayDesc:"該月服務費金額: HK$4,290 ~ HK$10,260",
-        serviceUserPayData:[
-            {percentage: "5%",
-            from: "$215",
-            to: "$513"
+        serviceUserPayDesc: "該月服務費金額: HK$4,290 ~ HK$10,260",
+        serviceUserPayData: [
+            {
+                percentage: "5%",
+                from: "$215",
+                to: "$513"
             },
-            {percentage: "8%",
-            from: "$343",
-            to: "$821"
+            {
+                percentage: "8%",
+                from: "$343",
+                to: "$821"
             },
-            {percentage: "12%",
-            from: "$515",
-            to: "$1,231"
+            {
+                percentage: "12%",
+                from: "$515",
+                to: "$1,231"
             },
-            {percentage: "16%",
-            from: "$686",
-            to: "$1,642"
+            {
+                percentage: "16%",
+                from: "$686",
+                to: "$1,642"
             },
-            {percentage: "25%",
-            from: "$1,073",
-            to: "$2,565"
+            {
+                percentage: "25%",
+                from: "$1,073",
+                to: "$2,565"
             },
-            {percentage: "40%",
-            from: "$1,716",
-            to: "$4,104"
-            }   
+            {
+                percentage: "40%",
+                from: "$1,716",
+                to: "$4,104"
+            }
         ],
         contact: "聯絡我們",
         phone: "電話",
         email: "電郵",
         addressWord: "地址",
-        address:"新界屯門青山坊2號樂華大廈一號樓總站1樓272號鋪",
+        address: "新界屯門青山坊2號樂華大廈一號樓總站1樓272號鋪",
         fullName: "姓名",
         message: "留言",
         messagePlaceHolder: "請輸入您的留言",
         sendMessage: "發送",
         contactUs: "聯絡我們",
-        case1:"案例1",
-        case2:"案例2",
+        case1: "案例1",
+        case2: "案例2",
         blogDetails: "文章詳情",
         blogDetailDesc: "最新的文章",
 
-        
+
 
 
 
@@ -303,17 +309,17 @@ const pageText = {
         professionalTherapist: "Professional Therapists",
         satisfiedClients: "Satisfied Clients",
         joinMember: "Join Member",
-        ourEvent: "Our Event",
-        ourComingEvent: "Our Coming Event",
-        eventDate1: "30th June 2024",
-        eventLocation1: "Hong Kong Convention and Exhibition Centre",
-        eventTitle1: "2024 Hong Kong Medical Expo",
-        eventDate2: "2nd July 2024",
-        eventLocation2: "Kowloonbay International Trade & Exhibition Centre",
-        eventTitle2: "2024 Hong Kong Nursing Expo",
-        eventDate3: "4th July 2024",
-        eventLocation3: "Hong Kong Cultural Centre",
-        eventTitle3: "2024 Hong Kong Rehabilitation Expo",
+        ourEvent: "Our services",
+        ourComingEvent: "Our latest services",
+        eventDate1: "June 30, 2023",
+        eventLocation1: "We provide outreach physiotherapy services to various institutions",
+        eventTitle1: "Outreach Institutions and Homes",
+        eventDate2: "July 2, 2023",
+        eventLocation2: "Learn more about the 'Community Voucher' subsidy program under the Social Welfare Department",
+        eventTitle2: "Community Voucher Program",
+        eventDate3: "July 4, 2023",
+        eventLocation3: "Provide related professional assessment services and reports",
+        eventTitle3: "Immigrant Consultation",
         commonQuestion: "Common Question",
         commonQuestionDescription: "Our professional therapists will provide professional physiotherapy services at your home.",
         commonQuestion1: "Does applying for the community voucher mean that you have to move into a nursing home?",
@@ -324,10 +330,10 @@ const pageText = {
         commonQuestion3Description: "Each community voucher can currently choose up to two service units per month, and the maximum face value of the community voucher remains unchanged. If the elderly or their family decides to choose the services provided by Encompass Rehab, our case manager will visit the elderly at home and explain the service details to the elderly and their family in detail. If you agree to use our services, the case manager will handle the relevant procedures with the elderly or their family.",
         commonQuestion4: "The minimum face value of the community voucher is $4,290, and the maximum face value is $10,260. What does this mean?",
         commonQuestion4Description: "In order to use the community voucher more effectively and help the elderly to recover and age at home, the monthly service fee amount of the elderly who have successfully applied for the community voucher must reach the minimum requirement of HK$4,290, and the maximum service fee amount must not exceed HK$10,260.",
-        commonQuestion5:"Is there an expiration date for the community voucher?",
-        commonQuestion5Description:"There is no expiration date for the community voucher, but the family must purchase services from any recognized institution within three months after receiving the community voucher, otherwise the community voucher will expire.",
-        commonQuestion6:"The social worker at the elderly community center told me that I can only apply for the 'Home Improvement Plan' and cannot apply for the community voucher?",
-        commonQuestion6Description:"The social worker at the elderly community center told me that I can only apply for the 'Home Improvement Plan' and cannot apply for the community voucher?",
+        commonQuestion5: "Is there an expiration date for the community voucher?",
+        commonQuestion5Description: "There is no expiration date for the community voucher, but the family must purchase services from any recognized institution within three months after receiving the community voucher, otherwise the community voucher will expire.",
+        commonQuestion6: "The social worker at the elderly community center told me that I can only apply for the 'Home Improvement Plan' and cannot apply for the community voucher?",
+        commonQuestion6Description: "The social worker at the elderly community center told me that I can only apply for the 'Home Improvement Plan' and cannot apply for the community voucher?",
         testimonial: "Testimonial",
         testimonialDescription: "Past clients' comments on our services.",
         testimonialName1: "Mrs. Chan",
@@ -501,7 +507,7 @@ const pageText = {
         eightHours: "8 hours",
         case2Fee: "Service User Pay: $474 ~ $3,786*",
         case2MonthFee: "(Monthly service fee amount: $9,464)",
-        baseOnUserFee:"*Based on the “Co-payment Level” approved by the service user",
+        baseOnUserFee: "*Based on the “Co-payment Level” approved by the service user",
         chargeDetail: "Charge Detail",
         chargeDetailDesc: "The “Community Voucher” adopts a form of co-payment by the holder and the government, and the government will determine the percentage of subsidy based on the median income of the “Community Voucher” holder and their cohabiting family. The monthly ceiling of the community voucher amount is HKD",
         chargeDetailDescAmount: "HKD10,260",
@@ -511,45 +517,51 @@ const pageText = {
         fortyPercent: "40%",
         chargeDetailDesc4: " (depending on the “Co-payment Level” approved by the service user)",
         serviceUserPay: "Service User Pay",
-        serviceUserPayDesc:"Monthly service fee amount: HK$4,290 ~ HK$10,260",
-        serviceUserPayData:[
-            {percentage: "5%",
-            from: "$215",
-            to: "$513"
+        serviceUserPayDesc: "Monthly service fee amount: HK$4,290 ~ HK$10,260",
+        serviceUserPayData: [
+            {
+                percentage: "5%",
+                from: "$215",
+                to: "$513"
             },
-            {percentage: "8%",
-            from: "$343",
-            to: "$821"
+            {
+                percentage: "8%",
+                from: "$343",
+                to: "$821"
             },
-            {percentage: "12%",
-            from: "$515",
-            to: "$1,231"
+            {
+                percentage: "12%",
+                from: "$515",
+                to: "$1,231"
             },
-            {percentage: "16%",
-            from: "$686",
-            to: "$1,642"
+            {
+                percentage: "16%",
+                from: "$686",
+                to: "$1,642"
             },
-            {percentage: "25%",
-            from: "$1,073",
-            to: "$2,565"
+            {
+                percentage: "25%",
+                from: "$1,073",
+                to: "$2,565"
             },
-            {percentage: "40%",
-            from: "$1,716",
-            to: "$4,104"
-            }   
+            {
+                percentage: "40%",
+                from: "$1,716",
+                to: "$4,104"
+            }
         ],
         contact: "Contact Us",
         phone: "Phone",
         email: "Email",
         addressWord: "Address",
-        address:"Shop 272, 1/F, Block 1, Lok Wah House, 2 Tsing Shan Lane, Tuen Mun, New Territories",
+        address: "Shop 272, 1/F, Block 1, Lok Wah House, 2 Tsing Shan Lane, Tuen Mun, New Territories",
         fullName: "Full Name",
         message: "Message",
         messagePlaceHolder: "Please enter your message",
         sendMessage: "Send",
         contactUs: "Contact Us",
-        case1:"Case 1",
-        case2:"Case 2",
+        case1: "Case 1",
+        case2: "Case 2",
         blogDetails: "Blog Detail",
         blogDetailDesc: "The latest blog.",
 
