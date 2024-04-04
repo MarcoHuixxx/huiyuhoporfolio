@@ -146,7 +146,7 @@
 
             <div class="col-lg-6">
                 <div class="know-img">
-                    <img src="../../assets/images/know/know-bg1.jpg" alt="Know">
+                    <img src="../../assets/images/know/know-bg1.png" alt="Know">
                     <img src="../../assets/images/know/know-shape1.png" alt="Shape">
                 </div>
             </div>
@@ -154,32 +154,45 @@
             <div class="col-lg-6">
                 <div class="know-content">
                     <div class="section-title">
-                        <h2>Know More About Us</h2>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus quas adipisci earum?
-                            Aspernatur accusantium sit perferendis! Aperiam cum ipsum nostrum iure autem porro quia,
-                            neque quis dicta maxime</p>
+                        <h2>
+                            <%=pageText.knowMoreAboutUs%>
+                        </h2>
+                        <p>
+                            <%=pageText.knowMoreAboutUsDescription%>
+                        </p>
                     </div>
                     <ul>
                         <li>
                             <img src="../../assets/images/know/know-icon1.png" alt="Know">
-                            <h3>Award-winning Company</h3>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of
-                                a page</p>
+                            <h3>
+                                <%=pageText.awardWinning%>
+                            </h3>
+                            <p>
+                                <%=pageText.awardWinningDescription%>
+                            </p>
                         </li>
                         <li>
                             <img src="../../assets/images/know/know-icon2.png" alt="Know">
-                            <h3>15+ Years Of Experience</h3>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of
-                                a page</p>
+                            <h3>
+                                <%=pageText.experience%>
+                            </h3>
+                            <p>
+                                <%=pageText.experienceDescription%>
+                            </p>
                         </li>
                         <li>
                             <img src="../../assets/images/know/know-icon3.png" alt="Know">
-                            <h3>Top Beauty Provider</h3>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of
-                                a page</p>
+                            <h3>
+                                <%=pageText.reliableProvider%>
+                            </h3>
+                            <p>
+                                <%=pageText.reliableProviderDescription%>
+                            </p>
                         </li>
                     </ul>
-                    <a class="common-btn two" href="about.html">About Us</a>
+                    <a class="common-btn two" href="/<%=language%>/about-us">
+                        <%=pageText.about%>
+                    </a>
                 </div>
             </div>
 
@@ -199,23 +212,26 @@
             <div class="col-lg-6">
                 <div class="skin-content">
                     <div class="section-title">
-                        <h2>Our New Skin Care Products For You</h2>
-                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-                            invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-                            et justo</p>
-                        <p>It is a long established fact that a reader will be distracted by the readable content of a
-                            page when looking at its layout. The point of using Lorem Ipsum is that it has a
-                            more-or-less normal distribution of letters, as opposed to using 'Content here, content here
+                        <h2>
+                            <%=pageText.newEyebrowPlan%>
+                        </h2>
+                        <p>
+                            <%=pageText.newEyebrowPlanDescription1%>
+                        </p>
+                        <p>
+                            <%=pageText.newEyebrowPlanDescription2%>
                         </p>
                     </div>
-                    <a class="common-btn two" href="shop.html">Shop Now</a>
+                    <a class="common-btn two" href="shop.html">
+                        <%=pageText.bookNow%>
+                    </a>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="skin-img">
-                    <img src="../../assets/images/skin-main.jpg" alt="Skin">
-                    <img src="../../assets/images/skin-shape1.png" alt="Shape">
+                    <img src="../../assets/images/eyebrow-price1.png" alt="Skin">
+                    <!-- <img src="../../assets/images/skin-shape1.png" alt="Shape"> -->
                 </div>
             </div>
 
@@ -233,9 +249,13 @@
                 <img src="../../assets/images/get-shape2.png" alt="Shape">
             </div>
             <div class="section-title">
-                <h2>It Needs Professional Hands To Get Rid Of Your Daily Stress Off</h2>
+                <h2>
+                    <%=pageText.getSpecialDiscount%>
+                </h2>
             </div>
-            <a class="common-btn two" href="appointment.html">Make An Appointment</a>
+            <a class="common-btn two" href="appointment.html">
+                <%=pageText.getAppointment%>
+            </a>
         </div>
     </div>
 </section>
@@ -245,16 +265,19 @@
 <section class="team-area ptb-100">
     <div class="container">
         <div class="section-title">
-            <h2>Meet Our Top Specialist</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus quas adipisci earum? Aspernatur
-                accusantium sit perferendis! Aperiam cum ipsum nostrum</p>
+            <h2>
+                <%=pageText.ourTeam%>
+            </h2>
+            <p>
+                <%=pageText.ourTeamDescription%>
+            </p>
         </div>
         <div class="row">
 
             <div class="col-sm-6 col-lg-4">
                 <div class="team-item">
                     <div class="top">
-                        <img src="../../assets/images/team/team1.jpg" alt="Team">
+                        <img src="../../assets/images/team/team-bg1.png" alt="Team">
                         <img src="../../assets/images/team/team-bg.png" alt="Shape">
                         <ul>
                             <li>
@@ -275,8 +298,10 @@
                         </ul>
                     </div>
                     <div class="bottom">
-                        <h3>Angela Hopper</h3>
-                        <span>Chief Beautician</span>
+                        <h3>Ella Gao</h3>
+                        <span>
+                            <%=pageText.chiefBeautician%>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -284,7 +309,7 @@
             <div class="col-sm-6 col-lg-4">
                 <div class="team-item">
                     <div class="top">
-                        <img src="../../assets/images/team/team2.jpg" alt="Team">
+                        <img src="../../assets/images/team/team-bg2.png" alt="Team">
                         <img src="../../assets/images/team/team-bg.png" alt="Shape">
                         <ul>
                             <li>
@@ -305,8 +330,10 @@
                         </ul>
                     </div>
                     <div class="bottom">
-                        <h3>Tullp Anda</h3>
-                        <span>Stone Therapist</span>
+                        <h3>Sinsze Wong</h3>
+                        <span>
+                            <%=pageText.assistantBeautician%>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -344,7 +371,9 @@
         </div>
 
         <div class="text-center">
-            <a class="common-btn two" href="team.html">View All Members</a>
+            <a class="common-btn two" href="team.html">
+                <%=pageText.viewAllTeam%>
+            </a>
         </div>
 
     </div>
@@ -362,7 +391,9 @@
 
             <div class="col-lg-12">
                 <div class="section-title">
-                    <h2>Reviews From Our Clients</h2>
+                    <h2>
+                        <%=pageText.clientReviews%>
+                    </h2>
                 </div>
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="reviews-shape">
@@ -373,9 +404,9 @@
                         aria-labelledby="v-pills-home-tab">
                         <div class="review-content">
                             <i class='bx bxs-quote-alt-right icon'></i>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium soluta voluptatem
-                                asperiores reiciendis odit eligendi, molestias voluptates aspernatur quis officiis!
-                                Excepturi quasi officiis</p>
+                            <p>
+                                <%=pageText.review1%>
+                            </p>
                             <h3>4.8</h3>
                             <ul>
                                 <li>
@@ -400,9 +431,9 @@
                         aria-labelledby="v-pills-profile-tab">
                         <div class="review-content">
                             <i class='bx bxs-quote-alt-right icon'></i>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium soluta voluptatem
-                                asperiores reiciendis odit eligendi, molestias voluptates aspernatur quis officiis!
-                                Excepturi quasi officiis</p>
+                            <p>
+                                <%=pageText.review2%>
+                            </p>
                             <h3>4.5</h3>
                             <ul>
                                 <li>
@@ -427,9 +458,9 @@
                         aria-labelledby="v-pills-messages-tab">
                         <div class="review-content">
                             <i class='bx bxs-quote-alt-right icon'></i>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium soluta voluptatem
-                                asperiores reiciendis odit eligendi, molestias voluptates aspernatur quis officiis!
-                                Excepturi quasi officiis</p>
+                            <p>
+                                <%=pageText.review3%>
+                            </p>
                             <h3>4.6</h3>
                             <ul>
                                 <li>
@@ -454,9 +485,9 @@
                         aria-labelledby="v-pills-settings-tab">
                         <div class="review-content">
                             <i class='bx bxs-quote-alt-right icon'></i>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium soluta voluptatem
-                                asperiores reiciendis odit eligendi, molestias voluptates aspernatur quis officiis!
-                                Excepturi quasi officiis</p>
+                            <p>
+                                <%=pageText.review4%>
+                            </p>
                             <h3>4.2</h3>
                             <ul>
                                 <li>
@@ -481,9 +512,9 @@
                         aria-labelledby="v-pills-reviewone-tab">
                         <div class="review-content">
                             <i class='bx bxs-quote-alt-right icon'></i>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium soluta voluptatem
-                                asperiores reiciendis odit eligendi, molestias voluptates aspernatur quis officiis!
-                                Excepturi quasi officiis</p>
+                            <p>
+                                <%=pageText.review5%>
+                            </p>
                             <h3>4.2</h3>
                             <ul>
                                 <li>
@@ -512,7 +543,7 @@
                     <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home"
                         role="tab" aria-controls="v-pills-home" aria-selected="true">
                         <div class="reviews-img">
-                            <img src="../../assets/images/reviews/reviews1.jpg" alt="Reviews">
+                            <img src="../../assets/images/reviews/user1.png" alt="Reviews">
                             <h3>Angela</h3>
                             <span>Director</span>
                         </div>
@@ -520,7 +551,7 @@
                     <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-profile"
                         role="tab" aria-controls="v-pills-profile" aria-selected="false">
                         <div class="reviews-img">
-                            <img src="../../assets/images/reviews/reviews2.jpg" alt="Reviews">
+                            <img src="../../assets/images/reviews/user2.png" alt="Reviews">
                             <h3>Margaret</h3>
                             <span>Reporter</span>
                         </div>
@@ -528,7 +559,7 @@
                     <a class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" href="#v-pills-messages"
                         role="tab" aria-controls="v-pills-messages" aria-selected="false">
                         <div class="reviews-img">
-                            <img src="../../assets/images/reviews/reviews3.jpg" alt="Reviews">
+                            <img src="../../assets/images/reviews/user3.png" alt="Reviews">
                             <h3>Lucy</h3>
                             <span>Model</span>
                         </div>
@@ -536,16 +567,16 @@
                     <a class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" href="#v-pills-settings"
                         role="tab" aria-controls="v-pills-settings" aria-selected="false">
                         <div class="reviews-img">
-                            <img src="../../assets/images/reviews/reviews4.jpg" alt="Reviews">
-                            <h3>Henry</h3>
+                            <img src="../../assets/images/reviews/user4.png" alt="Reviews">
+                            <h3>Maria</h3>
                             <span>Shop Owner</span>
                         </div>
                     </a>
                     <a class="nav-link" id="v-pills-reviewone-tab" data-bs-toggle="pill" href="#v-pills-reviewone"
                         role="tab" aria-controls="v-pills-reviewone" aria-selected="false">
                         <div class="reviews-img">
-                            <img src="../../assets/images/reviews/reviews5.jpg" alt="Reviews">
-                            <h3>Tom</h3>
+                            <img src="../../assets/images/reviews/user5.png" alt="Reviews">
+                            <h3>Sara</h3>
                             <span>Beautician</span>
                         </div>
                     </a>
@@ -565,24 +596,27 @@
     </div>
     <div class="container">
         <div class="section-title">
-            <h2>Our Organic Products</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus quas adipisci earum? Aspernatur
-                accusantium sit perferendis! Aperiam cum ipsum nostrum</p>
+            <h2>
+                <%=pageText.ourPopularTreatments%>
+            </h2>
+            <p>
+                <%=pageText.ourPopularTreatmentsDescription%>
+            </p>
         </div>
         <div class="row">
 
             <div class="col-sm-6 col-lg-4">
                 <div class="shop-item">
                     <div class="top">
-                        <img src="../../assets/images/shop/shop1.jpg" alt="Shop">
+                        <img src="../../assets/images/shop/item2.png" alt="Shop">
                         <ul>
                             <li>
-                                <a href="cart.html" target="_blank">
+                                <a href="" target="_blank">
                                     <i class="bx bx-cart"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="wishlist.html" target="_blank">
+                                <a href="" target="_blank">
                                     <i class='bx bxs-heart'></i>
                                 </a>
                             </li>
@@ -590,9 +624,11 @@
                     </div>
                     <div class="bottom">
                         <h3>
-                            <a href="single-product.html">Organic Face Cream</a>
+                            <a href="">
+                                <%=pageText.eyeBrowTreatment%>
+                            </a>
                         </h3>
-                        <span>$150.00</span>
+                        <span>HK$2680.00</span>
                     </div>
                 </div>
             </div>
@@ -600,15 +636,15 @@
             <div class="col-sm-6 col-lg-4">
                 <div class="shop-item">
                     <div class="top">
-                        <img src="../../assets/images/shop/shop2.jpg" alt="Shop">
+                        <img src="../../assets/images/shop/item1.png" alt="Shop">
                         <ul>
                             <li>
-                                <a href="cart.html" target="_blank">
+                                <a href="" target="_blank">
                                     <i class="bx bx-cart"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="wishlist.html" target="_blank">
+                                <a href="" target="_blank">
                                     <i class='bx bxs-heart'></i>
                                 </a>
                             </li>
@@ -616,9 +652,11 @@
                     </div>
                     <div class="bottom">
                         <h3>
-                            <a href="single-product.html">Organic Body Oil</a>
+                            <a href="">
+                                <%=pageText.lipsTreatment%>
+                            </a>
                         </h3>
-                        <span>$100.00</span>
+                        <span>HK$3680.00</span>
                     </div>
                 </div>
             </div>
@@ -626,15 +664,15 @@
             <div class="col-sm-6 offset-sm-3 offset-lg-0 col-lg-4">
                 <div class="shop-item">
                     <div class="top">
-                        <img src="../../assets/images/shop/shop3.jpg" alt="Shop">
+                        <img src="../../assets/images/shop/item3.png" alt="Shop">
                         <ul>
                             <li>
-                                <a href="cart.html" target="_blank">
+                                <a href="" target="_blank">
                                     <i class="bx bx-cart"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="wishlist.html" target="_blank">
+                                <a href="" target="_blank">
                                     <i class='bx bxs-heart'></i>
                                 </a>
                             </li>
@@ -642,9 +680,11 @@
                     </div>
                     <div class="bottom">
                         <h3>
-                            <a href="single-product.html">Luxury Spa Cream</a>
+                            <a href="">
+                                <%=pageText.eyeLashesTreatment%>
+                            </a>
                         </h3>
-                        <span>$250.00</span>
+                        <span>HK$680.00</span>
                     </div>
                 </div>
             </div>
@@ -652,7 +692,9 @@
         </div>
 
         <div class="text-center">
-            <a class="common-btn two" href="shop.html">View All Products</a>
+            <a class="common-btn two" href="<%=language%>/all-services">
+                <%=pageText.viewAllServices%>
+            </a>
         </div>
 
     </div>
@@ -670,11 +712,13 @@
 
                 <div class="video-item">
                     <div class="video-wrap">
-                        <button class="js-modal-btn" data-video-id="OZYgGUvUf0E">
+                        <button class="js-modal-btn" data-video-id="tJ4FnhktL0o">
                             <i class='bx bx-play'></i>
                         </button>
                     </div>
-                    <h3>Watch How We Work</h3>
+                    <h3>
+                        <%=pageText.watchHowWeWork%>
+                    </h3>
                 </div>
 
             </div>
@@ -684,7 +728,7 @@
 <!-- End Video -->
 
 <!-- Blog -->
-<section class="blog-area two pt-100 pb-70">
+<!-- <section class="blog-area two pt-100 pb-70">
     <div class="blog-shape">
         <img src="../../assets/images/blog/blog-shape1.png" alt="Shape">
     </div>
@@ -761,5 +805,5 @@
 
         </div>
     </div>
-</section>
+</section> -->
 <!-- End Blog -->
