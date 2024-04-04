@@ -44,6 +44,7 @@ const pageText = {
         ourTeamDescription:"我們的團隊由一群專業的美容師組成，為您提供最專業的服務。",
         chiefBeautician:"首席美容師",
         assistantBeautician:"助理美容師",
+        beautician:"美容師",
         viewAllTeam:"查看所有團隊",
         clientReviews:"客戶評價",
         review1:"我非常滿意這次的服務，美容師非常專業，服務態度也很好。",
@@ -153,7 +154,7 @@ const pageText = {
         wednesday:"Wednesday",
         thursday:"Thursday",
         friday:"Friday",
-        
+
 
        
 
