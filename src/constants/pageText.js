@@ -71,6 +71,123 @@ const pageText = {
         wednesday:"星期三",
         thursday:"星期四",
         friday:"星期五",
+        specialOffers:"特別優惠",
+        eyeLineTreatment:"眼線紋繡",
+        EyeLashesTreatment:"美睫療程",
+        makeup:"化妝",
+        priceList:"價目表",
+        eyeBrowServices:"眉形設計服務",
+        beautyServicesList1:[
+            {
+                name:"霧眉",
+                price:"HKD2680"
+            },{
+                name:"粉絨眉",
+                price:"HKD3980"
+            },{
+                name:"絲霧眉",
+                price:"HKD4280"
+            },{
+                name:"野生眉",
+                price:"HKD4800"
+            },{
+                name:"私人訂制",
+                price:"HKD5800"
+            }
+        ],
+        eyeLashesServices:"美睫護理服務",
+        beautyServicesList2:[
+            {
+                name:"單根",
+                price:"HKD680"
+            },{
+                name:"Yy三葉草",
+                price:"HKD780"
+            },{
+                name:"太陽花",
+                price:"HKD880"
+            },{
+                name:"仙女款",
+                price:"HKD980"
+            },{
+                name:"漫畫款",
+                price:"HKD1080"
+            },{
+                name:"芭比款",
+                price:"HKD1280"
+            },{
+                name:"角蛋白翹睫毛護理",
+                price:"HKD480"
+            }
+
+        ],
+        //It Needs Professional Hands To Get Rid Of Your Daily Stress Off
+        beautySlogan2:"需要專業的手來擺脫您的日常壓力",
+        lipServices:"唇部護理服務",
+        beautyServicesList3:[
+            {
+                name:"水晶紅唇",
+                price:"HKD3680"
+            },{
+                name:"BB唇",
+                price:"HKD3680"
+            },{
+                name:"花瓣唇",
+                price:"HKD3680"
+            },{
+                name:"歐洲漂唇",
+                price:"HKD4680"
+            },{
+                name:"改烏唇",
+                price:"HKD4280"
+            },{
+                name:"白唇",
+                price:"HKD4280"
+            },
+        ],
+        tuomaoServices:"脫毛服務",
+        beautyServicesList4:[
+            {
+                name:"全身脫毛",
+                price:"HKD3800"
+            },{
+                name:"唇毛/下巴/鬍鬚",
+                price:"HKD500"
+            },{
+                name:"腋下/髮際線",
+                price:"HKD880"
+            },{
+                name:"前臂/上臂",
+                price:"HKD1280"
+            },{
+                name:"小腿",
+                price:"HKD1680"
+            },{
+                name:"背部/胸部/腹部",
+                price:"HKD1500"
+            },{
+                name:"大腿",
+                price:"HKD1600"
+            },{
+                name:"比基尼",
+                price:"HKD980"
+            }
+        ],
+        address1:"尖沙咀金馬倫道40號",
+        address2:"金龍中心10樓1005室",
+        address:"地址",
+        contactMethods:"聯絡方式",
+        getInTouch:"聯絡我們",
+        enterName:"輸入姓名",
+        enterEmail:"輸入電郵",
+        enterPhone:"輸入電話",
+        enterSubject:"輸入主題",
+        enterMessage:"輸入訊息",
+        sendMessage:"發送",
+        termsConditions:"條款及細則",
+        privacyPolicy:"私隱政策",
+
+
 
 
 
@@ -154,6 +271,70 @@ const pageText = {
         wednesday:"Wednesday",
         thursday:"Thursday",
         friday:"Friday",
+        specialOffers:"Special Offers",
+        eyeLineTreatment:"Eye Line Embroidery",
+        EyeLashesTreatment:"Eyelash Treatment",
+        makeup:"Makeup",
+        priceList:"Price List",
+        eyeBrowServices:"Eyebrow Design Services",
+        beautyServicesList1:[
+            {
+                name:"Mist Eyebrow",
+                price:"HKD2680"
+            },{
+                name:"Powder Eyebrow",
+                price:"HKD3980"
+            },{
+                name:"Silk Mist Eyebrow",
+                price:"HKD4280"
+            },{
+                name:"Wild Eyebrow",
+                price:"HKD4800"
+            },{
+                name:"Private Customization",
+                price:"HKD5800"
+            }
+        ],
+        eyeLashesServices:"Eyelash Care Services",
+        beautyServicesList2:[
+            {
+                name:"Single Root",
+                price:"HKD680"
+            },{
+                name:"Yy Clover",
+                price:"HKD780"
+            },{
+                name:"Sunflower",
+                price:"HKD880"
+            },{
+                name:"Fairy Style",
+                price:"HKD980"
+            },{
+                name:"Comic Style",
+                price:"HKD1080"
+            },{
+                name:"Barbie Style",
+                price:"HKD1280"
+            },{
+                name:"Keratin Lash Care",
+                price:"HKD480"
+            },
+        ],
+        address1:"40 Cameron Road",
+        address2:"Golden Dragon Centre 10/F 1005",
+        address:"Address",
+        contactMethods:"Contact Methods",
+        getInTouch:"Get In Touch",
+        enterName:"Enter Name",
+        enterEmail:"Enter Email",
+        enterPhone:"Enter Phone",
+        enterSubject:"Enter Subject",
+        enterMessage:"Enter Message",
+        sendMessage:"Send Message",
+        termsConditions:"Terms & Conditions",
+        privacyPolicy:"Privacy Policy",
+        
+        
 
 
        

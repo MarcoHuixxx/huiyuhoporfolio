@@ -25,35 +25,9 @@ app.get('/:language', (req, res) => {
 
 });
 
-app.get('/:language/about-us', (req, res) => {
-  const language = req.params.language||"hk";
-  res.render('pages/about-us', {
-    pageText: pageText[language],
-    language: language
-  }
-  );
-}
-);
 
-app.get('/:language/services', (req, res) => {
-  const language = req.params.language||"hk";
-  res.render('pages/service', {
-    pageText: pageText[language],
-    language: language
-  }
-  );
-}
-);
 
-app.get('/:language/voucher', (req, res) => {
-  const language = req.params.language||"hk";
-  res.render('pages/voucher', {
-    pageText: pageText[language],
-    language: language
-  }
-  );
-}
-);
+
 
 app.get('/:language/contact-us', (req, res) => {
   const language = req.params.language||"hk";
@@ -65,20 +39,17 @@ app.get('/:language/contact-us', (req, res) => {
 }
 );
 
-app.get('/:language/blog-details/:blogId', async(req, res) => {
+app.get('/:language/price-list', (req, res) => {
   const language = req.params.language||"hk";
-  const blogId = req.params.blogId;
-  // const getBlogViewById=await ejs.renderFile(path.join(__dirname, 'views',  `blogs/${blogId}.ejs`), {blogId:blogId});
-  res.render('pages/blog-details', {
+  res.render('pages/price-list', {
     pageText: pageText[language],
-    language: language,
-    blogId: blogId
-    // blogView: getBlogViewById
-
+    language: language
   }
   );
 }
 );
+
+
 
 app.get('/', (req, res) => {
   const language = "hk";

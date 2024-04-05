@@ -1,144 +1,202 @@
-<!DOCTYPE html>
-<html lang="en" dir="lrt">
-
-
-<main>
-  <!-- Breadcrumb Area S t a r t -->
-  <section class="breadcrumb-section breadcrumb-bg">
-    <div class="container">
-      <div class="breadcrumb-text">
-        <nav aria-label="breadcrumb" class="breadcrumb-nav wow fadeInUp" data-wow-delay="0.0s">
-          <ul class="breadcrumb listing">
-            <li class="breadcrumb-item single-list"><a href="index.html" class="single">
-                <%=pageText.home%>
-              </a></li>
-            <li class="breadcrumb-item single-list" aria-current="page"><a href="javascript:void(0)" class="single">
-                <%=pageText.contactUs%>
-              </a></li>
-          </ul>
-        </nav>
-        <h1 class="title wow fadeInUp" data-wow-delay="0.1s">
-          <%=pageText.contactUs%>
-        </h1>
-      </div>
-    </div>
-  </section>
-  <!-- End-of Breadcrumb Area -->
-
-  <!-- Contact area S t a r t-->
-  <div class="volunteer-details top-bottom-padding2">
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="contact-section">
-            <div class="contact-list">
-              <div class="contact-icon-list">
-                <div class="single-icon">
-                  <i class="ri-phone-fill"></i>
-                </div>
-                <div class="divider-ver"></div>
-                <div class="contact-content">
-                  <p class="subtitle">
-                    <%=pageText.phone%>
-                  </p>
-                  <a class="title" href="javascript:void(0)">(+852)2120-5494</a>
-                </div>
-              </div>
-              <div class="contact-icon-list">
-                <div class="single-icon">
-                  <i class="ri-mail-fill"></i>
-                </div>
-                <div class="divider-ver"></div>
-                <div class="contact-content">
-                  <p class="subtitle">
-                    <%=pageText.email%>
-                  </p>
-                  <a class="title" href="javascript:void(0)">virtuehub@gmail.com</a>
-                </div>
-              </div>
-              <div class="contact-icon-list">
-                <div class="single-icon">
-                  <i class="ri-map-pin-line"></i>
-                </div>
-                <div class="divider-ver"></div>
-                <div class="contact-content">
-                  <p class="subtitle">
-                    <%=pageText.addressWord%>
-                  </p>
-                  <a class="title" href="javascript:void(0)">
-                    <%=pageText.address%>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+<!-- Page Title -->
+<div class="page-title-wrap">
+    <div class="page-title-area title-img-five">
+        <div class="title-shape">
+            <img src="../../assets/images/title/title-shape1.png" alt="Shape">
         </div>
-      </div>
-      <div class="top-padding4">
-        <div class="row gy-24">
-          <div class="col-xl-6">
-            <div class="send-box">
-              <form action="contact-us.html" class="custom-form">
+        <div class="d-table">
+            <div class="d-table-cell">
+
+                <div class="title-content">
+                    <h2>
+                        <%=pageText.contactUs%>
+                    </h2>
+                    <ul>
+                        <li>
+                            <a href="index.html">
+                                <%=pageText.home%>
+                            </a>
+                        </li>
+                        <li>
+                            <span>
+                                <%=pageText.contactUs%>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page Title -->
+
+<!-- Contact Info -->
+<div class="contact-info-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="contact-info-item">
+                    <h3>
+                        <%=pageText.address%>:
+                    </h3>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <%=pageText.address1%>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <%=pageText.address2%>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="contact-info-item active">
+                    <h3>
+                        <%=pageText.contactMethods%>:
+                    </h3>
+                    <ul>
+                        <li>
+                            <span>
+                                <%=pageText.phone%>:
+                            </span>
+                            <a href="tel:85264366837">852-64366837</a>
+                        </li>
+                        <li>
+                            <span>
+                                <%=pageText.whatsapp%>:
+                            </span>
+                            <a
+                                href="https://api.whatsapp.com/send?phone=85269965503&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82">852-69965503</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-sm-6 offset-sm-3 offset-lg-0 col-lg-4">
+                <div class="contact-info-item">
+                    <h3>
+                        <%=pageText.email%>:
+                    </h3>
+                    <ul>
+                        <li>
+                            <a href="mailto:hello@jeel.com">zoefacebeauty@gmail.com</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Contact Info -->
+
+<!-- Contact Form -->
+<div class="contact-form-area pb-100">
+    <div class="container">
+        <div class="form-item">
+            <div class="contact-shape">
+                <img src="../../assets/images/contact-shape1.png" alt="Shape">
+                <img src="../../assets/images/contact-shape2.png" alt="Shape">
+            </div>
+
+            <form id="contactForm">
+                <div class="section-title two">
+                    <h2>
+                        <%=pageText.getInTouch%>
+                    </h2>
+                </div>
                 <div class="row">
-                  <div class="col-xl-12">
-                    <div class="form-group">
-                      <label class="custom-label" for="exampleFormControlInput1">
-                        <%=pageText.fullName%>
-                      </label>
-                      <input type="text" class="form-control custom-input" id="exampleFormControlInput1"
-                        placeholder="Alex Jordan">
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Name" required
+                                data-error="<%=pageText.enterName%>">
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-xl-12">
-                    <div class="form-group">
-                      <label class="custom-label" for="exampleFormControlInput5">
-                        <%=pageText.phone%>
-                      </label>
-                      <input type="text" class="form-control custom-input" id="exampleFormControlInput5"
-                        placeholder="(+852)2120-5494">
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Email"
+                                required data-error="<%=pageText.enterEmail%>">
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-xl-12">
-                    <div class="form-group">
-                      <label class="custom-label" for="exampleFormControlInput2">
-                        <%=pageText.email%>
-                      </label>
-                      <input type="email" class="form-control custom-input" id="exampleFormControlInput2"
-                        placeholder="name@example.com">
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <input type="text" name="phone_number" id="phone_number" placeholder="Phone" required
+                                data-error="<%=pageText.enterPhone%>" class="form-control">
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
-                  </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <input type="text" name="msg_subject" id="msg_subject" class="form-control"
+                                placeholder="Subject" required data-error="<%=pageText.enterSubject%>">
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <textarea name="message" class="form-control" id="message" cols="30" rows="8"
+                                placeholder="Write message" required data-error="<%=pageText.enterMessage%>"></textarea>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12">
+                        <div class="form-group">
+                            <div class="form-check agree-label">
+                                <input name="gridCheck" value="I agree to the terms and privacy policy."
+                                    class="form-check-input" type="checkbox" id="gridCheck" required>
+                                <label class="form-check-label" for="gridCheck">
+                                    Accept <a href="terms-conditions.html">
+                                        <%=pageText.termsConditions%>
+                                    </a> and <a href="privacy-policy.html">
+                                        <%=pageText.privacyPolicy%>
+                                    </a>
+                                </label>
+                                <div class="help-block with-errors gridCheck-error"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <button type="submit" class="btn common-btn two">
+                                <%=pageText.sendMessage%>
+                            </button>
+                            <div id="msgSubmit" class="h3 text-center hidden"></div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="col-xl-12">
-                  <div class="form-group">
-                    <label class="custom-label" for="exampleFormControlTextarea1">
-                      <%=pageText.message%>
-                    </label>
-                    <textarea class="form-control custom-textarea" id="exampleFormControlTextarea1"
-                      placeholder="<%=pageText.messagePlaceHolder%>" rows="3"></textarea>
-                  </div>
-                </div>
-                <button type="submit" class="submit-btn">
-                  <%=pageText.sendMessage%>
-                </button>
-              </form>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <iframe class="map-frame"
-              src="https://www.google.com/maps/embed/v1/place?q=新界屯門青山坊2號樂華大廈一號樓總站1樓272號鋪&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
-              width="600" height="450" style="border: 15px" allowfullscreen="" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
+            </form>
+
         </div>
-      </div>
     </div>
-  </div>
-  <!-- End-of contact-->
+</div>
+<!-- End Contact Form -->
 
-
-</main>
-
-
-
-
-</html>
+<!-- Map -->
+<div class="map-area pb-100">
+    <div class="container">
+        <iframe id="map"
+            src="https://www.google.com/maps/embed/v1/place?q=尖沙咀金馬倫道40號金龍中心10樓1005室&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
+            allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+</div>
+<!-- End Map -->
