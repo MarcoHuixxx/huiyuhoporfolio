@@ -48,7 +48,37 @@
         </div>
     </div>
     <header>
+         <!-- Header -->
+    <div class="header-area two">
+        <div class="container-fluid">
+            <div class="row justify-content-end">
+
+
+                <div class="col-3 col-md-1 col-mg-1">
+                    <div class="right">
+
+                                <select class="form-select" onchange="location =
+                                    this.options[this.selectedIndex].value;">
+                                    <% if(language=='en' ) { %>
+                                        <option value="/en" selected>English</option>
+                                        <option value="/hk">中文</option>
+
+                                        <% } else { %>
+                                            <option value="/hk" selected>中文</option>
+                                            <option value="/en">English</option>
+
+                                            <% } %>
+                                </select>
+                            
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Header -->
         <div class="header-area">
+            <div style="height: 140px;display: none;" id="dummyDiv"></div>
             <div class="main-header header-sticky">
                 <div class="container">
                     <div class="row">
@@ -71,6 +101,8 @@
                                     <button id="closeSearch" class="close-search-btn"><i
                                             class="ri-close-line"></i></button>
                                 </div>
+
+                                
 
                                 <!-- Main-menu for desktop -->
                                 <div class="main-menu d-none d-lg-block">
@@ -109,9 +141,24 @@
 
 
                                             </li>
-                                            <li class="single-list"><a href="/<%=language%>/contact-us" class="single">
+                                            <!-- <li class="single-list"><a href="/<%=language%>/contact-us" class="single">
                                                     <%=pageText.contactus%>
                                                 </a></li>
+
+                                                <li class="d-flex flex-row  justify-content-end">
+                                                    <select class="form-select col-3 col-md-1 col-lg-1" onchange="location =
+                                                        this.options[this.selectedIndex].value;">
+                                                        <% if(language=='en' ) { %>
+                                                            <option value="/en" selected>English</option>
+                                                            <option value="/hk">中文</option>
+                    
+                                                            <% } else { %>
+                                                                <option value="/hk" selected>中文</option>
+                                                                <option value="/en">English</option>
+                    
+                                                                <% } %>
+                                                    </select>
+                                                </li> -->
                                         </ul>
                                     </nav>
                                 </div>
