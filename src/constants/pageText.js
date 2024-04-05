@@ -276,7 +276,7 @@ const pageText = {
         case2: "案例2",
         blogDetails: "文章詳情",
         blogDetailDesc: "最新的文章",
-
+        seeBelowMap: "查看以下地圖",
 
 
 
@@ -564,6 +564,7 @@ const pageText = {
         case2: "Case 2",
         blogDetails: "Blog Detail",
         blogDetailDesc: "The latest blog.",
+        seeBelowMap: "See below map",
 
 
 
