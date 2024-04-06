@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" dir="lrt">
+
+<head>
+
+  <main>
+    <!-- Breadcrumb Area S t a r t -->
+    <section class="breadcrumb-section breadcrumb-bg">
+      <div class="container">
+        <div class="breadcrumb-text">
+          <nav aria-label="breadcrumb" class="breadcrumb-nav wow fadeInUp" data-wow-delay="0.0s">
+            <ul class="breadcrumb listing">
+              <li class="breadcrumb-item single-list"><a href="/" class="single">
+                  <%=pageText.home%>
+                </a></li>
+              <li class="breadcrumb-item single-list" aria-current="page"><a href="javascript:void(0)" class="single">
+                  <%=pageText.serviceDetails%>
+                </a></li>
+            </ul>
+          </nav>
+          <h1 class="title wow fadeInUp" data-wow-delay="0.1s">
+            <%=pageText.serviceDetails%>
+          </h1>
+        </div>
+      </div>
+    </section>
+    <!-- End-of Breadcrumb Area -->
+
+
+    <!-- About us Area S t a r t -->
+    <% pageText.serviceDetailsData.forEach((service, index)=> { %>
+      <% if (index % 2==0) { %>
+        <section class="about-area mt-100">
+          <% if(index===0){%>
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-xl-7">
+                  <!-- Section Tittle -->
+                  <div class="section-tittle text-center">
+
+                    <h5 class="title font-500">
+                      <%=pageText.professionalService%>
+                    </h5>
+                    <span class="sub-tittle text-capitalize font-600">
+                      <%=pageText.professionalServiceDesc%>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+              <div class="container">
+                <div class="row justify-content-between ">
+                  <div class="col-lg-6 my-auto">
+                    <!-- Section Tittle -->
+                    <div class="section-tittle mb-35  bg-light px-5 py-5   shadow-lg  rounded-3">
+                      <span class="sub-tittle text-capitalize font-600">
+                        <%=service.name%>
+                      </span>
+                      <p class="pera-subtitle mb-15">
+                        <%=service.description%>
+                      </p>
+
+                      <p class="sub-tittle text-capitalize font-600">
+                        <%=service.suggestGroup%>
+                      </p>
+                      <% if(service?.suggestGroupData?.length>0)
+                        { %>
+                        <ol type="I">
+                          <% service.suggestGroupData.forEach((item2, index)=> { %>
+                            <li class="">
+                              <%=item2%>
+                            </li>
+                            <% }) %>
+                        </ol>
+                        <% } %>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 my-auto">
+                    <img class="h-100" w-100 src="../../../assets/images/gallery/<%=service.imageName%>"
+                      class="img-thumbnail" alt="Responsive image">
+                    <!-- <img class="w-auto d-none d-lg-block" src="../../../assets/images/gallery/上門物理治療.jpg" alt="image"> -->
+                  </div>
+                </div>
+              </div>
+        </section>
+
+        <% if(index===2){%>
+          <!-- helpful area S t a r t-->
+          <section class="helpful-area-three pb-80">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-xl-7">
+                  <!-- Section Tittle -->
+                  <div class="section-tittle text-center mb-50">
+                    <span class="sub-tittle text-capitalize font-600">
+                      <%=pageText.servieProcedure%>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <!-- Gallery S t a r t -->
+            <div class="gallery-area mt-10 container">
+              <div class="gallery-slider d-flex">
+                <% for (let i=0; i < 2; i++) { %>
+                  <% pageText.servieProcedureData.forEach((gallery, index)=> { %>
+                    <div class="text-center">
+                      <img src="../../../assets/images/gallery/<%=gallery.imageName%>" alt="img">
+                      <span class="sub-tittle text-capitalize font-600 align-self-center d-flex justify-content-center">
+                        <%=gallery.step%>
+                      </span>
+                      <br>
+                      <span class="sub-tittle text-capitalize font-600 align-self-center d-flex justify-content-center">
+                        <%=gallery.title%>
+                      </span>
+
+                      <span class=" text-capitalize align-self-center d-flex justify-content-center">
+                        <%=gallery.description%>
+                      </span>
+
+                    </div>
+                    <% }) %>
+                      <% } %>
+
+              </div>
+            </div>
+            <!-- End-of Gallery -->
+          </section>
+          <!-- End-of helpful-->
+          <% } %>
+            <% } else { %>
+              <section class="about-area mt-100">
+                <% if(index===3){%>
+                  <div class="container">
+                    <div class="row justify-content-center">
+                      <div class="col-xl-7">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center">
+
+                          <h5 class="title font-500">
+                            <%=pageText.takeCareService%>
+                          </h5>
+                          <span class="sub-tittle text-capitalize font-600">
+                            <%=pageText.takeCareServiceDesc%>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %>
+                    <div class="container">
+                      <div class="row justify-content-between ">
+                        <div class="col-lg-6 my-auto">
+                          <img class="h-100" w-100 src="../../../assets/images/gallery/<%=service.imageName%>"
+                            alt="Responsive image">
+                          <!-- <img class="w-auto d-none d-lg-block" src="../../../assets/images/gallery/上門物理治療.jpg" alt="image"> -->
+                        </div>
+                        <div class="col-lg-6 my-auto">
+                          <!-- Section Tittle -->
+                          <div class="section-tittle mb-35  bg-light px-5 py-5   shadow-lg  rounded-3">
+                            <span class="sub-tittle
+                text-capitalize font-600">
+                              <%=service.name%>
+                            </span>
+                            <p class="pera-subtitle mb-15">
+                              <%=service.description%>
+                            </p>
+                            <p class="sub-tittle text-capitalize font-600">
+                              <%=service.suggestGroup%>
+                            </p>
+                            <% if(service?.suggestGroupData?.length>0)
+                              { %>
+                              <ol type="I">
+                                <% service.suggestGroupData.forEach((item2, index)=> { %>
+                                  <li class="">
+                                    <%=item2%>
+                                  </li>
+                                  <% }) %>
+                              </ol>
+                              <% } %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </section>
+              <% } %>
+                <% }) %>
+
+
+
+
+
+
+
+                  <!-- About us Area S t a r t -->
+
+                  <!-- End-of About us Area -->
+
+
+                  <!-- Any Question Area S t a r t -->
+                  <section class=" question-area bottom-padding mt-40">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-12 my-auto">
+                          <!-- Section Tittle -->
+                          <div class="row justify-content-center">
+                            <div class="col-xl-7">
+                              <!-- Section Tittle -->
+                              <div class="section-tittle text-center">
+                                <span class="sub-tittle text-capitalize font-600">
+                                  <%=pageText.couponFAQ%>
+                                </span>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed additional-styles" type="button"
+                                  data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                  aria-controls="collapseOne">
+                                  <%=pageText.commonQuestion1%>
+                                </button>
+                              </h2>
+                              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                  <%=pageText.commonQuestion1Description%>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed additional-styles" type="button"
+                                  data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                                  aria-controls="collapseTwo">
+                                  <%=pageText.commonQuestion2%>
+                                </button>
+
+                              </h2>
+                              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                  <%=pageText.commonQuestion2Description%>
+
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed additional-styles" type="button"
+                                  data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
+                                  aria-controls="collapseThree">
+                                  <%=pageText.commonQuestion3%>
+                                </button>
+
+                              </h2>
+                              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                  <%=pageText.commonQuestion3Description%>
+                                </div>
+
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed additional-styles" type="button"
+                                  data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
+                                  aria-controls="collapseFour">
+                                  <%=pageText.commonQuestion4%>
+                                </button>
+                              </h2>
+                              <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                  <%=pageText.commonQuestion4Description%>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed additional-styles" type="button"
+                                  data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                                  aria-controls="collapseFive">
+                                  <%=pageText.commonQuestion5%>
+                                </button>
+                              </h2>
+                              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                  <%=pageText.commonQuestion5Description%>
+                                </div>
+                              </div>
+                              <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSix">
+                                  <button class="accordion-button collapsed additional-styles" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false"
+                                    aria-controls="collapseSix">
+                                    <%=pageText.commonQuestion6%>
+                                  </button>
+                                </h2>
+                                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+                                  data-bs-parent="#accordionExample">
+                                  <div class="accordion-body">
+                                    <%=pageText.commonQuestion6Description%>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                  </section>
+                  <!-- End-of Question Area -->
+
+
+  </main>
+
+  <!-- End-of Footer -->
+
+  </body>
+
+</html>

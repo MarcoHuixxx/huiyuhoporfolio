@@ -45,6 +45,16 @@ app.get('/:language/services', (req, res) => {
 }
 );
 
+app.get('/:language/service-details', (req, res) => {
+  const language = req.params.language||"hk";
+  res.render('pages/service-details', {
+    pageText: pageText[language],
+    language: language
+  }
+  );
+}
+);
+
 app.get('/:language/voucher', (req, res) => {
   const language = req.params.language||"hk";
   res.render('pages/voucher', {

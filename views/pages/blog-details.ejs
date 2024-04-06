@@ -45,7 +45,7 @@
               <%- include(`../blogs/${language}/${blogId}`) %>
 
                 <!-- blog info -->
-                <div class="another-blog-info">
+                <div class="another-blog-info mt-3">
                   <div class="d-flex res-flex justify-content-between align-items-center">
                     <div class="imp-btn flex align-items-center">
                       <div class="badge active">
@@ -142,7 +142,7 @@
             </div>
           </div>
           <!-- Comments -->
-          <div class="comment-blog">
+          <!-- <div class="comment-blog">
             <h4 class="pera">Write a Comment</h4>
             <div class="comment-box">
               <form action="javascript:void(0)" method="post" class="custom-form">
@@ -170,9 +170,9 @@
                 <button type="submit" class="submit-btn">Submit Comment</button>
               </form>
             </div>
-          </div>
+          </div> -->
           <!-- Comments list -->
-          <div class="comment-list">
+          <!-- <div class="comment-list">
             <p class="pera">04 comment</p>
             <div class="single-comment">
               <div class="comment-img">
@@ -237,20 +237,22 @@
                 <a href="javascript:void(0)" class="reply-btn">Reply</a>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="col-xxl-3 col-xl-4 col-lg-4">
           <div class="right-element">
 
             <!-- Search Box -->
             <div class="search-section">
-              <p class="pera">Search Here</p>
+              <p class="pera">
+                <%=pageText.searchHere%>
+              </p>
               <div class="dotted">
                 <div class="active-dot"></div>
                 <div class="inactive-dot"></div>
               </div>
               <div class="search-box">
-                <input type="search" class="search-input" placeholder="Enter Your Keyword">
+                <input type="search" class="search-input" placeholder="<%=pageText.enterYourKeyword%>">
                 <div class="search-icon">
                   <i class="ri-search-line"></i>
                 </div>
@@ -259,7 +261,9 @@
 
             <!-- category -->
             <div class="category-section">
-              <p class="pera">Category List</p>
+              <p class="pera">
+                <%=pageText.category%>
+              </p>
               <div class="dotted">
                 <div class="active-dot"></div>
                 <div class="inactive-dot"></div>
@@ -267,29 +271,31 @@
               <div class="category-box">
                 <ul class="listing">
                   <li class="single-list">
-                    <a class="single" href="javascript:void(0)">Food</a>
+                    <a class="single" href="javascript:void(0)">
+                      <%=pageText.food%>
+                    </a>
                   </li>
                   <li class="single-list">
-                    <a class="single" href="javascript:void(0)">Medical</a>
+                    <a class="single" href="javascript:void(0)">
+                      <%=pageText.medical%>
+                    </a>
+                  </li>
+                  <li class="single-list">
+                    <a class="single" href="javascript:void(0)">
+                      <%=pageText.recycline%>
+                    </a>
                   </li>
                   <li class="single-list active">
-                    <a class="single" href="javascript:void(0)">Parkinson</a>
-                  </li>
-                  <li class="single-list">
-                    <a class="single" href="javascript:void(0)">Wireframing</a>
-                  </li>
-                  <li class="single-list">
-                    <a class="single" href="javascript:void(0)">Recycline</a>
-                  </li>
-                  <li class="single-list">
-                    <a class="single" href="javascript:void(0)">Education</a>
+                    <a class="single" href="javascript:void(0)">
+                      <%=pageText.health%>
+                    </a>
                   </li>
                 </ul>
               </div>
             </div>
 
             <!-- Related post -->
-            <div class="related-post-section">
+            <!-- <div class="related-post-section">
               <p class="pera text-capitalize">Related post</p>
               <div class="dotted">
                 <div class="active-dot"></div>
@@ -348,7 +354,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Tag -->
             <div class="tag-section">
@@ -359,20 +365,31 @@
               </div>
               <div class="tag-box">
                 <div class="tag-info">
+                  <div class="badge ">
+                    <p class="subtitle">
+                      <%=pageText.medical%>
+                    </p>
+                  </div>
+                  <div class="badge">
+                    <p class="subtitle">
+                      <%=pageText.food%>
+                    </p>
+                  </div>
+                  <div class="badge">
+                    <p class="subtitle">
+                      <%=pageText.campaign%>
+                    </p>
+                  </div>
                   <div class="badge active">
-                    <p class="subtitle">medical</p>
+                    <p class="subtitle">
+                      <%=pageText.health%>
+                    </p>
                   </div>
                   <div class="badge">
-                    <p class="subtitle">Food</p>
-                  </div>
-                  <div class="badge">
-                    <p class="subtitle">Election</p>
-                  </div>
-                  <div class="badge">
-                    <p class="subtitle">Campaign</p>
-                  </div>
-                  <div class="badge">
-                    <p class="subtitle">Security</p>
+                    <p class="subtitle">
+                      <%=pageText.recycline%>
+                    </p>
+
                   </div>
                 </div>
               </div>

@@ -277,7 +277,114 @@ const pageText = {
         blogDetails: "文章詳情",
         blogDetailDesc: "最新的文章",
         seeBelowMap: "查看以下地圖",
+        searchHere: "在此搜尋",
+        enterYourKeyword: "輸入您的關鍵字",
+        category: "分類",
+        food: "食物",
+        medical: "醫療",
+        parkinson: "帕金森",
+        recycline: "回收",
+        health: "健康",
+        campaign: "活動",
+        serviceDetails: "服務詳情",
+        serviceDetailsData: [
+            {
+                name: "上門物理治療",
+                description: "物理治療師會為患者進行活動能力評估，了解服務使用者的起居自理能力, 以及訓練目標。然後根據身體情況，製定合適的訓練運動，從而提升活動能力，務求盡快回復正常生活。",
+                suggestGroup: "建議接受物理治療的情況：",
+                suggestGroupData: [
+                    "手術後 (如骨折、寬關節或膝關節換置術)",
+                    "中風後",
+                    "骨質疏鬆",
+                    "肌肉萎縮",
+                    "關節炎",
+                    "腰背痛",
+                    "姿勢不良",
+                ],
+                imageName: "上門物理治療.jpg",
+            },
+            {
+                name: "上門職業治療",
+                description: "職業治療師可透過針對性訓練，如記憶力或專注力訓練、現實導向、感知訓練等，提高患者自理能力，從而達到生活自理及重拾社區生活等。",
+                suggestGroup: "建議接受職業治療的情況：",
+                suggestGroupData: [
+                    "認知障礙",
+                    "中風",
+                    "欠缺自理能力",
+                    "家居安全改善",
+                    "醫療用具添置評估",
+                ],
+                imageName: "上門職業治療.jpg",
+            },
+            {
+                name: "上門言語治療",
+                description: "言語治療師會為病患進行口部肌肉及舌頭能力評估，以製定合適之治療方式幫助患者改善語言能力、吞嚥能力、發音及說話流暢度等問題。",
+                suggestGroup: "建議接受言語治療的情況：",
+                suggestGroupData: [
+                    "吞嚥障礙 / 困難",
+                    "失語症",
+                    "言語發展遲緩",
+                ],
+                imageName: "上門言語治療.jpg",
+            },
+            {
+                name: "上門護理服務",
+                description: "起居照顧、居家護理及復康服務",
+                suggestGroup: "護士、起居照顧員或保健員可為不方便行動之服務使用者提供日常起居照顧服務，服務範圍包括：",
+                suggestGroupData: [
+                    "煮食及餵食",
+                    "抹身、換片，沖涼",
+                    "體位轉移、簡單伸",
+                    "注射胰島素",
+                    "協助進食",
+                    "藥物整理 (執藥)"
+                ],
+                imageName: "上門看護服務.jpg",
+            }, {
+                name: "家居改善評估",
+                description: "為服務使用者提供家居安全評估 / 改善服務",
+                suggestGroup: "我們會針對服務使用者情況，建議家居是否需要安裝安全措施及輔助家具如浴室扶手、防滑墊、電床、高背椅等。治療師亦可提供專業評估報告，交予房署作為申請公屋改建或調遷之用。",
+                imageName: "家居改善評估.jpg",
+            },
+            {
+                name: "陪診服務",
+                description: "由我們的輔助人員陪同到醫院及診所覆診",
+                suggestGroup: "陪診員會陪同病患由家中出發到醫院或診所覆診及取藥，陪同返回家中並向家人匯報覆診情況。",
+                imageName: "陪診服務.jpg",
+            }
+        ],
+        professionalService: "專業治療服務",
+        professionalServiceDesc: "我們相信每位服務使用者的情況都各有不同。我們的專業團隊會於評估後為服務使用者度身訂做治療方向，務求貼合不同服務使用者的各種需要，達到可以足不出戶接受高質素的復康治療及居家護理服務。",
+        takeCareService: "護理服務",
+        takeCareServiceDesc: "我們相信每位服務使用者的情況都各有不同。我們的專業團隊會根據服務使用者情況，提供最符合服務使用者需求的護理員。",
+        servieProcedure: "服務流程",
+        servieProcedureData: [
+            {
+                step:"第一步",
+                title: "聯絡我們",
+                description: "聯絡我們，並提供服務使用者的基本資料及服務需要。",
+                imageName: "Step-01.png"
+            },
+            {
+                step:"第二步",
+                title: "預約服務",
+                description: "專業團隊會根據服務使用者情況，安排最適合之治療師",
+                imageName: "Step-02.png"
+            },
+            {
+                step:"第三步",
+                title: "服務開始",
+                description: "專業團隊會於約定時間到服務使用者家中提供服務",
+                imageName: "Step-03.png"
+            },
+            {
+                step:"第四步",
+                title: "進度跟進",
+                description: "服務結束後，專業團隊會提供服務報告及建議",
+                imageName: "Step-04.png"
 
+            }
+        ],
 
 
 

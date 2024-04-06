@@ -1,7 +1,7 @@
 .breadcrumb-bg {
-  background: var(--Gredient, linear-gradient(90deg, #00715d 27.6%, rgba(171, 185, 183, 0.13) 72.4%));
+  background: var(--Gredient, linear-gradient(90deg, #54b7d2 27.6%, rgba(171, 185, 183, 0.13) 72.4%));
   @media #{$xs} {
-    background: var(--Gredient, linear-gradient(90deg, #00715d 27.6%, rgb(83, 137, 129) 72.4%));
+    background: var(--Gredient, linear-gradient(90deg, #54b7d2 27.6%, rgb(83, 137, 129) 72.4%));
   }
   position: relative;
   @media #{$md} {
