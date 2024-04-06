@@ -370,7 +370,7 @@ const pageText = {
             }
         ],
 
-        address2:"40 Cameron Road",
+        address2:"40 Cameron Road, Tsim Sha Tsui",
         address1:"Golden Dragon Centre 10/F 1005",
         address:"Address",
         contactMethods:"Contact Methods",
