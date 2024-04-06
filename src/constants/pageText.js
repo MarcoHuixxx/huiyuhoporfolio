@@ -186,6 +186,9 @@ const pageText = {
         sendMessage:"發送",
         termsConditions:"條款及細則",
         privacyPolicy:"私隱政策",
+        whatsappApiLink:"https://api.whatsapp.com/send?phone=85269965503&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82",
+        getLatestPriceList:"獲取最新價目表",
+        contactProTeam:"聯絡我們的團隊",
 
 
 
@@ -320,6 +323,55 @@ const pageText = {
                 price:"HKD480"
             },
         ],
+        beautyServicesList3:[
+            {
+                name:"Crystal Red Lips",
+                price:"HKD3680"
+            },{
+                name:"BB Lips",
+                price:"HKD3680"
+            },{
+                name:"Petal Lips",
+                price:"HKD3680"
+            },{
+                name:"European Floating Lips",
+                price:"HKD4680"
+            },{
+                name:"Change Black Lips",
+                price:"HKD4280"
+            },{
+                name:"White Lips",
+                price:"HKD4280"
+            },
+        ],
+        beautyServicesList4:[
+            {
+                name:"Full Body Hair Removal",
+                price:"HKD3800"
+            },{
+                name:"Lip/Chin/Beard",
+                price:"HKD500"
+            },{
+                name:"Armpit/Hairline",
+                price:"HKD880"
+            },{
+                name:"Forearm/Upper Arm",
+                price:"HKD1280"
+            },{
+                name:"Calf",
+                price:"HKD1680"
+            },{
+                name:"Back/Chest/Abdomen",
+                price:"HKD1500"
+            },{
+                name:"Thigh",
+                price:"HKD1600"
+            },{
+                name:"Bikini",
+                price:"HKD980"
+            }
+        ],
+
         address1:"40 Cameron Road",
         address2:"Golden Dragon Centre 10/F 1005",
         address:"Address",
@@ -333,7 +385,9 @@ const pageText = {
         sendMessage:"Send Message",
         termsConditions:"Terms & Conditions",
         privacyPolicy:"Privacy Policy",
-        
+        whatsappApiLink:"https://api.whatsapp.com/send?phone=85269965503&text=Hello!%20I%20am%20interested%20in%20inquiry%20service%20!",
+        getLatestPriceList:"Latest Price List",
+        contactProTeam:"Contact Our Team",
         
 
 

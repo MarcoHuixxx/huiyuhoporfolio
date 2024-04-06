@@ -25,10 +25,6 @@ app.get('/:language', (req, res) => {
 
 });
 
-
-
-
-
 app.get('/:language/contact-us', (req, res) => {
   const language = req.params.language||"hk";
   res.render('pages/contact-us', {
@@ -48,8 +44,6 @@ app.get('/:language/price-list', (req, res) => {
   );
 }
 );
-
-
 
 app.get('/', (req, res) => {
   const language = "hk";
