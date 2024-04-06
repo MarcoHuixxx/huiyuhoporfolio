@@ -64,7 +64,6 @@ const pageText = {
         phone:"電話",
         whatsapp:"WhatsApp",
         openingHours:"營業時間",
-        saturday:"星期六",
         sunday:"星期日",
         monday:"星期一",
         tuesday:"星期二",
@@ -186,7 +185,7 @@ const pageText = {
         sendMessage:"發送",
         termsConditions:"條款及細則",
         privacyPolicy:"私隱政策",
-        whatsappApiLink:"https://api.whatsapp.com/send?phone=85269965503&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82",
+        whatsappApiLink:"https://api.whatsapp.com/send?phone=85264836837&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82",
         getLatestPriceList:"獲取最新價目表",
         contactProTeam:"聯絡我們的團隊",
 
@@ -267,7 +266,6 @@ const pageText = {
         phone:"Phone",
         whatsapp:"WhatsApp",
         openingHours:"Opening Hours",
-        saturday:"Saturday",
         sunday:"Sunday",
         monday:"Monday",
         tuesday:"Tuesday",
@@ -385,7 +383,7 @@ const pageText = {
         sendMessage:"Send Message",
         termsConditions:"Terms & Conditions",
         privacyPolicy:"Privacy Policy",
-        whatsappApiLink:"https://api.whatsapp.com/send?phone=85269965503&text=Hello!%20I%20am%20interested%20in%20inquiry%20service%20!",
+        whatsappApiLink:"https://api.whatsapp.com/send?phone=85264836837&text=Hello!%20I%20am%20interested%20in%20inquiry%20service%20!",
         getLatestPriceList:"Latest Price List",
         contactProTeam:"Contact Our Team",
         
