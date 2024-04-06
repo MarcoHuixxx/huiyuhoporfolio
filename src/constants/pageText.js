@@ -370,8 +370,8 @@ const pageText = {
             }
         ],
 
-        address1:"40 Cameron Road",
-        address2:"Golden Dragon Centre 10/F 1005",
+        address2:"40 Cameron Road",
+        address1:"Golden Dragon Centre 10/F 1005",
         address:"Address",
         contactMethods:"Contact Methods",
         getInTouch:"Get In Touch",
