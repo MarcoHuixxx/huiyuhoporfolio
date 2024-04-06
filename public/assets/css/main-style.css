@@ -24,7 +24,7 @@
   --dark: #28292c;
   --info: #0dcaf0;
   --body: #fff;
-  --primary:#54b7d2;
+  --primary:#3398cc;
   --primary-light:#00503f;
   --primary-deep:#005a4a;
   --secondary:#FFD502;
@@ -45,7 +45,7 @@
   --primary-paragraph:#666666;
   --secondary-paragraph:#333333;
   --tertiary-paragraph:#787787;
-  --primary-btn:#54b7d2;
+  --primary-btn:#3398cc;
   --secondary-btn:#FFD502;
   --tertiary-btn:#090E0D;
   --ratting-color:#FFB840;
@@ -19562,12 +19562,12 @@ input[type=number] {
 }
 
 .breadcrumb-bg {
-  background: var(--Gredient, linear-gradient(90deg, #54b7d2 27.6%, rgba(171, 185, 183, 0.13) 72.4%));
+  background: var(--Gredient, linear-gradient(90deg, #3398cc 27.6%, rgba(171, 185, 183, 0.13) 72.4%));
   position: relative;
 }
 @media (max-width: 575px) {
   .breadcrumb-bg {
-    background: var(--Gredient, linear-gradient(90deg, #54b7d2 27.6%, rgb(83, 137, 129) 72.4%));
+    background: var(--Gredient, linear-gradient(90deg, #3398cc 27.6%, rgb(83, 137, 129) 72.4%));
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {

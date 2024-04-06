@@ -211,7 +211,7 @@
 	transform: scaleX(-1);
 }
 .breadcrumb-bg {
-    background: var(--Gredient, linear-gradient(-90deg, #54b7d2 27.6%, rgba(171, 185, 183, 0.13) 72.4%));
+    background: var(--Gredient, linear-gradient(-90deg, #3398cc 27.6%, rgba(171, 185, 183, 0.13) 72.4%));
 }
 .breadcrumb-text .breadcrumb .single-list:last-child::before {
 	float: right;
