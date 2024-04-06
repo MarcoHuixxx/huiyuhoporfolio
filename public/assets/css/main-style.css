@@ -99,6 +99,14 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+
+@media only screen and (min-width: 1000px)  {
+.event-info-en{
+  max-height: 200px;
+  min-height: 200px;
+}
+}
+
 /*-- Margin Padding --*/
 /*-- Margin To-Bottom-Left-Right --*/
 .mt-6 {

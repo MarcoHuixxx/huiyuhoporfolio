@@ -672,6 +672,114 @@ const pageText = {
         blogDetails: "Blog Detail",
         blogDetailDesc: "The latest blog.",
         seeBelowMap: "See below map",
+        searchHere: "Search here",
+        enterYourKeyword: "Enter your keyword",
+        category: "Category",
+        food: "Food",
+        medical: "Medical",
+        parkinson: "Parkinson",
+        recycline: "Recycling",
+        health: "Health",
+        campaign: "Campaign",
+        serviceDetails: "Service Details",
+        serviceDetailsData: [
+            {
+                name: "Home Physiotherapy",
+                description: "The physiotherapist will conduct an activity ability assessment for the patient, understand the patient's self-care ability, and training goals. Then, based on the body condition, develop suitable training exercises to improve activity ability and strive to return to normal life as soon as possible.",
+                suggestGroup: "Situations suitable for physiotherapy:",
+                suggestGroupData: [
+                    "After surgery (such as fractures, hip or knee replacement surgery)",
+                    "After a stroke",
+                    "Osteoporosis",
+                    "Muscle atrophy",
+                    "Arthritis",
+                    "Back pain",
+                    "Poor posture",
+                ],
+                imageName: "上門物理治療.jpg",
+            },
+            {
+                name: "Home Occupational Therapy",
+                description: "Occupational therapists can improve patients' self-care ability through targeted training, such as memory or concentration training, reality orientation, perceptual training, etc., to improve patients' self-care ability and achieve life self-care and regain community life.",
+                suggestGroup: "Situations suitable for occupational therapy:",
+                suggestGroupData: [
+                    "Cognitive impairment",
+                    "Stroke",
+                    "Lack of self-care ability",
+                    "Home safety improvement",
+                    "Assessment of medical equipment purchase",
+                ],
+                imageName: "上門職業治療.jpg",
+            },
+            {
+                name: "Home Speech Therapy",
+                description: "Speech therapists will conduct an oral muscle and tongue ability assessment for patients to develop appropriate treatment methods to help patients improve language ability, swallowing ability, pronunciation, and fluency.",
+                suggestGroup: "Situations suitable for speech therapy:",
+                suggestGroupData: [
+                    "Swallowing disorder/difficulty",
+                    "Aphasia",
+                    "Speech development delay",
+                ],
+                imageName: "上門言語治療.jpg",
+            },
+            {
+                name: "Home Nursing",
+                description: "Daily living care, home care, and rehabilitation services",
+                suggestGroup: "Nurses, caregivers, or health workers can provide daily living care services for service users who are inconvenient to move. The scope of services includes:",
+                suggestGroupData: [
+                    "Cooking and feeding",
+                    "Wiping, changing diapers, showering",
+                    "Position transfer, simple stretching",
+                    "Insulin injection",
+                    "Assist in eating",
+                    "Medication arrangement (medication)"
+                ],
+                imageName: "上門看護服務.jpg",
+            }, {
+                name: "Home Improvement Assessment",
+                description: "Provide home safety assessment/improvement services for service users",
+                suggestGroup: "We will recommend whether home needs to be installed with safety measures and auxiliary furniture such as bathroom handrails, non-slip mats, electric beds, high-back chairs, etc. Therapists can also provide professional assessment reports to the Housing Department for application for public housing renovation or relocation.",
+                imageName: "家居改善評估.jpg",
+            },
+            {
+                name: "Accompany Service",
+                description: "Accompanying officers will accompany to hospitals and clinics for follow-up visits",
+                suggestGroup: "Accompanying officers will accompany patients from home to hospitals or clinics for follow-up visits and medication collection, accompany them back home, and report the follow-up situation to family members.",
+                imageName: "陪診服務.jpg",
+            }
+        ],
+        professionalService: "Professional Therapy Service",
+        professionalServiceDesc: "We believe that each service user's situation is different. Our professional team will tailor the treatment direction for the service user after assessment to meet the various needs of different service users and provide high-quality rehabilitation treatment and home care services.",
+        takeCareService: "Nursing Service",
+        takeCareServiceDesc: "We believe that each service user's situation is different. Our professional team will provide the most suitable caregiver according to the service user's situation.",
+        servieProcedure: "Service Procedure",
+        servieProcedureData: [
+            {
+                step:"Step 1",
+                title: "Contact Us",
+                description: "Contact us and provide basic information of the service user and service needs.",
+                imageName: "Step-01.png"
+            },
+            {
+                step:"Step 2",
+                title: "Service Reservation",
+                description: "The professional team will arrange the most suitable therapist according to the service user's situation",
+                imageName: "Step-02.png"
+            },
+            {
+                step:"Step 3",
+                title: "Service Start",
+                description: "The professional team will provide services to the service user at home at the agreed time",
+                imageName: "Step-03.png"
+            },
+            {
+                step:"Step 4",
+                title: "Progress Follow-up",
+                description: "After the service is completed, the professional team will provide service reports and suggestions",
+                imageName: "Step-04.png"
+
+            }
+        ],
 
 
 
