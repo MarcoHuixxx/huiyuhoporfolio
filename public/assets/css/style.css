@@ -284,7 +284,7 @@ button:focus {
 .header-area .right ul li .nice-select {
   background-color: transparent;
   border: 0;
-  padding-left: 0;
+  padding-left: 20px;
   height: 25px;
   line-height: 25px;
 }
