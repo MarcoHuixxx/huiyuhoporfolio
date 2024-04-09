@@ -82,6 +82,36 @@
     <title>Zoeface-Beauty|半永久霧眉|嘴唇漂染|角蛋白美睫|全身脫毛</title>
 
     <link rel="icon" type="image/png" href="../../assets/images/favicon.ico">
+
+     <!-- Google tag (gtag.js) -->
+     <script async src="https://www.googletagmanager.com/gtag/js?id=G-F4H7YB7F96">
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-F4H7YB7F96');
+    </script>
+
+    <!-- Google tag (gtag.js) event - delayed navigation helper -->
+<script>
+    // Helper function to delay opening a URL until a gtag event is sent.
+    // Call it in response to an action that should navigate to a URL.
+    function gtagSendEvent(url) {
+      var callback = function () {
+        if (typeof url === 'string') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion_event_request_quote', {
+        'event_callback': callback,
+        'event_timeout': 2000,
+        // <event_parameters>
+      });
+      return false;
+    }
+  </script>
 </head>
 
 <body>
@@ -459,16 +489,9 @@
         <script src="../../assets/js/jquery.nice-select.min.js"></script>
         <!-- Custom JS -->
         <script src="../../assets/js/custom.js"></script>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-F4H7YB7F96">
-        </script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
+       
 
-            gtag('config', 'G-F4H7YB7F96');
-        </script>
+        
 </body>
 
 </html>
