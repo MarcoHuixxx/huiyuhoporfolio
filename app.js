@@ -76,6 +76,12 @@ app.get('/', (req, res) => {
 
 });
 
+app.get('/:language/contact/open-whatsapp-api/:link', (req, res) => {
+  const link = req.params.link;
+  const language = req.params.language || "hk";
+  return res.redirect(pageText[language][link]);
+});
+
 
 
 

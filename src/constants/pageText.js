@@ -187,7 +187,10 @@ const pageText = {
         sendMessage: "發送",
         termsConditions: "條款及細則",
         privacyPolicy: "私隱政策",
-        whatsappApiLink: "https://api.whatsapp.com/send?phone=85264836837&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82",
+        whatsappApiLinkHref1: "contact/open-whatsapp-api/whatsappApiLink",
+        whatsappApiLinkHref2: "contact/open-whatsapp-api/whatsappApiLink2",
+        whatsappApiLink: "https://api.whatsapp.com/send?phone=85269965503&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82",
+        whatsappApiLink2: "https://api.whatsapp.com/send?phone=85264836837&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82",
         getLatestPriceList: "獲取最新價目表",
         contactProTeam: "聯絡我們的團隊",
 
@@ -386,7 +389,10 @@ const pageText = {
         sendMessage: "Send Message",
         termsConditions: "Terms & Conditions",
         privacyPolicy: "Privacy Policy",
-        whatsappApiLink: "https://api.whatsapp.com/send?phone=85264836837&text=Hello!%20I%20am%20interested%20in%20inquiry%20service%20!",
+        whatsappApiLinkHref1: "contact/open-whatsapp-api/whatsappApiLink",
+        whatsappApiLinkHref2: "contact/open-whatsapp-api/whatsappApiLink2",
+        whatsappApiLink: "https://api.whatsapp.com/send?phone=85269965503&text=Hello! I am interested in inquiring about your services.",
+        whatsappApiLink2: "https://api.whatsapp.com/send?phone=85264836837&text=Hello! I am interested in inquiring about your services.",
         getLatestPriceList: "Latest Price List",
         contactProTeam: "Contact Our Team",
 
