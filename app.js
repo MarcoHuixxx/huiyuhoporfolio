@@ -15,8 +15,29 @@ app.use(expressLayouts)
 app.set('layout', './layouts/layout')
 app.set('view engine', 'ejs');
 
+
+
+//return not found page
+// app.use((req, res, next) => {
+//   console.log('404')
+//   const language = req.params.language || "hk";
+//   console.log(" pageText[language]:", pageText[language])
+//   res.render('pages/404', {
+//     pageText: pageText[language],
+//     language: language
+//   }
+//   )
+// })
+
 app.get('/:language', (req, res) => {
-  const language = req.params.language||"hk";
+  const language = req.params.language || "hk";
+  if (!['hk', 'en'].includes('language')) {
+    console.log("xqd1d11")
+    res.render('pages/404', {
+      pageText: pageText['hk'],
+      language: 'hk'
+    })
+  }
   res.render('pages/index', {
     pageText: pageText[language],
     language: language
@@ -26,7 +47,7 @@ app.get('/:language', (req, res) => {
 });
 
 app.get('/:language/contact-us', (req, res) => {
-  const language = req.params.language||"hk";
+  const language = req.params.language || "hk";
   res.render('pages/contact-us', {
     pageText: pageText[language],
     language: language
@@ -36,7 +57,7 @@ app.get('/:language/contact-us', (req, res) => {
 );
 
 app.get('/:language/price-list', (req, res) => {
-  const language = req.params.language||"hk";
+  const language = req.params.language || "hk";
   res.render('pages/price-list', {
     pageText: pageText[language],
     language: language
@@ -57,7 +78,6 @@ app.get('/', (req, res) => {
 
 
 
-  
 
 
 app.use(express.static('public'));
