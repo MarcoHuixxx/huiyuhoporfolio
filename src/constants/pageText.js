@@ -13,7 +13,8 @@ const pageText = {
         search: "搜尋",
         emailUs: "電郵",
         callUs: "電話",
-        slogan: "Beauty Is A State Of Mind",
+        // slogan: "Beauty Is A State Of Mind",
+        slogan: "4月限時優惠HKD1980整眉，立即諮詢！",
         ourBeautyServices: "我們的美容服務",
         ourBeautyServicesDescription: "我們提供一系列的美容服務，包括臉部護理、身體護理、美甲、美髮等等。我們的專業美容師會根據您的需要，為您提供最合適的服務。",
         eyebrow: "眉形設計",
@@ -79,7 +80,8 @@ const pageText = {
         beautyServicesList1: [
             {
                 name: "霧眉",
-                price: "HKD2680"
+                newPrice: "HKD1980",
+                price: "*原價HKD2680/4月優惠期間HKD1980"
             }, {
                 name: "粉絨眉",
                 price: "HKD3980"
@@ -216,7 +218,8 @@ const pageText = {
         search: "Search",
         emailUs: "Email",
         callUs: "Call",
-        slogan: "Beauty Is A State Of Mind",
+        // slogan: "Beauty Is A State Of Mind",
+        slogan: "April Limited Time Promotion HKD1980 Eyebrow Design!",
         ourBeautyServices: "Our Beauty Services",
         ourBeautyServicesDescription: "We offer a range of beauty services, including facial care, body care, manicure, hair care, etc. Our professional beauticians will provide you with the most suitable service according to your needs.",
         eyebrow: "Eyebrow Design",
