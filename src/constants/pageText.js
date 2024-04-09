@@ -219,7 +219,7 @@ const pageText = {
         emailUs: "Email",
         callUs: "Call",
         // slogan: "Beauty Is A State Of Mind",
-        slogan: "April Limited Time Promotion HKD1980 Eyebrow Design!",
+        slogan: "HKD 1980 for Mist Eyebrow in April",
         ourBeautyServices: "Our Beauty Services",
         ourBeautyServicesDescription: "We offer a range of beauty services, including facial care, body care, manicure, hair care, etc. Our professional beauticians will provide you with the most suitable service according to your needs.",
         eyebrow: "Eyebrow Design",
