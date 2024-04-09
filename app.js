@@ -31,7 +31,7 @@ app.set('view engine', 'ejs');
 
 app.get('/:language', (req, res) => {
   const language = req.params.language || "hk";
-  if (!['hk', 'en'].includes('language')) {
+  if (!['hk', 'en'].includes(language)) {
     console.log("xqd1d11")
     res.render('pages/404', {
       pageText: pageText['hk'],
