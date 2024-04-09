@@ -12,21 +12,21 @@ var geoip = require('geoip-lite');
 // app.get('/', (req, res) => {
 //   res.sendFile(__dirname + '/index.html')
 // })
-mongoose.connect(
-  process.env.MONGODB_URI,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }
-);
+// mongoose.connect(
+//   process.env.MONGODB_URI,
+//   {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+//   }
+// );
 
-const logSchema = new mongoose.Schema({
-  type: String,
-  message: Object,
-  time: Date
-});
+// const logSchema = new mongoose.Schema({
+//   type: String,
+//   message: Object,
+//   time: Date
+// });
 
-const Log = mongoose.model('companyLog', logSchema);
+// const Log = mongoose.model('companyLog', logSchema);
 
 // set the view engine to ejs
 app.use(expressLayouts)
@@ -101,19 +101,19 @@ app.get('/:language/contact/open-whatsapp-api/:link', (req, res) => {
   const link = req.params.link;
   const language = req.params.language || "hk";
   res.redirect(pageText[language][link]);
-  const stud = new Log({
-    type: "Zoe Face whatsapp link click",
-    message: {
-      "ip": ip, "Headers": JSON.stringify(req.headers), " Browser: ": req.headers["user-agent"], " Language": req.headers["accept-language"], " Country": + (geo ? geo.country : "Unknown"), " Region": (geo ? geo.region : "Unknown")
-    },
-    time: new Date()
-  });
-  stud
-    .save()
-    .then(
-      () => console.log("One entry added"),
-      (err) => console.log(err)
-    );
+  // const stud = new Log({
+  //   type: "Zoe Face whatsapp link click",
+  //   message: {
+  //     "ip": ip, "Headers": JSON.stringify(req.headers), " Browser: ": req.headers["user-agent"], " Language": req.headers["accept-language"], " Country": + (geo ? geo.country : "Unknown"), " Region": (geo ? geo.region : "Unknown")
+  //   },
+  //   time: new Date()
+  // });
+  // stud
+  //   .save()
+  //   .then(
+  //     () => console.log("One entry added"),
+  //     (err) => console.log(err)
+  //   );
 });
 
 
