@@ -284,7 +284,7 @@ const pageText = {
         beautyServicesList1: [
             {
                 name: "Mist Eyebrow",
-                price: "HKD2680"
+                price: "Original Price HKD2680/ April Promotion HKD1980"
             }, {
                 name: "Powder Eyebrow",
                 price: "HKD3980"
