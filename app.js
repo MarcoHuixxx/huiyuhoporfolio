@@ -106,7 +106,7 @@ app.get('/:language/contact/open-whatsapp-api/:link', async (req, res) => {
     const log = await Log.create({
       type: "Zoe Face whatsapp link click",
       message: {
-        link, "ip": ip, "Headers": JSON.stringify(req.headers), " Browser: ": req.headers["user-agent"], " Language": req.headers["accept-language"], " Country": + (geo ? geo.country : "Unknown"), " Region": (geo ? geo.region : "Unknown")
+        link: pageText[language][link], "ip": ip, "Headers": JSON.stringify(req.headers), " Browser: ": req.headers["user-agent"], " Language": req.headers["accept-language"], " Country": + (geo ? geo.country : "Unknown"), " Region": (geo ? geo.region : "Unknown")
       },
       time: new Date()
     });
