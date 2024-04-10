@@ -97,7 +97,7 @@ app.get('/', (req, res) => {
 app.get('/:language/contact/open-whatsapp-api/:link', async (req, res) => {
   try {
     var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-    console.log("ip:", ip)
+
     var geo = geoip.lookup(req.ip);
     const link = req.params.link;
     const language = req.params.language || "hk";
@@ -106,12 +106,11 @@ app.get('/:language/contact/open-whatsapp-api/:link', async (req, res) => {
     const log = await Log.create({
       type: "Zoe Face whatsapp link click",
       message: {
-        "ip": ip, "Headers": JSON.stringify(req.headers), " Browser: ": req.headers["user-agent"], " Language": req.headers["accept-language"], " Country": + (geo ? geo.country : "Unknown"), " Region": (geo ? geo.region : "Unknown")
+        link, "ip": ip, "Headers": JSON.stringify(req.headers), " Browser: ": req.headers["user-agent"], " Language": req.headers["accept-language"], " Country": + (geo ? geo.country : "Unknown"), " Region": (geo ? geo.region : "Unknown")
       },
       time: new Date()
     });
-    console.log("log:", log)
-    return;
+    return res.json({ status: "success" });
   } catch (e) {
     console.log("error:", e)
   }
