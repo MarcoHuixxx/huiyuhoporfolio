@@ -41,7 +41,7 @@ const pageText = {
         commonQuestion1Description: "不是。申請「社區券」時，社工有機會為長者同時於中央輪候冊上輪候長期護理服務(俗稱排老人院)。如成功申請社區券後，照顧者可以申請暫停長者之老人院輪候(轉為非活躍個案)，即表示長者並不需要入住老人院。值得一提的是，將來如長者決定入住老人院，其輪候個案將會重啟， 其輪候位置亦會以原本的申請日期為準。",
         commonQuestion2: "長者原已在社署之老人院輪候冊，對申請社區券有影響嗎？",
         commonQuestion2Description: "不會。承上，長者在輪候老人院時仍可申請「社區券」。如成功申請，長者於輪候冊會變為「非活躍個案」。於使用社區券期間，長者如有需要，可透過負責工作人員，重新啟動其在中央輪候冊上的輪候狀態。",
-        commonQuestion3: "我是否可以選擇恩預復康提供物理治療服務，同時使用其他機構提供其他服務？",
+        commonQuestion3: "我是否可以選擇Virtue Club復康提供物理治療服務，同時使用其他機構提供其他服務？",
         commonQuestion3Description: "每張社區券現時每月可以選擇最多兩間服務單位，而社區券最高面值則維持不變。如長者或其家人決定選用恩預復康提供服務，我們的個案經理會上門探訪長者，同時會向長者及其家人詳細講解服務細則。如果同意選用本公司服務，個案經理會與長者或其家人辦理有關手續。",
         commonQuestion4: "社區券之最低面值為$4,290， 而最高面值為$10,260， 這代表甚麼?",
         commonQuestion4Description: "為更有效使用社區券並協助長者居家復康及安老，已成功申請社區券之長者每月的服務費金額必須達到最低要求HK$4,290， 而最高服務費金額不得高於HK$10,260。 ",
@@ -360,25 +360,25 @@ const pageText = {
         servieProcedure: "服務流程",
         servieProcedureData: [
             {
-                step:"第一步",
+                step: "第一步",
                 title: "聯絡我們",
                 description: "聯絡我們，並提供服務使用者的基本資料及服務需要。",
                 imageName: "Step-01.png"
             },
             {
-                step:"第二步",
+                step: "第二步",
                 title: "預約服務",
                 description: "專業團隊會根據服務使用者情況，安排最適合之治療師",
                 imageName: "Step-02.png"
             },
             {
-                step:"第三步",
+                step: "第三步",
                 title: "服務開始",
                 description: "專業團隊會於約定時間到服務使用者家中提供服務",
                 imageName: "Step-03.png"
             },
             {
-                step:"第四步",
+                step: "第四步",
                 title: "進度跟進",
                 description: "服務結束後，專業團隊會提供服務報告及建議",
                 imageName: "Step-04.png"
@@ -433,7 +433,7 @@ const pageText = {
         commonQuestion1Description: "No. When applying for the “Community Voucher”, social workers have the opportunity to queue for long-term care services for the elderly at the Central Waiting List (commonly known as queuing for nursing homes). If the application for the community voucher is successful, the caregiver can apply to suspend the elderly's nursing home queue (change to inactive case), which means that the elderly does not need to move into a nursing home. It is worth mentioning that if the elderly decides to move into a nursing home in the future, their queue case will be restarted, and their queue position will be based on the original application date.",
         commonQuestion2: "Does the elderly's original queue for the Social Welfare Department's nursing home have any impact on applying for the community voucher?",
         commonQuestion2Description: "No. As mentioned above, the elderly can still apply for the “Community Voucher” while queuing for a nursing home. If the application is successful, the elderly will become an “inactive case” on the waiting list. During the use of the community voucher, if the elderly needs it, they can restart their queue status on the Central Waiting List through the responsible staff.",
-        commonQuestion3: "Can I choose Encompass Rehab to provide physiotherapy services and use other institutions to provide other services at the same time?",
+        commonQuestion3: "Can I choose Virtue Club to provide physiotherapy services and use other institutions to provide other services at the same time?",
         commonQuestion3Description: "Each community voucher can currently choose up to two service units per month, and the maximum face value of the community voucher remains unchanged. If the elderly or their family decides to choose the services provided by Encompass Rehab, our case manager will visit the elderly at home and explain the service details to the elderly and their family in detail. If you agree to use our services, the case manager will handle the relevant procedures with the elderly or their family.",
         commonQuestion4: "The minimum face value of the community voucher is $4,290, and the maximum face value is $10,260. What does this mean?",
         commonQuestion4Description: "In order to use the community voucher more effectively and help the elderly to recover and age at home, the monthly service fee amount of the elderly who have successfully applied for the community voucher must reach the minimum requirement of HK$4,290, and the maximum service fee amount must not exceed HK$10,260.",
@@ -755,25 +755,25 @@ const pageText = {
         servieProcedure: "Service Procedure",
         servieProcedureData: [
             {
-                step:"Step 1",
+                step: "Step 1",
                 title: "Contact Us",
                 description: "Contact us and provide basic information of the service user and service needs.",
                 imageName: "Step-01.png"
             },
             {
-                step:"Step 2",
+                step: "Step 2",
                 title: "Service Reservation",
                 description: "The professional team will arrange the most suitable therapist according to the service user's situation",
                 imageName: "Step-02.png"
             },
             {
-                step:"Step 3",
+                step: "Step 3",
                 title: "Service Start",
                 description: "The professional team will provide services to the service user at home at the agreed time",
                 imageName: "Step-03.png"
             },
             {
-                step:"Step 4",
+                step: "Step 4",
                 title: "Progress Follow-up",
                 description: "After the service is completed, the professional team will provide service reports and suggestions",
                 imageName: "Step-04.png"
