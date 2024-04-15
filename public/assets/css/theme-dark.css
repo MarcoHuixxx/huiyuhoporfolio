@@ -13,7 +13,7 @@
   right: 0;
   bottom: 0;
   background-color: transparent;
-  border: 1.5px solid #275672;
+  border: 1.5px solid #fa670a;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -64,8 +64,8 @@
 }
 
 .switch-box input:focus + .slider {
-  -webkit-box-shadow: 0 0 1px #275672;
-          box-shadow: 0 0 1px #275672;
+  -webkit-box-shadow: 0 0 1px #fa670a;
+          box-shadow: 0 0 1px #fa670a;
 }
 
 .switch-box input:checked + .slider:before {
@@ -91,7 +91,7 @@
 }
 
 .theme-dark h3 a:hover, .theme-dark h4 a:hover {
-  color: #275672 !important;
+  color: #fa670a !important;
 }
 
 .theme-dark p {
@@ -130,22 +130,22 @@
 
 .theme-dark .option.selected {
   color: #ffffff;
-  background-color: #275672;
+  background-color: #fa670a;
 }
 
 .theme-dark .option:hover {
   color: #ffffff;
-  background-color: #275672;
+  background-color: #fa670a;
 }
 
 .theme-dark .option.focus {
   color: #ffffff;
-  background-color: #275672;
+  background-color: #fa670a;
 }
 
 .theme-dark .option.selected.focus {
   color: #ffffff;
-  background-color: #275672;
+  background-color: #fa670a;
 }
 
 .theme-dark .select-box .nice-select .list {
@@ -169,11 +169,11 @@
 }
 
 .theme-dark .main-nav nav .navbar-nav .nav-item a.active {
-  color: #275672 !important;
+  color: #fa670a !important;
 }
 
 .theme-dark .main-nav nav .navbar-nav .nav-item a:hover {
-  color: #275672 !important;
+  color: #fa670a !important;
 }
 
 .theme-dark .main-nav nav .navbar-nav .nav-item .dropdown-menu {
@@ -185,11 +185,11 @@
 }
 
 .theme-dark .main-nav nav .navbar-nav .nav-item .dropdown-menu li a.active {
-  color: #275672 !important;
+  color: #fa670a !important;
 }
 
 .theme-dark .main-nav nav .navbar-nav .nav-item .dropdown-menu li a:hover {
-  color: #275672 !important;
+  color: #fa670a !important;
 }
 
 .theme-dark .page-title-area::before {
@@ -222,7 +222,7 @@
 }
 
 .theme-dark .faq-item .accordion li .faq-head.active, .theme-dark .faq-item .accordion li .faq-head:hover {
-  background-color: #275672;
+  background-color: #fa670a;
 }
 
 .theme-dark .faq-item .accordion li .faq-content {
@@ -245,7 +245,7 @@
 }
 
 .theme-dark .blog-details-area .details-tag .right ul li a:hover {
-  background-color: #275672;
+  background-color: #fa670a;
 }
 
 .theme-dark .blog-details-area .details-comment ul li a {
@@ -255,7 +255,7 @@
 }
 
 .theme-dark .blog-details-area .details-comment ul li a:hover {
-  color: #275672;
+  color: #fa670a;
 }
 
 .theme-dark .widget-area .articles .inner ul li a {
@@ -263,7 +263,7 @@
 }
 
 .theme-dark .widget-area .articles .inner ul li a:hover {
-  color: #275672;
+  color: #fa670a;
 }
 
 .theme-dark .widget-area .categories ul li a, .theme-dark .widget-area .tags ul li a {

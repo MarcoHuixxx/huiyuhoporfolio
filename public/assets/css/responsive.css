@@ -1022,7 +1022,7 @@
 
 @media only screen and (max-width: 991px) {
   .mean-container .mean-bar {
-    background-color: #275672;
+    background-color: #fa670a;
     border-top: 1px solid #fff;
     z-index: unset;
   }
@@ -1041,7 +1041,7 @@
     max-width: 55px;
   }
   .mobile-nav.mean-container .mean-nav ul li a.active {
-    color: #275672;
+    color: #fa670a;
   }
   .mobile-nav.mean-container .mean-nav ul li a img {
     display: none;
