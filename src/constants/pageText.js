@@ -76,7 +76,7 @@ const pageText = {
         eyeLineTreatment: "眼線紋繡",
         EyeLashesTreatment: "美睫療程",
         makeup: "化妝",
-        priceList: "價目表",
+        priceList: "項目表",
         eyeBrowServices: "眉形設計服務",
         beautyServicesList1: [
             {
@@ -192,7 +192,7 @@ const pageText = {
         whatsappApiLinkHref2: "contact/open-whatsapp-api/whatsappApiLink2",
         whatsappApiLink: "https://api.whatsapp.com/send?phone=85269965503&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82",
         whatsappApiLink2: "https://api.whatsapp.com/send?phone=85264836837&text=%E4%BD%A0%E5%A5%BD!%20%E6%88%91%E6%9C%89%E8%88%88%E8%B6%A3%E6%9F%A5%E8%A9%A2%E6%9C%8D%E5%8B%99%E3%80%82",
-        getLatestPriceList: "獲取最新價目表",
+        getLatestPriceList: "獲取最新項目表",
         contactProTeam: "聯絡我們的團隊",
 
 
@@ -284,7 +284,7 @@ const pageText = {
         eyeLineTreatment: "Eye Line Embroidery",
         EyeLashesTreatment: "Eyelash Treatment",
         makeup: "Makeup",
-        priceList: "Price List",
+        priceList: "Service List",
         eyeBrowServices: "Eyebrow Design Services",
         beautyServicesList1: [
             {
@@ -395,7 +395,7 @@ const pageText = {
         whatsappApiLinkHref2: "contact/open-whatsapp-api/whatsappApiLink2",
         whatsappApiLink: "https://api.whatsapp.com/send?phone=85269965503&text=Hello! I am interested in inquiring about your services.",
         whatsappApiLink2: "https://api.whatsapp.com/send?phone=85264836837&text=Hello! I am interested in inquiring about your services.",
-        getLatestPriceList: "Latest Price List",
+        getLatestPriceList: "Latest Service List",
         contactProTeam: "Contact Our Team",
 
 
