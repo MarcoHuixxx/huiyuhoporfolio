@@ -34,61 +34,289 @@
 <!-- Pricing -->
 <div class="pricing-area two pt-100 pb-70">
     <div class="container-fluid p-0">
-        <div class="row m-0 p-1">
-
-            <div class="col-lg-6 p-0">
-                <div class="pricing-img">
-                    <img class="img-thumbnail" src="../../assets/images/price-list1.png" alt="Pricing">
-                </div>
-            </div>
-            <div class="col-lg-6 p-0">
-                <div class="pricing-img">
-                    <img class="img-thumbnail" src="../../assets/images/price-list2.png" alt="Pricing">
-                </div>
-            </div>
-
-           
-
-          
-
-        </div>
-        <div class="row m-0 p-1">
-
-            <div class="col-lg-6 p-0">
-                <div class="pricing-img">
-                    <img class="img-thumbnail" src="../../assets/images/price-list3.png" alt="Pricing">
-                </div>
-            </div>
-            <div class="col-lg-6 p-0">
-                <div class="pricing-img">
-                    <img class="img-thumbnail" src="../../assets/images/price-list4.png" alt="Pricing">
-                </div>
-            </div>
-
-        </div>
-
         <div class="row m-0">
 
             <div class="col-lg-6 p-0">
                 <div class="pricing-img">
-                    <img class="img-thumbnail" src="../../assets/images/price-list5.png" alt="Pricing">
+                    <img src="../../assets/images/item-list/eyebrow2.png" alt="Pricing">
                 </div>
             </div>
+
             <div class="col-lg-6 p-0">
-                <div class="pricing-img">
-                    <img class="img-thumbnail" src="../../assets/images/price-list6.png" alt="Pricing">
+                <div class="pricing-content">
+                    <div class="pricing-shape">
+                        <img src="../../assets/images/pricing-shape1.png" alt="Shape">
+                    </div>
+                    <div class="top">
+                        <h3>
+                            <%=pageText.eyeBrowServices%>
+                        </h3>
+                    </div>
+                    <div class="bottom">
+                        <ul>
+                            <% pageText.beautyServicesList1.forEach((service)=> { %>
+                                <li>
+                                    <%=service.name%>                            
+                                </li>
+                                <% }) %>
+
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-           
+            <div class="col-lg-6 p-0">
+                <div class="pricing-content two">
+                    <div class="pricing-shape">
+                        <img src="../../assets/images/pricing-shape1.png" alt="Shape">
+                    </div>
+                    <div class="top">
+                        <h3>
+                            <%=pageText.eyeLashesServices%>
+                        </h3>
+                    </div>
+                    <div class="bottom">
+                        <ul>
+                            <% pageText.beautyServicesList2.forEach((service)=> { %>
+                                <li>
+                                    <%=service.name%>
+                                      
+                                </li>
+                                <% }) %>
 
-          
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-img two">
+                    <img src="../../assets/images/item-list/eyelash2.png" alt="Pricing">
+                </div>
+            </div>
 
         </div>
     </div>
 </div>
 <!-- End Pricing -->
 
+
+
+<!-- Pricing -->
+<div class="pricing-area two  pb-70">
+    <div class="container-fluid p-0">
+        <div class="row m-0">
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-img">
+                    <img src="../../assets/images/lipprice.png" alt="Pricing">
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-content">
+                    <div class="pricing-shape">
+                        <img src="../../assets/images/pricing-shape1.png" alt="Shape">
+                    </div>
+                    <div class="top">
+                        <h3>
+                            <%=pageText.lipServices%>
+                        </h3>
+                    </div>
+                    <div class="bottom">
+                        <ul>
+                            <% pageText.beautyServicesList3.forEach((service)=> { %>
+                                <li>
+                                    <%=service.name%>
+                                        <span>
+                                            <%=service.price%>
+                                        </span>
+                                </li>
+                                <% }) %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-content two">
+                    <div class="pricing-shape">
+                        <img src="../../assets/images/pricing-shape1.png" alt="Shape">
+                    </div>
+                    <div class="top">
+                        <h3>
+                            <%=pageText.tuomaoServices%>
+                        </h3>
+                    </div>
+                    <div class="bottom">
+                        <ul>
+                            <% pageText.beautyServicesList4.forEach((service)=> { %>
+                                <li>
+                                    <%=service.name%>
+                                        <span>
+                                            <%=service.price%>
+                                        </span>
+                                </li>
+                                <% }) %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-img two">
+                    <img src="../../assets/images/item-list/hair1.png" alt="Pricing">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Pricing -->
+
+
+
+<!-- Pricing -->
+<div class="pricing-area two  pb-70">
+    <div class="container-fluid p-0">
+        <div class="row m-0">
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-img">
+                    <img src="../../assets/images/item-list/skin1.png" alt="Pricing">
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-content">
+                    <div class="pricing-shape">
+                        <img src="../../assets/images/pricing-shape1.png" alt="Shape">
+                    </div>
+                    <div class="top">
+                        <h3>
+                            <%=pageText.skinManage%>
+                        </h3>
+                    </div>
+                    <div class="bottom">
+                        <ul>
+                            <% pageText.beautyServicesList5.forEach((service)=> { %>
+                                <li>
+                                    <%=service.name%>
+                                </li>
+                                <% }) %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-content two">
+                    <div class="pricing-shape">
+                        <img src="../../assets/images/pricing-shape1.png" alt="Shape">
+                    </div>
+                    <div class="top">
+                        <h3>
+                            <%=pageText.face%>
+                        </h3>
+                    </div>
+                    <div class="bottom">
+                        <ul>
+                            <% pageText.beautyServicesList6.forEach((service)=> { %>
+                                <li>
+                                    <%=service.name%>
+                                       
+                                </li>
+                                <% }) %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-img two">
+                    <img src="../../assets/images/item-list/waterlight1.png" alt="Pricing">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Pricing -->
+
+
+
+<!-- Pricing -->
+<div class="pricing-area two  pb-70">
+    <div class="container-fluid p-0">
+        <div class="row m-0">
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-img">
+                    <img src="../../assets/images/item-list/pico1.jpg" alt="Pricing">
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-content">
+                    <div class="pricing-shape">
+                        <img src="../../assets/images/pricing-shape1.png" alt="Shape">
+                    </div>
+                    <div class="top">
+                        <h3>
+                            <%=pageText.pico%>
+                        </h3>
+                    </div>
+                    <div class="bottom">
+                        <ul>
+                            <% pageText.beautyServicesList7.forEach((service)=> { %>
+                                <li>
+                                    <%=service.name%>
+                                </li>
+                                <% }) %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-content two">
+                    <div class="pricing-shape">
+                        <img src="../../assets/images/pricing-shape1.png" alt="Shape">
+                    </div>
+                    <div class="top">
+                        <h3>
+                            <%=pageText.weight%>
+                        </h3>
+                    </div>
+                    <div class="bottom">
+                        <ul>
+                            <% pageText.beautyServicesList8.forEach((service)=> { %>
+                                <li>
+                                    <%=service.name%>
+                                       
+                                </li>
+                                <% }) %>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-0">
+                <div class="pricing-img two">
+                    <img src="../../assets/images/item-list/weight1.png" alt="Pricing">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Pricing -->
 
 
 <!-- Get -->

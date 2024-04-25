@@ -77,7 +77,7 @@ const pageText = {
         EyeLashesTreatment: "美睫療程",
         makeup: "化妝",
         priceList: "項目表",
-        eyeBrowServices: "眉形設計服務",
+        eyeBrowServices: "「眉」女人氣質在眉",
         beautyServicesList1: [
             {
                 name: "霧眉",
@@ -97,8 +97,17 @@ const pageText = {
                 price: "HKD5800"
             }
         ],
-        eyeLashesServices: "美睫護理服務",
+        eyeLashesServices: "「眼」神來在眼",
         beautyServicesList2: [
+            {
+                name: "魅惑美睫線",
+            },
+            {
+                name: "魅惑美瞳黑",
+            },
+            {
+                name: "星空美瞳線",
+            },
             {
                 name: "單根",
                 price: "HKD680"
@@ -109,15 +118,6 @@ const pageText = {
                 name: "太陽花",
                 price: "HKD880"
             }, {
-                name: "仙女款",
-                price: "HKD980"
-            }, {
-                name: "漫畫款",
-                price: "HKD1080"
-            }, {
-                name: "芭比款",
-                price: "HKD1280"
-            }, {
                 name: "角蛋白翹睫毛護理",
                 price: "HKD480"
             }
@@ -125,7 +125,7 @@ const pageText = {
         ],
         //It Needs Professional Hands To Get Rid Of Your Daily Stress Off
         beautySlogan2: "需要專業的手來擺脫您的日常壓力",
-        lipServices: "唇部護理服務",
+        lipServices: "「唇」性感在唇",
         beautyServicesList3: [
             {
                 name: "水晶紅唇",
@@ -174,6 +174,80 @@ const pageText = {
                 name: "比基尼",
                 price: "HKD980"
             }
+        ],
+        skinManage: "皮膚管理項目表",
+        beautyServicesList5: [
+            {
+                name: "韓國超微小氣泡清潔",
+                price: "HKD3800"
+            }, {
+                name: "Baby Face 補水膠原增生",
+                price: "HKD500"
+            }, {
+                name: "細胞修復抗敏感",
+                price: "HKD880"
+            }, {
+                name: "緊緻逆齡抗衰提升",
+                price: "HKD1280"
+            }
+        ],
+        face: "面部高端水光抗衰私人訂制",
+        beautyServicesList6: [
+            {
+                name: "祛黃➕祛色素均勻膚色套餐",
+                price: "HKD3800"
+            }, {
+                name: "收毛孔➕提亮膚色套餐",
+                price: "HKD500"
+            }, {
+                name: "補水➕去皺抗衰套餐",
+                price: "HKD880"
+            }, {
+                name: "美白➕提亮膚色套餐",
+                price: "HKD1280"
+            },
+            {
+                name: "眼部水光",
+                price: "HKD1280"
+            }
+        ],
+        pico: "PICO 系列皮膚管理",
+        waterlight: "PICO 系列皮膚管理",
+        beautyServicesList7: [
+            {
+                name: "Pico 無創洗眉",
+                price: "HKD3800"
+            }, {
+                name: "Pico 4D祛斑",
+                price: "HKD500"
+            }, {
+                name: "Pico嫩膚美白祛黃",
+                price: "HKD880"
+            }, {
+                name: "Pico 收毛孔均勻膚色",
+                price: "HKD1280"
+            },
+            {
+                name: "Pico 腋下美白擦子膠",
+                price: "HKD1280"
+            },
+            {
+                name: "DPL 超光子嫩膚",
+                price: "HKD1280"
+            }
+        ],
+        weight: "身體瘦身塑型管理",
+        beautyServicesList8: [
+            {
+                name: "馬甲線管理",
+                price: "HKD3800"
+            }, {
+                name: "肚子瘦身管理",
+                price: "HKD500"
+            }, {
+                name: "蜜桃臀管理",
+                price: "HKD880"
+            },
         ],
         address1: "尖沙咀金馬倫道40號",
         address2: "金龍中心10樓1005室",
