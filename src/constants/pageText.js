@@ -212,7 +212,6 @@ const pageText = {
             }
         ],
         pico: "PICO 系列皮膚管理",
-        waterlight: "PICO 系列皮膚管理",
         beautyServicesList7: [
             {
                 name: "Pico 無創洗眉",
