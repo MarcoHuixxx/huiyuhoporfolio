@@ -358,11 +358,12 @@ const pageText = {
         EyeLashesTreatment: "Eyelash Treatment",
         makeup: "Makeup",
         priceList: "Service List",
-        eyeBrowServices: "Eyebrow Design Services",
+        eyeBrowServices: "Eyebrows",
         beautyServicesList1: [
             {
                 name: "Mist Eyebrow",
-                price: "Original Price HKD2680/ April Promotion HKD1980"
+                newPrice: "HKD1980",
+                price: "*Original Price HKD2680/ HKD1980 during April"
             }, {
                 name: "Powder Eyebrow",
                 price: "HKD3980"
@@ -377,8 +378,17 @@ const pageText = {
                 price: "HKD5800"
             }
         ],
-        eyeLashesServices: "Eyelash Care Services",
+        eyeLashesServices: "Eyelashes",
         beautyServicesList2: [
+            {
+                name: "Charming Eyeliner",
+            },
+            {
+                name: "Charming Pupil Black",
+            },
+            {
+                name: "Starry Pupil Line",
+            },
             {
                 name: "Single Root",
                 price: "HKD680"
@@ -389,19 +399,12 @@ const pageText = {
                 name: "Sunflower",
                 price: "HKD880"
             }, {
-                name: "Fairy Style",
-                price: "HKD980"
-            }, {
-                name: "Comic Style",
-                price: "HKD1080"
-            }, {
-                name: "Barbie Style",
-                price: "HKD1280"
-            }, {
-                name: "Keratin Lash Care",
+                name: "Keratin Eyelash Care",
                 price: "HKD480"
-            },
+            }
         ],
+        beautySlogan2: "It Needs Professional Hands To Get Rid Of Your Daily Stress Off",
+        lipServices: "Lips",
         beautyServicesList3: [
             {
                 name: "Crystal Red Lips",
@@ -423,6 +426,7 @@ const pageText = {
                 price: "HKD4280"
             },
         ],
+        tuomaoServices: "Hair Removal",
         beautyServicesList4: [
             {
                 name: "Full Body Hair Removal",
@@ -450,7 +454,79 @@ const pageText = {
                 price: "HKD980"
             }
         ],
-
+        skinManage: "Skin Management",
+        beautyServicesList5: [
+            {
+                name: "Korean Ultra Micro Bubble Cleansing",
+                price: "HKD3800"
+            }, {
+                name: "Baby Face Moisturizing Collagen Growth",
+                price: "HKD500"
+            }, {
+                name: "Cell Repair Anti-Sensitive",
+                price: "HKD880"
+            }, {
+                name: "Firming Anti-Aging Lifting",
+                price: "HKD1280"
+            }
+        ],
+        face: "Facial High-end Water Light Anti-aging Private Customization",
+        beautyServicesList6: [
+            {
+                name: "Yellow Removal + Pigment Uniform Skin Color Package",
+                price: "HKD3800"
+            }, {
+                name: "Pore Shrinking + Brightening Skin Color Package",
+                price: "HKD500"
+            }, {
+                name: "Moisturizing + Wrinkle Removal Anti-aging Package",
+                price: "HKD880"
+            }, {
+                name: "Whitening + Bright Skin Color Package",
+                price: "HKD1280"
+            },
+            {
+                name: "Eye Water Light",
+                price: "HKD1280"
+            }
+        ],
+        pico: "PICO Series Skin Management",
+        beautyServicesList7: [
+            {
+                name: "Pico Non-invasive Eyebrow Washing",
+                price: "HKD3800"
+            }, {
+                name: "Pico 4D Spot Removal",
+                price: "HKD500"
+            }, {
+                name: "Pico Tender Skin Whitening Yellow Removal",
+                price: "HKD880"
+            }, {
+                name: "Pico Pore Shrinking Uniform Skin Color",
+                price: "HKD1280"
+            },
+            {
+                name: "Pico Underarm Whitening Wipe Gel",
+                price: "HKD1280"
+            },
+            {
+                name: "DPL Super Photon Tender Skin",
+                price: "HKD1280"
+            }
+        ],
+        weight: "Body Slimming and Shaping Management",
+        beautyServicesList8: [
+            {
+                name: "Vest Line Management",
+                price: "HKD3800"
+            }, {
+                name: "Belly Slimming Management",
+                price: "HKD500"
+            }, {
+                name: "Peach Hip Management",
+                price: "HKD880"
+            },
+        ],
         address2: "40 Cameron Road, Tsim Sha Tsui",
         address1: "Unit 1005, 10/F, Golden Dragon Centre  ",
         address: "Address",
