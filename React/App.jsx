@@ -7,6 +7,7 @@ import BannerImage from "./assets/banner.jpg";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -104,13 +105,31 @@ function App() {
                 </Grid>
                 <Grid item xs={4} className="voteBox">
                   <Button
-                    endIcon={<KeyboardArrowDownIcon />}
+                    endIcon={
+                      showVoteMethod ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )
+                    }
                     sx={{
                       color: "#e04478",
                     }}
                     onClick={() => setShowVoteMethod(!showVoteMethod)}
                   >
-                    <span className="voteMethodTitleText">投票方法</span>
+                    <Typography
+                      className="voteMethodTitleText"
+                      sx={{
+                        fontSize: {
+                          xs: "12px",
+                          sm: "16px",
+                          md: "18px",
+                        },
+                        fontWeight: "bold",
+                      }}
+                    >
+                      投票方法
+                    </Typography>
                   </Button>
                 </Grid>
               </Grid>
@@ -118,11 +137,24 @@ function App() {
                 container
                 sx={{
                   display: showVoteMethod ? "block" : "none",
+                  padding: "10px 0px",
                 }}
               >
                 <Grid item xs={12}>
                   <Container maxWidth="md">
-                    <span className="sectionTitleBold">投票方法</span>
+                    <Typography
+                      className="sectionTitleBold"
+                      sx={{
+                        fontSize: {
+                          xs: "28px",
+                          sm: "32px",
+                          md: "36px",
+                        },
+                        fontWeight: "bold",
+                      }}
+                    >
+                      投票方法
+                    </Typography>
                     <Stack direction="column" spacing={0}>
                       <Item className="flexRow">
                         <img
@@ -137,7 +169,12 @@ function App() {
                           </span>
                         </p>
                       </Item>
-                      <Item className="flexRow">
+                      <Item
+                        className="flexRow"
+                        sx={{
+                          position: "relative",
+                        }}
+                      >
                         <img
                           src={checkedIcon}
                           alt="checked"
@@ -166,6 +203,35 @@ function App() {
                             (只限同一名參賽者)
                           </span>
                         </p>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: "#e04478",
+                            color: "#ffffff",
+                            borderRadius: "0px",
+                            padding: "5px 10px",
+                            marginLeft: "10px",
+                            boxShadow: "0px 0px 10px 0px #000000",
+                            position: "absolute",
+                            right: {
+                              xs: "10%",
+                              sm: "50%",
+                              md: "50%",
+                            },
+                            bottom: "-20px",
+                            ":hover": {
+                              backgroundColor: "#e04478",
+                            },
+                            textWrap: "nowrap",
+                            fontSize: {
+                              xs: "10px",
+                              sm: "14px",
+                              md: "16px",
+                            },
+                          }}
+                        >
+                          立即登記會員
+                        </Button>
                         {/* <Box
                           className="flexRow"
                           sx={{
@@ -258,7 +324,19 @@ function App() {
         <Box className="section">
           <Box className="columnBox">
             <Box className="titleBox">
-              <span className="sectionTitleBold">投票走勢</span>
+              <Typography
+                className="sectionTitleBold"
+                sx={{
+                  fontSize: {
+                    xs: "28px",
+                    sm: "32px",
+                    md: "36px",
+                  },
+                  fontWeight: "bold",
+                }}
+              >
+                投票走勢
+              </Typography>
             </Box>
             <Container>
               <Grid container spacing={2}>
@@ -277,9 +355,19 @@ function App() {
                           fontSize: 24 - (index - 1) * 6 + "px",
                         }}
                       >
-                        <span className="rankingNumberText">
+                        <Typography
+                          className="rankingNumberText"
+                          sx={{
+                            fontSize: {
+                              xs: "12px",
+                              sm: "20px",
+                              md: "28px",
+                            },
+                            fontWeight: "bold",
+                          }}
+                        >
                           {rankingTitleMapping[index]}
-                        </span>
+                        </Typography>
                       </Box>
                     </Grid>
                     <Grid item xs={8}>
@@ -359,13 +447,74 @@ function App() {
         <Box className="section">
           <Box className="columnBox">
             <Box className="titleBox">
-              <span className="sectionTitle">投選</span>
-              <span className="sectionTitleBold">你</span>
-              <span className="sectionTitle">想</span>
-              <span className="sectionTitleBold">復活的選手</span>
+              <Typography
+                className="sectionTitle"
+                display="inline"
+                sx={{
+                  fontSize: {
+                    xs: "28px",
+                    sm: "32px",
+                    md: "36px",
+                  },
+                }}
+              >
+                投選
+              </Typography>
+              <Typography
+                display="inline"
+                className="sectionTitleBold"
+                sx={{
+                  fontSize: {
+                    xs: "28px",
+                    sm: "32px",
+                    md: "36px",
+                  },
+                  fontWeight: "bold",
+                }}
+              >
+                你
+              </Typography>
+              <Typography
+                display="inline"
+                className="sectionTitle"
+                sx={{
+                  fontSize: {
+                    xs: "28px",
+                    sm: "32px",
+                    md: "36px",
+                  },
+                }}
+              >
+                想
+              </Typography>
+              <Typography
+                display="inline"
+                className="sectionTitleBold"
+                sx={{
+                  fontSize: {
+                    xs: "28px",
+                    sm: "32px",
+                    md: "36px",
+                  },
+                  fontWeight: "bold",
+                }}
+              >
+                復活的選手
+              </Typography>
             </Box>
             <Box className="rankingNumberInnerBox eventCountDownBox">
-              <span className="eventCountDownText">距離投票截止還有</span>
+              <Typography
+                className="eventCountDownText"
+                sx={{
+                  fontSize: {
+                    xs: "10px",
+                    md: "12px",
+                  },
+                  fontWeight: "bold",
+                }}
+              >
+                距離投票截止還有
+              </Typography>
               <span className="eventCountDownDateText">
                 {
                   <Countdown
