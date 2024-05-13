@@ -3,13 +3,14 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Container from "@mui/material/Container";
-import BannerImage from "./assets/banner.png";
+import BannerImage from "./assets/banner.jpg";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
+import Item from "@mui/material/ListItem";
 import axios from "axios";
 import moment from "moment";
 import { dummyList } from "./constants";
@@ -17,6 +18,16 @@ import Countdown from "react-countdown";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const serverUrl = import.meta.env.VITE_API_BASE_URL;
 import Avatar from "@mui/material/Avatar";
+import wewaClubIcon from "./assets/wewaClub.svg";
+import BigBIcon from "./assets/bigb.svg";
+import citywalkIcon from "./assets/citywalk.svg";
+import poppingIcon from "./assets/popping.svg";
+import pravoIcon from "./assets/pravo.svg";
+import singIcon from "./assets/sing.svg";
+import wewaIcon from "./assets/wewa.svg";
+import checkedIcon from "./assets/checked.svg";
+import sponsorIcon from "./assets/sponsor.svg";
+import voteMethodImage from "./assets/voteMethod.png";
 //set axios default url
 axios.defaults.baseURL = serverUrl;
 
@@ -25,6 +36,7 @@ function App() {
   const [eventDeadlineDate, setEventDeadlineDate] = useState(
     "2024-06-30T23:59:59"
   );
+  const [showVoteMethod, setShowVoteMethod] = useState(false);
   const [rankingList, setRankingList] = useState(dummyList);
   const [thirdRankingList, setThirdRankingList] = useState([]);
 
@@ -78,40 +90,174 @@ function App() {
   // }, []);
 
   return (
-    <div className="PageContainer">
+    <Box className="PageContainer">
       <Container>
-        <div className="section">
-          <div className="columnBox">
+        <Box className="section">
+          <Box className="columnBox">
             <img src={BannerImage} alt="Banner" className="BannerImage" />
-            <div className="navBar">
+            <Box className="navBar">
               <Grid container>
                 <Grid item xs={8}>
-                  <div className="iconRowBox">
-                    <img src={reactLogo} alt="React Logo" className="icon" />
-                    <img src={viteLogo} alt="Vite Logo" className="icon" />
-                  </div>
+                  <Box className="iconRowBox">
+                    <img src={sponsorIcon} alt="wewa" className="sponsorIcon" />
+                  </Box>
                 </Grid>
-                <Grid item xs={4}>
-                  <div className="voteBox">
-                    <Button
-                      endIcon={<KeyboardArrowDownIcon />}
-                      sx={{
-                        color: "#e04478",
-                      }}
-                    >
-                      <span className="voteMethodText">投票方法</span>
-                    </Button>
-                  </div>
+                <Grid item xs={4} className="voteBox">
+                  <Button
+                    endIcon={<KeyboardArrowDownIcon />}
+                    sx={{
+                      color: "#e04478",
+                    }}
+                    onClick={() => setShowVoteMethod(!showVoteMethod)}
+                  >
+                    <span className="voteMethodTitleText">投票方法</span>
+                  </Button>
                 </Grid>
               </Grid>
-            </div>
-          </div>
-        </div>
-        <div className="section">
-          <div className="columnBox">
-            <div className="titleBox">
+              <Grid
+                container
+                sx={{
+                  display: showVoteMethod ? "block" : "none",
+                }}
+              >
+                <Grid item xs={12}>
+                  <Container maxWidth="md">
+                    <span className="sectionTitleBold">投票方法</span>
+                    <Stack direction="column" spacing={0}>
+                      <Item className="flexRow">
+                        <img
+                          src={checkedIcon}
+                          alt="checked"
+                          className="checkedIcon"
+                        />
+                        <p className="voteMethodTextP">
+                          <span className="voteMethodText">投票期間，</span>
+                          <span className="voteMethodTextBold">
+                            每人每日皆可投選一次
+                          </span>
+                        </p>
+                      </Item>
+                      <Item className="flexRow">
+                        <img
+                          src={checkedIcon}
+                          alt="checked"
+                          className="checkedIcon"
+                        />
+                        <p className="voteMethodTextP">
+                          <span className="voteMethodText">成為</span>
+                          <Box
+                            sx={{
+                              display: "inline-block",
+                            }}
+                          >
+                            <img
+                              src={wewaClubIcon}
+                              alt="wewaClub"
+                              className="wewaClubIcon"
+                            />
+                          </Box>
+                          <span className="voteMethodText">會員</span>
+                          <span className="voteMethodTextBold">
+                            每日可投選兩票
+                          </span>
+                          <span className="voteMethodTextDesc">
+                            (只限同一名參賽者)
+                          </span>
+                        </p>
+                        {/* <Box
+                          className="flexRow"
+                          sx={{
+                            marginLeft: "10px",
+                          }}
+                        >
+                          <span className="voteMethodText">成為</span>
+                          <img
+                            src={wewaClubIcon}
+                            alt="wewaClub"
+                            className="wewaClubIcon"
+                          />
+                          <span className="voteMethodText">會員</span>
+                          <span className="voteMethodTextBold">
+                            每日可投選兩票
+                          </span>
+                          <span className="voteMethodTextDesc">
+                            (只限同一名參賽者)
+                          </span>
+                          <Button
+                            sx={{
+                              backgroundColor: "#e04478",
+                              color: "#ffffff",
+                              borderRadius: "0px",
+                              padding: "5px 10px",
+                              marginLeft: "10px",
+                              boxShadow: "0px 0px 10px 0px #000000",
+                              // transform: "translate(-120px,35px)",
+                              ":hover": {
+                                backgroundColor: "#e04478",
+                              },
+                              textWrap: "nowrap",
+                              fontSize: {
+                                xs: "10px",
+                                sm: "14px",
+                                md: "16px",
+                              },
+                            }}
+                          >
+                            立即登記會員
+                          </Button>
+                        </Box> */}
+                        {/* <Button
+                          sx={{
+                            backgroundColor: "#e04478",
+                            color: "#ffffff",
+                            borderRadius: "0px",
+                            padding: "5px 10px",
+                            marginLeft: "10px",
+                            boxShadow: "0px 0px 10px 0px #000000",
+                            transform: "translate(-120px,35px)",
+                            ":hover": {
+                              backgroundColor: "#e04478",
+                            },
+                            textWrap: "nowrap",
+                            fontSize: {
+                              xs: "10px",
+                              sm: "14px",
+                              md: "16px",
+                            },
+                          }}
+                        >
+                          立即登記會員
+                        </Button> */}
+                      </Item>
+                      <Item className="flexRow">
+                        <img
+                          src={checkedIcon}
+                          alt="checked"
+                          className="checkedIcon"
+                        />
+                        <p className="voteMethodTextP">
+                          <span className="voteMethodText">得票最高的</span>
+                          <span className="voteMethodTextBold">前兩名</span>
+                          <span className="voteMethodText">
+                            將獲得復活資格，
+                          </span>
+                          <span className="voteMethodTextBold">
+                            並可參加決賽
+                          </span>
+                        </p>
+                      </Item>
+                    </Stack>
+                  </Container>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Box>
+        <Box className="section">
+          <Box className="columnBox">
+            <Box className="titleBox">
               <span className="sectionTitleBold">投票走勢</span>
-            </div>
+            </Box>
             <Container>
               <Grid container spacing={2}>
                 {thirdRankingList.map((item, index) => (
@@ -206,17 +352,17 @@ function App() {
                 ))}
               </Grid>
             </Container>
-          </div>
-        </div>
-        <div className="section">
-          <div className="columnBox">
-            <div className="titleBox">
+          </Box>
+        </Box>
+        <Box className="section">
+          <Box className="columnBox">
+            <Box className="titleBox">
               <span className="sectionTitle">投選</span>
               <span className="sectionTitleBold">你</span>
               <span className="sectionTitle">想</span>
               <span className="sectionTitleBold">復活的選手</span>
-            </div>
-            <div className="rankingNumberInnerBox eventCountDownBox">
+            </Box>
+            <Box className="rankingNumberInnerBox eventCountDownBox">
               <span className="eventCountDownText">距離投票截止還有</span>
               <span className="eventCountDownDateText">
                 {
@@ -230,7 +376,7 @@ function App() {
                   />
                 }
               </span>
-            </div>
+            </Box>
             <Container>
               <Grid container>
                 {rankingList.map((item, index) => (
@@ -257,10 +403,10 @@ function App() {
                 ))}
               </Grid>
             </Container>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Container>
-    </div>
+    </Box>
   );
 }
 
