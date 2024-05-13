@@ -10,6 +10,18 @@
   /* text-align: center; */
 }
 
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
 span p label h1 h2 h3 h4 h5 h6 {
   font-family: "Open Sans", sans-serif;
 }
@@ -38,6 +50,13 @@ span p label h1 h2 h3 h4 h5 h6 {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   /* margin: 0; */
 }
+
+.voteMethodBox {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  /* background-repeat: no-repeat;
+  height: 100%;
+  width: 100%; */
+}
 .iconRowBox {
   display: flex;
   justify-content: start;
@@ -50,12 +69,30 @@ span p label h1 h2 h3 h4 h5 h6 {
   justify-content: end;
   align-items: center;
   margin: 1rem;
+  padding-right: 10px;
+}
+
+.voteMethodTitleText {
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .voteMethodText {
   font-size: 16px;
-  font-weight: 700;
-  /* color: #e04478; */
+  font-weight: 200;
+  /* white-space: nowrap; */
+}
+
+.voteMethodTextDesc {
+  font-size: 14px;
+  font-weight: 100;
+  /* white-space: nowrap; */
+}
+
+.voteMethodTextBold {
+  font-size: 16px;
+  font-weight: 900;
+  /* white-space: nowrap; */
 }
 
 .sectionTitleBold {
@@ -153,4 +190,32 @@ span p label h1 h2 h3 h4 h5 h6 {
   transform: translate(600%, -70%)
     rotate(calc(360deg / var(--total) * var(--index)))
     translateY(calc(var(--radius, 5) * -1ch));
+}
+
+.sponsorIcon {
+  /* width: 60px; */
+  height: 100%;
+  object-fit: cover;
+}
+
+.checkedIcon {
+  height: 37px;
+  width: 37px;
+}
+
+.voteMethodTextP {
+  margin-left: 10px;
+}
+
+.wewaClubIcon {
+  align-items: center;
+  align-self: self-end;
+  height: 40px;
+  width: 60px;
+}
+
+.voteMethodButtonText {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
 }
