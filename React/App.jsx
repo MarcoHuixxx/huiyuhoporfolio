@@ -148,6 +148,8 @@ function App() {
                           <Box
                             sx={{
                               display: "inline-block",
+                              verticalAlign: "bottom",
+                              alignItems: "bottom",
                             }}
                           >
                             <img
