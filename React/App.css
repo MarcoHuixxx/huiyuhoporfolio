@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+#root {
+  display: flex;
+  flex-direction: column;
+  /* max-width: 1280px; */
+  height: 100%;
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
+  /* text-align: center; */
+}
+
+span p label h1 h2 h3 h4 h5 h6 {
+  font-family: "Open Sans", sans-serif;
+}
+
+.section {
+  margin: 0 0 4rem 0;
+}
+
+.columnBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.PageContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.BannerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.navBar {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  /* margin: 0; */
+}
+.iconRowBox {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin: 1rem;
+}
+
+.voteBox {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin: 1rem;
+}
+
+.voteMethodText {
+  font-size: 16px;
+  font-weight: 700;
+  /* color: #e04478; */
+}
+
+.sectionTitleBold {
+  font-size: 36px;
+  font-weight: 800;
+  color: #e04478;
+}
+
+.sectionTitle {
+  font-size: 36px;
+  font-weight: 100;
+  color: #e04478;
+}
+
+.rankingNumberBox {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.rankingNumberInnerBox {
+  background-color: #e04478;
+  padding: 0.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.eventCountDownBox {
+  width: 48%;
+  max-width: 250px;
+}
+
+.rankingNumberText {
+  font-weight: 700;
+  color: #fff;
+}
+
+.rankingContentBox {
+  display: block-inline;
+  /* flex-direction: column;
+  justify-content: center; */
+  align-items: start;
+}
+
+.iconRankingBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.rankingNameText {
+  font-weight: 700;
+  color: #e04478;
+}
+
+.eventCountDownText {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.eventCountDownDateText {
+  margin-left: 2px;
+  font-size: 10px;
+  font-weight: 100;
+  color: #fff;
+}
+
+.avatarGridBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+}
+
+.participantName {
+  transform: translate(20px, 85px) rotate(-30deg);
+}
+
+.text-ring {
+  position: relative;
+}
+.text-ring [style*="--index"] {
+  font-size: 12px;
+  font-family: monospace;
+  font-weight: bold;
+  /* font-size: calc(var(--font-size, 2) * 1rem); */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(600%, -70%)
+    rotate(calc(360deg / var(--total) * var(--index)))
+    translateY(calc(var(--radius, 5) * -1ch));
+}
