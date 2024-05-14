@@ -1,5 +1,21 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
 
+@font-face {
+  font-family: "Hiragino Sans";
+  src: url("assets/fonts/Hiragino_Sans/1.ttc");
+}
+
+@font-face {
+  font-family: "gensen-font-master";
+  src: url("assets/fonts/gensen-font-master");
+}
+
+.notoSansHk {
+  font-family: "Noto Sans HK", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -96,6 +112,12 @@ span p label h1 h2 h3 h4 h5 h6 {
   color: #e04478;
 }
 
+.votePageInfoText {
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+}
+
 .sectionTitle {
   font-size: 36px;
   font-weight: 100;
@@ -120,6 +142,7 @@ span p label h1 h2 h3 h4 h5 h6 {
 .eventCountDownBox {
   width: 48%;
   max-width: 250px;
+  box-shadow: 0px 0px 5px 0px #000000;
 }
 
 .rankingNumberText {
@@ -164,11 +187,7 @@ span p label h1 h2 h3 h4 h5 h6 {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 30px 0;
-}
-
-.participantName {
-  transform: translate(20px, 85px) rotate(-30deg);
+  padding: 20px 0;
 }
 
 .text-ring {
@@ -212,6 +231,76 @@ span p label h1 h2 h3 h4 h5 h6 {
 
 .voteMethodButtonText {
   font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.participationNo {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.icmaIcon {
+  height: 150px;
+  width: 150px;
+}
+
+.dialogContainer {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.backButton {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  width: 14px;
+  height: 14px;
+}
+
+.backButtonIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.mobileVotePageBox {
+  background: linear-gradient(90deg, #e53972 30%, #f29921 100%);
+  display: flex;
+  flexdirection: column;
+  height: 100%;
+  margin-top: -20px;
+}
+
+.video-responsive {
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+  height: 0;
+}
+
+.video-responsive iframe {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.igIcon {
+  height: 30px;
+  width: 30px;
+}
+
+.voteButtonText {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e53972;
+}
+
+.voteButtonText:hover {
+  font-size: 18px;
   font-weight: 700;
   color: #fff;
 }
