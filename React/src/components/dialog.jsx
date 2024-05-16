@@ -6,10 +6,15 @@ import Slide from "@mui/material/Slide";
 import Box from "@mui/material/Box";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="left" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FullScreenDialog({ open, setOpen, children, locale }) {
+export default function FullScreenDialog({
+  open,
+  setOpen,
+  children,
+  fullScreen,
+}) {
   const handleBackHandler = () => {
     setOpen(false);
   };
@@ -17,12 +22,15 @@ export default function FullScreenDialog({ open, setOpen, children, locale }) {
   return (
     <React.Fragment>
       <Dialog
-        fullScreen
+        fullScreen={fullScreen}
         open={open}
         TransitionComponent={Transition}
+        keepMounted
         sx={{
           height: "100%",
+          //   "& .MuiDialog-paper": { width: "80%", maxHeight: 435 },
         }}
+        aria-describedby="alert-dialog-slide-description"
         // className={Styles.dialog}
       >
         <IconButton onClick={handleBackHandler} className="backButton">

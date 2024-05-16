@@ -1,8 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
 
 const YoutubeEmbed = ({ embedId }) => (
-  <div className="video-responsive">
+  <Box
+    className="video-responsive"
+    sx={{
+      borderRadius: 4,
+      marginLeft: {
+        xs: 0,
+        md: "10px",
+      },
+    }}
+  >
     <iframe
       width="853"
       height="480"
@@ -12,7 +22,7 @@ const YoutubeEmbed = ({ embedId }) => (
       allowFullScreen
       title="Embedded youtube"
     />
-  </div>
+  </Box>
 );
 
 YoutubeEmbed.propTypes = {

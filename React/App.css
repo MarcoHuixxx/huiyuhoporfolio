@@ -273,6 +273,14 @@ span p label h1 h2 h3 h4 h5 h6 {
   margin-top: -20px;
 }
 
+.webVotePageBox {
+  margin-top: 100px;
+  background: linear-gradient(90deg, #e53972 30%, #f29921 100%);
+  display: flex;
+  flexdirection: column;
+  height: 100%;
+}
+
 .video-responsive {
   overflow: hidden;
   padding-bottom: 56.25%;
@@ -303,4 +311,13 @@ span p label h1 h2 h3 h4 h5 h6 {
   font-size: 18px;
   font-weight: 700;
   color: #fff;
+}
+
+.webAvatarBox {
+  position: absolute;
+  transform: translate(100%, -60%);
+}
+
+.webIgBox {
+  margin-left: -6px !important;
 }
