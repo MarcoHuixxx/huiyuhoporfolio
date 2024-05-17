@@ -17,6 +17,8 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "moment": "^2.30.1",
+    "mui-one-time-password-input": "^2.0.2",
+    "mui-phone-number": "^3.0.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-countdown": "^2.3.5",

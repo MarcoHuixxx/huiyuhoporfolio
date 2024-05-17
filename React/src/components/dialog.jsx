@@ -4,20 +4,25 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Slide from "@mui/material/Slide";
 import Box from "@mui/material/Box";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function FullScreenDialog({
   open,
   setOpen,
   children,
   fullScreen,
+  direction = "left",
+  closeIcon = false,
 }) {
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction={direction} ref={ref} {...props} />;
+  });
+
   const handleBackHandler = () => {
     setOpen(false);
   };
+
+  console.log("closeIcon:", closeIcon);
 
   return (
     <React.Fragment>
@@ -33,9 +38,16 @@ export default function FullScreenDialog({
         aria-describedby="alert-dialog-slide-description"
         // className={Styles.dialog}
       >
-        <IconButton onClick={handleBackHandler} className="backButton">
+        <IconButton
+          onClick={handleBackHandler}
+          className="backButton"
+          sx={{
+            ...(!closeIcon && { left: "18px" }), // if closeIcon is false, then left: "18px
+            ...(closeIcon && { right: "18px" }),
+          }}
+        >
           {/* <img className="backButtonIcon" src={ArrowBackIosNewIcon} /> */}
-          <ArrowBackIosNewIcon />
+          {closeIcon ? <CloseIcon /> : <ArrowBackIosNewIcon />}
         </IconButton>
 
         <Box
