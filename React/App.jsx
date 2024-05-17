@@ -126,6 +126,10 @@ function App() {
     setVotePageIsOpen(value);
   };
 
+  useEffect(() => {
+    console.log("votePageIsOpen:", votePageIsOpen);
+  }, [votePageIsOpen]);
+
   const handleDialogClose = useCallback(() => setVotePageIsOpen(false), []);
 
   // useEffect(() => {

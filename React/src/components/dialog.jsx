@@ -27,6 +27,7 @@ export default function FullScreenDialog({
   return (
     <React.Fragment>
       <Dialog
+        key={Math.random()}
         fullScreen={fullScreen}
         open={open}
         TransitionComponent={Transition}
