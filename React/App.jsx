@@ -14,7 +14,7 @@ import Stack from "@mui/material/Stack";
 import Item from "@mui/material/ListItem";
 import axios from "axios";
 import moment from "moment";
-import { dummyList } from "./constants";
+// import { dummyList } from "./constants";
 import Countdown from "react-countdown";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const serverUrl = import.meta.env.VITE_API_BASE_URL;
@@ -40,17 +40,25 @@ import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
+import { Skeleton } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { set } from "mongoose";
 
 //set axios default url
 axios.defaults.baseURL = serverUrl;
 
 function App() {
+  const eventId = "664b20f7cbd11e4bca2386c8";
+  const roundNumber = 1;
   const [isAdmin, setIsAdmin] = useState(false);
   const [eventDeadlineDate, setEventDeadlineDate] = useState(
-    "2024-06-30T23:59:59"
+    "2024-08-30T23:59:59"
   );
   const [showVoteMethod, setShowVoteMethod] = useState(false);
-  const [rankingList, setRankingList] = useState(dummyList);
+  const [rankingList, setRankingList] = useState([]);
   const [thirdRankingList, setThirdRankingList] = useState([]);
   const [votePageIsOpen, setVotePageIsOpen] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState({});
@@ -61,40 +69,71 @@ function App() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [totalVotes, setTotalVotes] = useState(600);
   const [iswewaClubIdValid, setIswewaClubIdValid] = useState(true);
+  const [showOptDialog, setShowOptDialog] = useState(false);
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up("md"));
+  const [isPhoneValid, setIsPhoneValid] = useState(false);
+  const [isOptValid, setIsOptValid] = useState(false);
+  const [confirmVoteIsClicked, setConfirmVoteIsClicked] = useState(false);
+  const [errorMessage, setErrorMesssage] = useState("");
+  const [isVoteSuccess, setIsVoteSuccess] = useState(false);
+  const [isOptChecked, setIsOptChecked] = useState(false);
+  const [isListLoaded, setIsListLoaded] = useState(false);
+  const [windowErrorMesssage, setWindowErrorMesssage] = useState("");
 
   useEffect(() => {
-    const thirdList = dummyList.sort((a, b) => b.votes - a.votes).slice(0, 3);
-    setThirdRankingList(thirdList);
-  }, []);
+    const fetchRankingList = async () => {
+      try {
+        if (!isListLoaded) {
+          const getEventResult = await axios.get(`/event/${eventId}`);
+          console.log("getEventResult:", getEventResult.data.timeEnd);
+          if (getEventResult?.data?.timeEnd) {
+            console.log("buwbdiuwebdiubweviudbvxiwviv");
+            setEventDeadlineDate(getEventResult.data.timeEnd);
+          }
+          const participantListResult = await axios.get(
+            `/participant/${eventId}/${roundNumber}/100`
+          );
+
+          console.log("participantListResult:", participantListResult);
+          if (participantListResult?.data?.length > 0) {
+            const thirdList = participantListResult?.data
+              .sort((a, b) => b.votes - a.votes)
+              .slice(0, 3);
+            setThirdRankingList(thirdList);
+            setRankingList(participantListResult.data);
+          }
+          setIsListLoaded(true);
+        }
+      } catch (error) {
+        setIsListLoaded(false);
+        setRankingList([]);
+        setThirdRankingList([]);
+        setWindowErrorMesssage("獲取排名列表失敗");
+        console.log("error:", error);
+      }
+    };
+    fetchRankingList();
+  }, [isListLoaded]);
 
   const handleOtpChange = (otp) => {
     console.log(otp);
+  };
+
+  function matchIsNumeric(text) {
+    const isNumber = typeof text === "number";
+    const isString = matchIsString(text);
+    return (isNumber || (isString && text !== "")) && !isNaN(Number(text));
+  }
+
+  const validateChar = (value, index) => {
+    return matchIsNumeric(value);
   };
 
   const rankingTitleMapping = {
     0: "第一名",
     1: "第二名",
     2: "第三名",
-  };
-
-  const TextRing = ({ children }) => {
-    const CHARS = children.split("");
-    const INNER_ANGLE = 180 / CHARS.length;
-    return (
-      <span
-        className="text-ring"
-        style={{
-          "--total": CHARS.length,
-          "--radius": 1 / Math.sin(INNER_ANGLE / (620 / Math.PI)),
-        }}
-      >
-        {CHARS.map((char, index) => (
-          <span key={char + index} style={{ "--index": index }}>
-            {char}
-          </span>
-        ))}
-      </span>
-    );
   };
 
   const onParticipantClick = (item) => {
@@ -106,15 +145,111 @@ function App() {
   const onVoteButonClick = (item) => {
     console.log("item", item);
     setVoteDialogIsOpen(true);
+    setShowOptDialog(false);
   };
 
-  const onConfirmVote = () => {
-    //check wewaClubId
+  const onConfirmVote = async () => {
+    try {
+      console.log("onConfirmVote");
+      setConfirmVoteIsClicked(true);
+      if (!isPhoneValid || votes === 0) {
+        return;
+      }
+      //checking if the user is voted today
+      const isVotedToday = await checkIsVotedToday();
+
+      if (isVotedToday) {
+        setErrorMesssage("今天已參與投票，請明天再參與");
+        return;
+      }
+      const senOptResult = await sendOtp();
+      console.log("senOptResult:", senOptResult);
+
+      if (senOptResult.success) {
+        setShowOptDialog(true);
+      } else {
+        setErrorMesssage("發送驗證碼失敗, 請再試一次");
+      }
+    } catch (error) {
+      console.log("error:", error);
+      setErrorMesssage("發送驗證碼失敗, 請再試一次");
+    }
+  };
+
+  const checkIsVotedToday = async () => {
+    try {
+      const result = await axios.get(`/check-vote/${phoneNumber}/${eventId}`);
+      console.log("checkIsVotedToday result:", result);
+      return result.data.isVoted;
+    } catch (error) {
+      console.log("error:", error);
+      return true;
+    }
+  };
+
+  const onConfirmOptInput = async () => {
+    try {
+      if (otp.length !== 6) {
+        setIsOptValid(false);
+        setIsOptChecked(true);
+        return;
+      }
+      const result = await axios.get(`/verify-otp/${phoneNumber}/${otp}`);
+      console.log("verify result:", result);
+
+      if (result.data.success) {
+        setIsOptValid(true);
+        const voteData = {
+          roundNumber,
+          eventId,
+          voterPhone: phoneNumber,
+          voteCount: votes,
+          wewaClubId: wewaClubId,
+          participantId: selectedParticipant.id,
+        };
+        const voteResult = await axios.post("/vote", voteData);
+        // const voteResult = { data: { success: true } };
+
+        console.log("voteResult:", voteResult);
+
+        if (voteResult.data.success) {
+          // setVoteDialogIsOpen(false);
+          setIsVoteSuccess(true);
+        }
+      }
+      setIsOptChecked(true);
+    } catch (error) {
+      setIsOptValid(false);
+      setIsOptChecked(true);
+      console.log("error:", error);
+    }
+  };
+
+  const sendOtp = async () => {
+    try {
+      const result = await axios.get(`/send-otp/${phoneNumber}`, {
+        phoneNumber: phoneNumber,
+      });
+
+      console.log("sendOtp sendOtp result:", result);
+
+      return {
+        success: result.data.success,
+      };
+      console.log("result:", result);
+    } catch (error) {
+      console.log("error:", error);
+      return {
+        success: false,
+      };
+    }
   };
 
   useEffect(() => {
     const iswewaClubIdValidHandler = () => {
-      const iswewaClubIdValidVar = wewaClubId ? wewaClubId.length === 6 : true;
+      const iswewaClubIdValidVar = wewaClubId
+        ? wewaClubId.length === 11 && wewaClubId.startsWith("WWC")
+        : true;
 
       setIswewaClubIdValid(iswewaClubIdValidVar);
     };
@@ -122,13 +257,52 @@ function App() {
     iswewaClubIdValidHandler();
   }, [wewaClubId]);
 
+  useEffect(() => {
+    const isPhoneValidHandler = () => {
+      const isPhoneValidVar = !(
+        phoneNumber === "" || phoneNumber?.length !== 14
+      );
+      console.log("phoneNumber:", phoneNumber.length);
+      console.log("isPhoneValidVar:", isPhoneValidVar);
+      setIsPhoneValid(isPhoneValidVar);
+    };
+
+    isPhoneValidHandler();
+  }, [phoneNumber]);
+
   const setVotePageIsOpenHandler = (value) => {
     setVotePageIsOpen(value);
   };
 
   useEffect(() => {
     console.log("votePageIsOpen:", votePageIsOpen);
-  }, [votePageIsOpen]);
+    if (!votePageIsOpen || !voteDialogIsOpen) {
+      if (!votePageIsOpen) {
+        setSelectedParticipant({});
+        setVoteDialogIsOpen(false);
+      }
+
+      //redirect to home page after vote success and close the dialog
+      if (isVoteSuccess) {
+        setIsListLoaded(false);
+        setVoteDialogIsOpen(false);
+      }
+
+      console.log("voteDialogIsOpen:", voteDialogIsOpen);
+      setErrorMesssage("");
+      setIsOptChecked(false);
+      setIsOptValid(false);
+      setIsPhoneValid(false);
+      setIsVoteSuccess(false);
+      setPhoneNumber("");
+      setWewaClubId("");
+      setVotes(0);
+      setOtp("");
+      setIswewaClubIdValid(true);
+      setShowOptDialog(false);
+      setConfirmVoteIsClicked(false);
+    }
+  }, [votePageIsOpen, voteDialogIsOpen]);
 
   const handleDialogClose = useCallback(() => setVotePageIsOpen(false), []);
 
@@ -169,172 +343,211 @@ function App() {
             <img src={icmaIcon} alt="icma" className="icmaIcon" />
           </Box>
         </Container>
-        <Box className="mobileVotePageBox">
-          <Container
-            maxWidth="sm"
-            sx={{
-              paddingY: "20px",
-              display: {
-                xs: "block",
-                md: "none",
-              },
-            }}
-          >
-            <Container maxWidth="sm">
-              <Grid container>
-                <Grid
-                  item
-                  xs={6}
-                  sx={{
-                    borderLeft: "1px solid #FFF",
-                    paddingX: "10px",
-                    marginY: "50px",
-                  }}
-                >
-                  <Stack direction="column" spacing={1}>
-                    <Typography className="votePageInfoText">
-                      <Typography display={"inline"}>
-                        {selectedParticipant.chineseName}
-                      </Typography>
-                      <Typography display={"inline"}>
-                        {selectedParticipant.name}
-                      </Typography>
-                    </Typography>
-                    <Box
-                      className="votePageInfoText"
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <Typography display={"inline"}>
-                        Year {selectedParticipant.studyingYear}
+        {!isMd && (
+          <Box className="mobileVotePageBox">
+            <Container
+              maxWidth="sm"
+              sx={{
+                paddingY: "20px",
+                display: {
+                  xs: "block",
+                  md: "none",
+                },
+              }}
+            >
+              <Container maxWidth="sm">
+                <Grid container>
+                  <Grid
+                    item
+                    xs={6}
+                    sx={{
+                      maxHeight: "90px",
+                      borderLeft: "1px solid #FFF",
+                      paddingX: "10px",
+                      marginY: "50px",
+                    }}
+                  >
+                    <Stack direction="column" spacing={1}>
+                      <Typography className="votePageInfoText">
+                        <Typography
+                          display={"inline"}
+                          sx={{
+                            fontSize: {
+                              xs: "14px",
+                              md: "18px",
+                            },
+                          }}
+                        >
+                          {selectedParticipant.chineseName}
+                        </Typography>
+                        <Typography
+                          display={"inline"}
+                          sx={{
+                            fontSize: {
+                              xs: "14px",
+                              md: "18px",
+                            },
+                          }}
+                        >
+                          {selectedParticipant.name}
+                        </Typography>
                       </Typography>
                       <Box
+                        className="votePageInfoText"
                         sx={{
                           display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "end",
-                          paddingLeft: "6px",
-                          paddingRight: "0px",
+                          flexDirection: "row",
                         }}
                       >
-                        <img
-                          src={InstagramIcon}
-                          alt="Instagram"
-                          className="igIcon"
-                        />
+                        <Typography
+                          display={"inline"}
+                          sx={{
+                            fontSize: {
+                              xs: "14px",
+                              md: "18px",
+                            },
+                          }}
+                        >
+                          Year {selectedParticipant.studyingYear}
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "end",
+                            paddingLeft: "2px",
+                            paddingRight: "0px",
+                          }}
+                        >
+                          <img
+                            src={InstagramIcon}
+                            alt="Instagram"
+                            className="igIcon"
+                          />
+                        </Box>
+                        <Typography
+                          className="votePageInfoText"
+                          display={"inline"}
+                          onClick={() => {
+                            window.open(
+                              selectedParticipant.instagram,
+                              "_blank"
+                            );
+                          }}
+                          sx={{
+                            cursor: "pointer",
+                            fontSize: {
+                              xs: "12px",
+                              md: "14px",
+                            },
+                            fontWeight: "100",
+                            textDecoration: "underline",
+                            alignSelf: "center",
+                          }}
+                        >
+                          @{selectedParticipant.instagram}
+                        </Typography>
                       </Box>
                       <Typography
                         className="votePageInfoText"
-                        display={"inline"}
-                        onClick={() => {
-                          window.open(selectedParticipant.instagram, "_blank");
-                        }}
                         sx={{
-                          cursor: "pointer",
-                          fontSize: "13px",
-                          fontWeight: "100",
-                          textDecoration: "underline",
-                          alignSelf: "center",
+                          fontSize: {
+                            xs: "14px",
+                            md: "18px",
+                          },
                         }}
                       >
-                        @{selectedParticipant.instagram}
+                        {selectedParticipant.university}
                       </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={6}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                      }}
+                    >
+                      <Avatar
+                        alt={selectedParticipant.name}
+                        src={selectedParticipant.image}
+                        sx={{
+                          width: {
+                            xs: "95%",
+                            sm: "95%",
+                          },
+                          height: {
+                            xs: "100%",
+                            sm: "100%",
+                          },
+                          boxShadow: "0px 0px 5px 0px #000000",
+                        }}
+                      />
                     </Box>
-                    <Typography className="votePageInfoText">
-                      {selectedParticipant.university}
-                    </Typography>
-                  </Stack>
+                  </Grid>
                 </Grid>
-                <Grid
-                  item
-                  xs={6}
+                <Grid container>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      borderLeft: "1px solid #FFF",
+                      paddingX: "10px",
+                      marginY: "50px",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography
+                        className="votePageInfoText"
+                        sx={{
+                          fontSize: "10px",
+                          fontWeight: "100",
+                          marginBottom: "5px",
+                        }}
+                      >
+                        複賽影片
+                      </Typography>
+                      <YoutubeEmbed embedId={selectedParticipant.video} />
+                    </Box>
+                  </Grid>
+                </Grid>
+                <Box
                   sx={{
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center",
                   }}
                 >
-                  <Box
+                  <Button
                     sx={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
+                      backgroundColor: "#FFF",
+                      color: "#e04478",
+                      borderRadius: "75px",
+                      padding: "10px 30px",
+                      boxShadow: "0px 0px 2px 0px #000000",
                     }}
+                    onClick={onVoteButonClick}
                   >
-                    <Avatar
-                      alt={selectedParticipant.name}
-                      src={selectedParticipant.image}
-                      sx={{
-                        width: {
-                          xs: "95%",
-                          sm: "95%",
-                        },
-                        height: {
-                          xs: "100%",
-                          sm: "100%",
-                        },
-                        boxShadow: "0px 0px 5px 0px #000000",
-                      }}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
-              <Grid container>
-                <Grid
-                  item
-                  xs={12}
-                  sx={{
-                    borderLeft: "1px solid #FFF",
-                    paddingX: "10px",
-                    marginY: "50px",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <Typography
-                      className="votePageInfoText"
-                      sx={{
-                        fontSize: "10px",
-                        fontWeight: "100",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      複賽影片
-                    </Typography>
-                    <YoutubeEmbed embedId={selectedParticipant.video} />
-                  </Box>
-                </Grid>
-              </Grid>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  sx={{
-                    backgroundColor: "#FFF",
-                    color: "#e04478",
-                    borderRadius: "75px",
-                    padding: "10px 30px",
-                    boxShadow: "0px 0px 2px 0px #000000",
-                  }}
-                  onClick={() => {
-                    onVoteButonClick(selectedParticipant);
-                  }}
-                >
-                  <span className="voteButtonText">投票</span>
-                </Button>
-              </Box>
+                    <span className="voteButtonText">投票</span>
+                  </Button>
+                </Box>
+              </Container>
             </Container>
-          </Container>
-        </Box>
+          </Box>
+        )}
         <Container
           maxWidth="sm"
           sx={{
@@ -400,9 +613,7 @@ function App() {
                       padding: "10px 30px",
                       boxShadow: "0px 0px 2px 0px #000000",
                     }}
-                    onClick={() => {
-                      onVoteButonClick(selectedParticipant);
-                    }}
+                    onClick={onVoteButonClick}
                   >
                     <span className="voteButtonText">投票</span>
                   </Button>
@@ -548,88 +759,206 @@ function App() {
           direction="up"
           closeIcon
         >
-          <Box
-            sx={{
-              padding: "40px",
-            }}
-          >
-            {/* <FormControl> */}
-            <InputLabel htmlFor="my-input">電話號碼</InputLabel>
-            <MuiPhoneNumber
-              defaultCountry={"hk"}
-              onChange={(value) => setPhoneNumber(value)}
-              onlyCountries={["hk"]}
-            />
-            <InputLabel
-              htmlFor="my-input"
-              sx={{
-                marginTop: "20px",
-              }}
-            >
-              Wewa Club 會員編號 (如有)
-            </InputLabel>
-            <Input
-              id="my-input"
-              aria-describedby="my-helper-text"
-              onChange={(e) => setWewaClubId(e.target.value)}
-            />
-            <InputLabel
-              id="demo-simple-select-label"
-              sx={{
-                marginTop: "20px",
-                marginBottom: "10px",
-              }}
-            >
-              投取票數
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={votes}
-              onChange={(e) => setVotes(e.target.value)}
-            >
-              <MenuItem value={0}>-請選擇-</MenuItem>
-              <MenuItem value={1}>1</MenuItem>
-              {iswewaClubIdValid && <MenuItem value={2}>2</MenuItem>}
-            </Select>
+          {!showOptDialog ? (
             <Box
               sx={{
-                marginTop: "20px",
-                display: "flex",
-                justifyContent: "center",
+                padding: "40px",
               }}
             >
-              <Button
+              {/* <FormControl> */}
+              <InputLabel htmlFor="my-input">電話號碼</InputLabel>
+              <MuiPhoneNumber
+                defaultCountry={"hk"}
+                onChange={(value) => setPhoneNumber(value)}
+                onlyCountries={["hk"]}
+              />
+              {(!isPhoneValid && phoneNumber !== "") ||
+              (confirmVoteIsClicked && phoneNumber === "") ? (
+                <p className="inputErrorText">請輸入8位數字電話號碼</p>
+              ) : phoneNumber !== "" ? (
+                <p className="inputSuccessText">電話號碼正確</p>
+              ) : (
+                ""
+              )}
+              <InputLabel
+                htmlFor="my-input"
                 sx={{
-                  backgroundColor: "#e04478",
-                  color: "#ffffff",
-                  borderRadius: "75px",
-                  padding: "10px 30px",
-                  boxShadow: "0px 0px 2px 0px #000000",
-                  ":hover": {
-                    backgroundColor: "#e04478",
-                  },
-                  onClick: () => {
-                    onConfirmVote();
-                  },
+                  marginTop: "20px",
                 }}
-                className="confirmVoteButton"
               >
-                <Typography
+                Wewa Club 會員編號 (如有)
+              </InputLabel>
+              <Input
+                id="my-input"
+                aria-describedby="my-helper-text"
+                onChange={(e) => setWewaClubId(e.target.value)}
+              />
+              {wewaClubId !== "" && !iswewaClubIdValid ? (
+                <p className="inputErrorText">
+                  Wewa Club 會員編號無效 (只能投取1票)
+                </p>
+              ) : wewaClubId !== "" ? (
+                <p className="inputSuccessText">
+                  Wewa Club 會員編號有效 (現在可以投取2票)
+                </p>
+              ) : (
+                ""
+              )}
+
+              <InputLabel
+                id="demo-simple-select-label"
+                sx={{
+                  marginTop: "20px",
+                  marginBottom: "10px",
+                }}
+              >
+                投取票數
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={votes}
+                onChange={(e) => setVotes(e.target.value)}
+              >
+                <MenuItem value={0}>-請選擇-</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                {wewaClubId !== "" && iswewaClubIdValid && (
+                  <MenuItem value={2}>2</MenuItem>
+                )}
+              </Select>
+              <p className="inputErrorText">
+                {votes === 0 && confirmVoteIsClicked ? "請選擇投票數" : ""}
+              </p>
+
+              <Box
+                sx={{
+                  marginTop: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Button
                   sx={{
-                    fontSize: "16px",
-                    fontWeight: "bold",
+                    backgroundColor: "#e04478",
+                    color: "#ffffff",
+                    borderRadius: "75px",
+                    padding: "10px 30px",
+                    boxShadow: "0px 0px 2px 0px #000000",
+                    ":hover": {
+                      backgroundColor: "#e04478",
+                    },
+                  }}
+                  onClick={onConfirmVote}
+                  className="confirmVoteButton"
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    投票
+                  </Typography>
+                </Button>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <p className="inputErrorText">{errorMessage}</p>
+              </Box>
+              {/* <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
+              {/* <InputLabel htmlFor="my-input">驗證碼</InputLabel>
+              <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
+              {/* </FormControl> */}
+            </Box>
+          ) : isVoteSuccess ? (
+            (console.log("isVoteSuccessXXXXXX:", isVoteSuccess),
+            (
+              <Box
+                sx={{
+                  padding: "40px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Alert variant="outlined" severity="success">
+                  投票成功
+                </Alert>
+              </Box>
+            ))
+          ) : (
+            <Box
+              sx={{
+                padding: "40px",
+              }}
+            >
+              <InputLabel
+                htmlFor="my-input"
+                sx={{
+                  marginBottom: "20px",
+                }}
+              >
+                請輸入6位數字的手機驗證碼
+              </InputLabel>
+              <MuiOtpInput
+                value={otp}
+                onChange={(newValue) => {
+                  setOtp(newValue);
+                }}
+                length={6}
+                autoFocus
+                // validateChar={validateChar}
+              />
+              <Box
+                sx={{
+                  marginTop: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Button
+                  sx={{
+                    backgroundColor: "#e04478",
+                    color: "#ffffff",
+                    borderRadius: "75px",
+                    padding: "10px 30px",
+                    boxShadow: "0px 0px 2px 0px #000000",
+                    ":hover": {
+                      backgroundColor: "#e04478",
+                    },
+                  }}
+                  onClick={onConfirmOptInput}
+                  className="confirmVoteButton"
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    確認
+                  </Typography>
+                </Button>
+              </Box>
+              {!isOptValid && isOptChecked && (
+                <Box
+                  sx={{
+                    paddingTop: "10px",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
                 >
-                  投票
-                </Typography>
-              </Button>
+                  <p className="inputErrorText text-center">
+                    {isOptChecked ? "驗證碼錯誤" : ""}
+                  </p>
+                </Box>
+              )}
             </Box>
-            {/* <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
-            {/* <InputLabel htmlFor="my-input">驗證碼</InputLabel>
-              <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
-            {/* </FormControl> */}
-          </Box>
+          )}
         </Dialog>
       </Dialog>
       <Container>
@@ -726,21 +1055,32 @@ function App() {
                           alt="checked"
                           className="checkedIcon"
                         />
-                        <p className="voteMethodTextP">
+                        <Typography
+                          sx={{
+                            marginLeft: "10px",
+                            minWidth: {
+                              xs: "34px",
+                              md: "0px",
+                            },
+                          }}
+                        >
                           <span className="voteMethodText">成為</span>
-                          <Box
-                            sx={{
-                              display: "inline-block",
-                              verticalAlign: "bottom",
-                              alignItems: "bottom",
-                            }}
-                          >
-                            <img
-                              src={wewaClubIcon}
-                              alt="wewaClub"
-                              className="wewaClubIcon"
-                            />
-                          </Box>
+                        </Typography>
+
+                        <Box
+                          sx={{
+                            display: "inline-block",
+                            // verticalAlign: "center",
+                            // alignItems: "center",
+                          }}
+                        >
+                          <img
+                            src={wewaClubIcon}
+                            alt="wewaClub"
+                            className="wewaClubIcon"
+                          />
+                        </Box>
+                        <p>
                           <span className="voteMethodText">會員</span>
                           <span className="voteMethodTextBold">
                             每日可投選兩票
@@ -808,6 +1148,7 @@ function App() {
             </Box>
           </Box>
         </Box>
+
         <Box className="section">
           <Box className="columnBox">
             <Box className="titleBox">
@@ -1033,8 +1374,8 @@ function App() {
                   <Grid
                     item
                     xs={6}
-                    sm={4}
-                    md={3}
+                    // sm={4}
+                    md={4}
                     key={item.name + item.participationNo + index}
                     sx={{
                       display: "flex",
@@ -1118,6 +1459,7 @@ function App() {
             </Container>
           </Box>
         </Box>
+
         <Box
           className="section"
           sx={{

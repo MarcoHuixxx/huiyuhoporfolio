@@ -6,6 +6,10 @@ import Slide from "@mui/material/Slide";
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction={"left"} ref={ref} {...props} />;
+});
+
 export default function FullScreenDialog({
   open,
   setOpen,
@@ -14,10 +18,6 @@ export default function FullScreenDialog({
   direction = "left",
   closeIcon = false,
 }) {
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction={direction} ref={ref} {...props} />;
-  });
-
   const handleBackHandler = () => {
     setOpen(false);
   };
@@ -27,7 +27,6 @@ export default function FullScreenDialog({
   return (
     <React.Fragment>
       <Dialog
-        key={Math.random()}
         fullScreen={fullScreen}
         open={open}
         TransitionComponent={Transition}
