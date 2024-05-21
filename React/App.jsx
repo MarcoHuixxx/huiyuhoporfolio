@@ -43,6 +43,7 @@ import MenuItem from "@mui/material/MenuItem";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { Skeleton } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { set } from "mongoose";
@@ -80,6 +81,7 @@ function App() {
   const [isOptChecked, setIsOptChecked] = useState(false);
   const [isListLoaded, setIsListLoaded] = useState(false);
   const [windowErrorMesssage, setWindowErrorMesssage] = useState("");
+  const [isConfirmVoteLoading, setIsConfirmVoteLoading] = useState(false);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -150,15 +152,18 @@ function App() {
 
   const onConfirmVote = async () => {
     try {
+      setIsConfirmVoteLoading(true);
       console.log("onConfirmVote");
       setConfirmVoteIsClicked(true);
       if (!isPhoneValid || votes === 0) {
+        setIsConfirmVoteLoading(false);
         return;
       }
       //checking if the user is voted today
       const isVotedToday = await checkIsVotedToday();
 
       if (isVotedToday) {
+        setIsConfirmVoteLoading(false);
         setErrorMesssage("今天已參與投票，請明天再參與");
         return;
       }
@@ -170,8 +175,10 @@ function App() {
       } else {
         setErrorMesssage("發送驗證碼失敗, 請再試一次");
       }
+      setIsConfirmVoteLoading(false);
     } catch (error) {
       console.log("error:", error);
+      setIsConfirmVoteLoading(false);
       setErrorMesssage("發送驗證碼失敗, 請再試一次");
     }
   };
@@ -215,6 +222,8 @@ function App() {
         if (voteResult.data.success) {
           // setVoteDialogIsOpen(false);
           setIsVoteSuccess(true);
+        } else {
+          setErrorMesssage("投票失敗, 請再試一次");
         }
       }
       setIsOptChecked(true);
@@ -244,6 +253,14 @@ function App() {
       };
     }
   };
+
+  useEffect(() => {
+    console.log("errorMessage:", errorMessage);
+    if (errorMessage !== "") {
+      console.log("errorMessage   dscdsnclnsdlnjl:");
+      setConfirmVoteIsClicked(false);
+    }
+  }, [errorMessage]);
 
   useEffect(() => {
     const iswewaClubIdValidHandler = () => {
@@ -837,7 +854,7 @@ function App() {
                   justifyContent: "center",
                 }}
               >
-                <Button
+                <LoadingButton
                   sx={{
                     backgroundColor: "#e04478",
                     color: "#ffffff",
@@ -848,6 +865,7 @@ function App() {
                       backgroundColor: "#e04478",
                     },
                   }}
+                  loading={isConfirmVoteLoading && isPhoneValid && votes !== 0}
                   onClick={onConfirmVote}
                   className="confirmVoteButton"
                 >
@@ -859,7 +877,7 @@ function App() {
                   >
                     投票
                   </Typography>
-                </Button>
+                </LoadingButton>
               </Box>
               <Box
                 sx={{

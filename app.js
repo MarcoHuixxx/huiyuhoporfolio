@@ -104,9 +104,12 @@ const init = async () => {
     const eventCount = await event.find();
     if (eventCount.length === 0) {
       const event1 = new event({
+        _id: new mongodb.ObjectId("664b20f7cbd11e4bca2386c8"),
         name: "event1",
-        timeBegin: new Date(),
-        timeEnd: new Date(),
+        // timeBegin: new Date("2024-0-08T00:00:00Z"),
+        // timeEnd: new Date("2024-06-16T15:59:59Z"),
+        timeBegin: new Date("2024-05-08T00:00:00Z"),
+        timeEnd: new Date("2024-05-21T11:59:59Z"),
         location: "location1",
         description: "description1",
         link: "link1",
@@ -291,7 +294,18 @@ app.post('/vote', async (req, res) => {
   try {
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
     console.log({ participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId })
-    //check if the voter has voted today
+    //check if the event is still open
+    const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
+
+
+    if (!eventResult) {
+      return res.status(400).send({ success: false, message: 'The round is not found' });
+
+    }
+    if (eventResult.startDate > new Date() || eventResult.endDate < new Date()) {
+      return res.status(400).send({ success: false, message: 'The round is not open' });
+
+    }
 
     const updateParticipant = await participant.findOneAndUpdate(
       { _id: participantId, },
@@ -322,9 +336,6 @@ app.post('/vote', async (req, res) => {
     console.log(e)
   }
 })
-
-
-
 
 app.get('/verify-otp/:phone/:otp', async (req, res) => {
   try {
