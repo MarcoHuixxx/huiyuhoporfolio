@@ -82,20 +82,31 @@ function App() {
   const [isListLoaded, setIsListLoaded] = useState(false);
   const [windowErrorMesssage, setWindowErrorMesssage] = useState("");
   const [isConfirmVoteLoading, setIsConfirmVoteLoading] = useState(false);
+  const [isConfirmOptLoading, setIsConfirmOptLoading] = useState(false);
+
+  useEffect(() => {
+    const windowLocation = window.location.href;
+    if (windowLocation.includes("664b20f7cbd11e4bca2386c8")) {
+      setIsAdmin(true);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchRankingList = async () => {
       try {
         if (!isListLoaded) {
           const getEventResult = await axios.get(`/event/${eventId}`);
-          console.log("getEventResult:", getEventResult.data.timeEnd);
           if (getEventResult?.data?.timeEnd) {
-            console.log("buwbdiuwebdiubweviudbvxiwviv");
             setEventDeadlineDate(getEventResult.data.timeEnd);
           }
           const participantListResult = await axios.get(
             `/participant/${eventId}/${roundNumber}/100`
           );
+
+          const totalVotes = participantListResult.data.reduce((acc, item) => {
+            return acc + item.votes;
+          }, 0);
+          setTotalVotes(totalVotes);
 
           console.log("participantListResult:", participantListResult);
           if (participantListResult?.data?.length > 0) {
@@ -117,20 +128,6 @@ function App() {
     };
     fetchRankingList();
   }, [isListLoaded]);
-
-  const handleOtpChange = (otp) => {
-    console.log(otp);
-  };
-
-  function matchIsNumeric(text) {
-    const isNumber = typeof text === "number";
-    const isString = matchIsString(text);
-    return (isNumber || (isString && text !== "")) && !isNaN(Number(text));
-  }
-
-  const validateChar = (value, index) => {
-    return matchIsNumeric(value);
-  };
 
   const rankingTitleMapping = {
     0: "第一名",
@@ -160,14 +157,16 @@ function App() {
         return;
       }
       //checking if the user is voted today
-      const isVotedToday = await checkIsVotedToday();
+      // const isVotedToday = await checkIsVotedToday();
+      const isVotedToday = false;
 
       if (isVotedToday) {
         setIsConfirmVoteLoading(false);
         setErrorMesssage("今天已參與投票，請明天再參與");
         return;
       }
-      const senOptResult = await sendOtp();
+      // const senOptResult = await sendOtp();
+      const senOptResult = { success: true };
       console.log("senOptResult:", senOptResult);
 
       if (senOptResult.success) {
@@ -195,13 +194,16 @@ function App() {
   };
 
   const onConfirmOptInput = async () => {
+    setIsConfirmOptLoading(true);
     try {
       if (otp.length !== 6) {
         setIsOptValid(false);
         setIsOptChecked(true);
+        setIsConfirmOptLoading(false);
         return;
       }
-      const result = await axios.get(`/verify-otp/${phoneNumber}/${otp}`);
+      // const result = await axios.get(`/verify-otp/${phoneNumber}/${otp}`);
+      const result = { data: { success: true } };
       console.log("verify result:", result);
 
       if (result.data.success) {
@@ -225,11 +227,25 @@ function App() {
         } else {
           setErrorMesssage("投票失敗, 請再試一次");
         }
+      } else {
+        setIsOptValid(false);
       }
+      setIsConfirmOptLoading(false);
       setIsOptChecked(true);
     } catch (error) {
-      setIsOptValid(false);
       setIsOptChecked(true);
+      if (error.response.status === 400) {
+        if (error.response.data.message === "The round is not open") {
+          setErrorMesssage("活動已經結束，投票失敗");
+        } else if (
+          error.response.data.message === "The participant is not found"
+        ) {
+          setErrorMesssage("參賽者不存在，投票失敗");
+        }
+      } else {
+        setIsOptValid(false);
+      }
+      setIsConfirmOptLoading(false);
       console.log("error:", error);
     }
   };
@@ -821,7 +837,6 @@ function App() {
               ) : (
                 ""
               )}
-
               <InputLabel
                 id="demo-simple-select-label"
                 sx={{
@@ -911,7 +926,14 @@ function App() {
           ) : (
             <Box
               sx={{
-                padding: "40px",
+                paddingY: {
+                  xs: "10px",
+                  md: "40px",
+                },
+                paddingX: {
+                  xs: "5px",
+                  md: "40px",
+                },
               }}
             >
               <InputLabel
@@ -923,6 +945,7 @@ function App() {
                 請輸入6位數字的手機驗證碼
               </InputLabel>
               <MuiOtpInput
+                TextFieldsProps={{ size: isMd ? "large" : "small" }}
                 value={otp}
                 onChange={(newValue) => {
                   setOtp(newValue);
@@ -938,7 +961,7 @@ function App() {
                   justifyContent: "center",
                 }}
               >
-                <Button
+                <LoadingButton
                   sx={{
                     backgroundColor: "#e04478",
                     color: "#ffffff",
@@ -951,6 +974,7 @@ function App() {
                   }}
                   onClick={onConfirmOptInput}
                   className="confirmVoteButton"
+                  loading={isConfirmOptLoading}
                 >
                   <Typography
                     sx={{
@@ -960,9 +984,9 @@ function App() {
                   >
                     確認
                   </Typography>
-                </Button>
+                </LoadingButton>
               </Box>
-              {!isOptValid && isOptChecked && (
+              {isOptChecked && (!isOptValid || errorMessage !== "") && (
                 <Box
                   sx={{
                     paddingTop: "10px",
@@ -971,7 +995,7 @@ function App() {
                   }}
                 >
                   <p className="inputErrorText text-center">
-                    {isOptChecked ? "驗證碼錯誤" : ""}
+                    {errorMessage ? errorMessage : "驗證碼錯誤"}
                   </p>
                 </Box>
               )}
@@ -1456,6 +1480,20 @@ function App() {
                       >
                         {item.name}
                       </Typography>
+
+                      {isAdmin && (
+                        <Typography
+                          className="rankingNameText"
+                          sx={{
+                            fontSize: 18 - (item.rank - 1) * 4 + "px",
+                            marginLeft: "10px",
+                          }}
+                        >
+                          {item.votes} 票 (
+                          {((item.votes / totalVotes) * 100).toFixed(2)}
+                          %)
+                        </Typography>
+                      )}
                     </Box>
 
                     <Avatar

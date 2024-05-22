@@ -4,8 +4,6 @@ const port = 1343
 const path = require('path')
 const { pageText } = require('./src/constants/pageText.js');
 const expressLayouts = require('express-ejs-layouts');
-const ejs = require('ejs');
-const fs = require('fs');
 const mongoose = require("mongoose");
 require("dotenv").config();
 var geoip = require('geoip-lite');
@@ -292,19 +290,25 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
 
 app.post('/vote', async (req, res) => {
   try {
+
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
+
+    if (voteCount > 2) {
+      return res.status(400).send({ success: false, message: 'Vote Count Invalid' });
+    }
+
     console.log({ participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId })
     //check if the event is still open
     const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
 
-
     if (!eventResult) {
+      console.log("The round is not found")
       return res.status(400).send({ success: false, message: 'The round is not found' });
-
     }
-    if (eventResult.startDate > new Date() || eventResult.endDate < new Date()) {
-      return res.status(400).send({ success: false, message: 'The round is not open' });
 
+    if (new Date(eventResult.timeBegin) > new Date() || new Date(eventResult.timeEnd) < new Date()) {
+      console.log("The round is not open")
+      return res.status(400).send({ success: false, message: 'The round is not open' });
     }
 
     const updateParticipant = await participant.findOneAndUpdate(
@@ -329,6 +333,9 @@ app.post('/vote', async (req, res) => {
       });
       newVoteRecord.save();
       res.send({ success: true });
+    } else {
+      console.log("The participant is not found")
+      res.send({ success: false });
     }
 
   } catch (e) {
@@ -373,8 +380,6 @@ app.get('/participant/:event_id/:round_number/:limit', async (req, res) => {
     const eventId = req.params.event_id;
     const limit = req.params.limit;
     const roundNumber = req.params.round_number;
-    const pp = await participant.find();
-    console.log({ pp, eventId, limit, roundNumber })
     const participants = await participant.aggregate(
       [
         {
