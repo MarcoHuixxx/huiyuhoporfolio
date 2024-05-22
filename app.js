@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 1343
+const port = 1342
 const path = require('path')
 const { pageText } = require('./src/constants/pageText.js');
 const expressLayouts = require('express-ejs-layouts');
