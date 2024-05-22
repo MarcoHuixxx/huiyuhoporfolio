@@ -83,6 +83,7 @@ function App() {
   const [windowErrorMesssage, setWindowErrorMesssage] = useState("");
   const [isConfirmVoteLoading, setIsConfirmVoteLoading] = useState(false);
   const [isConfirmOptLoading, setIsConfirmOptLoading] = useState(false);
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
   useEffect(() => {
     const windowLocation = window.location.href;
@@ -157,19 +158,37 @@ function App() {
         return;
       }
       //checking if the user is voted today
-      // const isVotedToday = await checkIsVotedToday();
-      const isVotedToday = false;
+      const isVotedToday = await checkIsVotedToday();
+      // const isVotedToday = false;
 
       if (isVotedToday) {
         setIsConfirmVoteLoading(false);
         setErrorMesssage("今天已參與投票，請明天再參與");
         return;
       }
-      // const senOptResult = await sendOtp();
-      const senOptResult = { success: true };
+
+      const isPhoneVerified = await checkIsPhoneVerified();
+      console.log("isPhoneVerified:", isPhoneVerified);
+      if (isPhoneVerified.success) {
+        setIsPhoneVerified(true);
+        setErrorMesssage("");
+
+        setTimeout(() => {
+          setIsConfirmVoteLoading(false);
+          setShowOptDialog(true);
+        }, 500);
+        return;
+      } else if (isPhoneVerified.error) {
+        setIsConfirmVoteLoading(false);
+        setErrorMesssage("驗證電話號碼失敗, 請再試一次");
+        return;
+      }
+      const senOptResult = await sendOtp();
+      // const senOptResult = { success: true };
       console.log("senOptResult:", senOptResult);
 
       if (senOptResult.success) {
+        setErrorMesssage("");
         setShowOptDialog(true);
       } else {
         setErrorMesssage("發送驗證碼失敗, 請再試一次");
@@ -193,6 +212,19 @@ function App() {
     }
   };
 
+  const checkIsPhoneVerified = async () => {
+    try {
+      const result = await axios.get(
+        `/check-phone-verified/${phoneNumber}/${eventId}`
+      );
+      console.log("checkIsPhoneVerified result:", result);
+      return { success: result.data.isPhoneVerified };
+    } catch (error) {
+      console.log("error:", error);
+      return { success: false, error: true };
+    }
+  };
+
   const onConfirmOptInput = async () => {
     setIsConfirmOptLoading(true);
     try {
@@ -202,31 +234,13 @@ function App() {
         setIsConfirmOptLoading(false);
         return;
       }
-      // const result = await axios.get(`/verify-otp/${phoneNumber}/${otp}`);
-      const result = { data: { success: true } };
+      const result = await axios.get(`/verify-otp/${phoneNumber}/${otp}`);
+      // const result = { data: { success: true } };
       console.log("verify result:", result);
 
       if (result.data.success) {
         setIsOptValid(true);
-        const voteData = {
-          roundNumber,
-          eventId,
-          voterPhone: phoneNumber,
-          voteCount: votes,
-          wewaClubId: wewaClubId,
-          participantId: selectedParticipant.id,
-        };
-        const voteResult = await axios.post("/vote", voteData);
-        // const voteResult = { data: { success: true } };
-
-        console.log("voteResult:", voteResult);
-
-        if (voteResult.data.success) {
-          // setVoteDialogIsOpen(false);
-          setIsVoteSuccess(true);
-        } else {
-          setErrorMesssage("投票失敗, 請再試一次");
-        }
+        setIsPhoneVerified(true);
       } else {
         setIsOptValid(false);
       }
@@ -250,6 +264,29 @@ function App() {
     }
   };
 
+  const makeVote = async () => {
+    try {
+      const voteData = {
+        roundNumber,
+        eventId,
+        voterPhone: phoneNumber,
+        voteCount: votes,
+        wewaClubId: wewaClubId,
+        participantId: selectedParticipant.id,
+      };
+      const voteResult = await axios.post("/vote", voteData);
+      console.log("voteResult:", voteResult);
+      return {
+        success: voteResult.data.success,
+      };
+    } catch (error) {
+      console.log("error:", error);
+      return {
+        success: false,
+      };
+    }
+  };
+
   const sendOtp = async () => {
     try {
       const result = await axios.get(`/send-otp/${phoneNumber}`, {
@@ -269,6 +306,26 @@ function App() {
       };
     }
   };
+
+  useEffect(() => {
+    const makeVoteHandler = async () => {
+      if (isPhoneVerified) {
+        const voteResult = await makeVote();
+        // const voteResult = { data: { success: true } };
+
+        console.log("voteResult:", voteResult);
+
+        if (voteResult.success) {
+          // setVoteDialogIsOpen(false);
+          setIsVoteSuccess(true);
+        } else {
+          setErrorMesssage("投票失敗, 請再試一次");
+        }
+      }
+    };
+
+    makeVoteHandler();
+  }, [isPhoneVerified]);
 
   useEffect(() => {
     console.log("errorMessage:", errorMessage);
@@ -314,6 +371,9 @@ function App() {
         setSelectedParticipant({});
         setVoteDialogIsOpen(false);
       }
+      console.log(
+        "hihihihihihihidwhqiobdouqwboudbqwoubdouqwbvoudvqwouvduoqvwoudvqwouvdouqvwuovdoq"
+      );
 
       //redirect to home page after vote success and close the dialog
       if (isVoteSuccess) {
@@ -322,6 +382,7 @@ function App() {
       }
 
       console.log("voteDialogIsOpen:", voteDialogIsOpen);
+      setIsPhoneVerified(false);
       setErrorMesssage("");
       setIsOptChecked(false);
       setIsOptValid(false);
@@ -336,24 +397,6 @@ function App() {
       setConfirmVoteIsClicked(false);
     }
   }, [votePageIsOpen, voteDialogIsOpen]);
-
-  const handleDialogClose = useCallback(() => setVotePageIsOpen(false), []);
-
-  // useEffect(() => {
-  //   axios
-  //     .get("/ranking/3")
-  //     .then((res) => {
-  //       setRankingList(res.data);
-  //       setTotalVotes(
-  //         res.data.reduce((acc, item) => {
-  //           return acc + item.votes;
-  //         }, 0)
-  //       );
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // }, []);
 
   return (
     <Box className="PageContainer">
@@ -464,7 +507,7 @@ function App() {
                           display={"inline"}
                           onClick={() => {
                             window.open(
-                              selectedParticipant.instagram,
+                              `https://www.instagram.com/${selectedParticipant.instagram}/`,
                               "_blank"
                             );
                           }}
@@ -717,7 +760,7 @@ function App() {
                           display={"inline"}
                           onClick={() => {
                             window.open(
-                              selectedParticipant.instagram,
+                              `https://www.instagram.com/${selectedParticipant.instagram}/`,
                               "_blank"
                             );
                           }}
@@ -801,7 +844,9 @@ function App() {
               {/* <FormControl> */}
               <InputLabel htmlFor="my-input">電話號碼</InputLabel>
               <MuiPhoneNumber
+                sx={{ "& svg": { height: "1em" } }}
                 defaultCountry={"hk"}
+                value={phoneNumber}
                 onChange={(value) => setPhoneNumber(value)}
                 onlyCountries={["hk"]}
               />
@@ -824,6 +869,7 @@ function App() {
               <Input
                 id="my-input"
                 aria-describedby="my-helper-text"
+                value={wewaClubId}
                 onChange={(e) => setWewaClubId(e.target.value)}
               />
               {wewaClubId !== "" && !iswewaClubIdValid ? (

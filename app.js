@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 1342
+const port = 1343
 const path = require('path')
 const { pageText } = require('./src/constants/pageText.js');
 const expressLayouts = require('express-ejs-layouts');
@@ -190,7 +190,6 @@ app.get('/send-otp/:phone', async (req, res) => {
         // customFriendlyName: "ICMA Verification"
       });
 
-    console.log({ opt: result });
     res.send({ success: true });
   } catch (error) {
     console.error('Error sending OTP:', error);
@@ -221,6 +220,28 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
     res.send({ isVoted: true, error: e });
   }
 })
+
+app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
+  try {
+    const phone = req.params.phone;
+    const eventId = req.params.eventId;
+
+    const voteRecords = await voteRecord.find({
+      voterPhone: phone,
+      eventId: eventId
+    });
+    if (voteRecords.length > 0) {
+      res.send({ isPhoneVerified: true });
+      return;
+    }
+    res.send({ isPhoneVerified: false });
+  } catch (e) {
+    console.log(e)
+    res.send({ isPhoneVerified: false, error: e });
+  }
+})
+
+
 
 
 app.post('/vote', async (req, res) => {
@@ -264,7 +285,8 @@ app.post('/vote', async (req, res) => {
         voterPhone: voterPhone,
         votedAt: new Date(),
         eventId: eventId,
-        userWWCCode: wewaClubId
+        userWWCCode: wewaClubId,
+        participantId: participantId
       });
       newVoteRecord.save();
       res.send({ success: true });
