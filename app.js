@@ -155,6 +155,7 @@ app.get('/:language/price-list', (req, res) => {
 );
 
 app.get('/', (req, res) => {
+  console.log("this is the home page")
   const language = "hk";
   res.render('pages/index', {
     pageText: pageText[language],
