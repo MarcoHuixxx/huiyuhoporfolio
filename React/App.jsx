@@ -1177,7 +1177,7 @@ function App() {
                           sx={{
                             marginLeft: "10px",
                             minWidth: {
-                              xs: "34px",
+                              xs: "25px",
                               md: "0px",
                             },
                           }}
