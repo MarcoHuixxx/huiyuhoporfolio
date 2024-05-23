@@ -203,9 +203,10 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
     const eventId = req.params.eventId;
 
     var dayStart = new Date();
-    dayStart.setUTCHours(0, 0, 0, 0);
+    dayStart.setTime(dayStart.getTime() +8 * 60 * 60 * 1000);
     let dayEnd = new Date();
-    dayEnd.setUTCHours(23, 59, 59, 999);
+    dayEnd.setDate(dayStart.getDate() + 1);
+    dayEnd.setTime(dayEnd.getTime() +8 * 60 * 60 * 1000);
     const voteRecords = await voteRecord.find({
       voterPhone: voterPhone, votedAt: { $gte: dayStart, $lt: dayEnd },
       eventId: eventId
