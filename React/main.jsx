@@ -19,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Router>
         <Routes>
           <Route path="/voting" element={<App />} />
+          <Route path="/voting/664b20f7cbd11e4bca2386c8" element={<App />} />
         </Routes>
       </Router>
     </ThemeProvider>
