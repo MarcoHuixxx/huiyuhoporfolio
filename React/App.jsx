@@ -367,12 +367,9 @@ function App() {
     console.log("votePageIsOpen:", votePageIsOpen);
     if (!votePageIsOpen || !voteDialogIsOpen) {
       if (!votePageIsOpen) {
-        setSelectedParticipant({});
+        // setSelectedParticipant({});
         setVoteDialogIsOpen(false);
       }
-      console.log(
-        "hihihihihihihidwhqiobdouqwboudbqwoubdouqwbvoudvqwouvduoqvwoudvqwouvdouqvwuovdoq"
-      );
 
       //redirect to home page after vote success and close the dialog
       if (isVoteSuccess) {
