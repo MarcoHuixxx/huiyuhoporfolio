@@ -111,9 +111,7 @@ function App() {
 
           console.log("participantListResult:", participantListResult);
           if (participantListResult?.data?.length > 0) {
-            const thirdList = participantListResult?.data
-              .sort((a, b) => b.votes - a.votes)
-              .slice(0, 3);
+            const thirdList = participantListResult?.data.slice(0, 3);
             setThirdRankingList(thirdList);
             setRankingList(participantListResult.data);
           }
@@ -338,7 +336,8 @@ function App() {
   useEffect(() => {
     const iswewaClubIdValidHandler = () => {
       const iswewaClubIdValidVar = wewaClubId
-        ? wewaClubId.length === 11 && wewaClubId.startsWith("WWC")
+        ? wewaClubId.length === 11 &&
+          wewaClubId.toLocaleUpperCase().startsWith("WWC")
         : true;
 
       setIswewaClubIdValid(iswewaClubIdValidVar);
@@ -838,13 +837,24 @@ function App() {
           {!showOptDialog ? (
             <Box
               sx={{
-                padding: "40px",
+                paddingX: "50px",
+                paddingTop: "50px",
               }}
             >
               {/* <FormControl> */}
-              <InputLabel htmlFor="my-input">電話號碼</InputLabel>
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  color: "#e04478",
+                  fontWeight: "500",
+                }}
+              >
+                電話號碼
+              </Typography>
               <MuiPhoneNumber
-                sx={{ "& svg": { height: "1em" } }}
+                sx={{
+                  "& svg": { height: "1em" },
+                }}
                 defaultCountry={"hk"}
                 value={phoneNumber}
                 onChange={(value) => setPhoneNumber(value)}
@@ -858,51 +868,68 @@ function App() {
               ) : (
                 ""
               )}
-              <InputLabel
-                htmlFor="my-input"
+              <Typography
                 sx={{
+                  fontSize: "16px",
+                  color: "#e04478",
+                  fontWeight: "500",
                   marginTop: "20px",
                 }}
               >
                 Wewa Club 會員編號 (如有)
-              </InputLabel>
+              </Typography>
               <Input
                 id="my-input"
                 aria-describedby="my-helper-text"
                 value={wewaClubId}
                 onChange={(e) => setWewaClubId(e.target.value)}
+                sx={{
+                  width: "100%",
+                }}
               />
               {wewaClubId !== "" && !iswewaClubIdValid ? (
-                <p className="inputErrorText">
-                  Wewa Club 會員編號無效 (只能投取1票)
-                </p>
+                <p className="inputErrorText">Wewa Club 會員編號無效</p>
               ) : wewaClubId !== "" ? (
-                <p className="inputSuccessText">
-                  Wewa Club 會員編號有效 (現在可以投取2票)
-                </p>
+                <p className="inputSuccessText">Wewa Club 會員編號有效</p>
               ) : (
                 ""
               )}
-              <InputLabel
-                id="demo-simple-select-label"
+
+              <Typography
                 sx={{
+                  fontSize: "16px",
+                  color: "#e04478",
+                  fontWeight: "500",
                   marginTop: "20px",
                   marginBottom: "10px",
                 }}
               >
                 投取票數
-              </InputLabel>
+              </Typography>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={votes}
                 onChange={(e) => setVotes(e.target.value)}
+                sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor:
+                      votes === 0 && confirmVoteIsClicked ? "red" : "#e04478",
+                    borderWidth: votes === 0 && confirmVoteIsClicked ? 2 : 1,
+                  },
+                }}
               >
                 <MenuItem value={0}>-請選擇-</MenuItem>
                 <MenuItem value={1}>1</MenuItem>
-                {wewaClubId !== "" && iswewaClubIdValid && (
-                  <MenuItem value={2}>2</MenuItem>
-                )}
+                <MenuItem
+                  value={2}
+                  disabled={!(wewaClubId !== "" && iswewaClubIdValid)}
+                >
+                  {wewaClubId !== "" && iswewaClubIdValid
+                    ? "2"
+                    : "2 (Wewa Club會員)"}
+                </MenuItem>
               </Select>
               <p className="inputErrorText">
                 {votes === 0 && confirmVoteIsClicked ? "請選擇投票數" : ""}
@@ -910,9 +937,11 @@ function App() {
 
               <Box
                 sx={{
-                  marginTop: "20px",
+                  marginTop: "40px",
                   display: "flex",
                   justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
                 }}
               >
                 <LoadingButton
@@ -944,7 +973,7 @@ function App() {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  marginTop: "20px",
+                  // marginTop: "40px",
                 }}
               >
                 <p className="inputErrorText">{errorMessage}</p>
