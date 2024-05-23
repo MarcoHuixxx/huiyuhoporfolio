@@ -839,6 +839,7 @@ function App() {
               sx={{
                 paddingX: "50px",
                 paddingTop: "50px",
+                paddingBottom: "20px",
               }}
             >
               {/* <FormControl> */}
