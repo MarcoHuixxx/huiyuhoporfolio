@@ -347,10 +347,11 @@ function App() {
 
   useEffect(() => {
     const iswewaClubIdValidHandler = () => {
-      const iswewaClubIdValidVar = wewaClubId
-        ? wewaClubId.length === 11 &&
-          wewaClubId.toLocaleUpperCase().startsWith("WWC")
-        : true;
+      const iswewaClubIdValidVar =
+        wewaClubId !== ""
+          ? wewaClubId.length === 11 &&
+            wewaClubId.toLocaleUpperCase().startsWith("WWC")
+          : false;
 
       if (iswewaClubIdValidVar) {
         setVotes(2);
@@ -399,7 +400,7 @@ function App() {
       setWewaClubId("");
       setVotes(0);
       setOtp("");
-      setIswewaClubIdValid(true);
+      setIswewaClubIdValid(false);
       setShowOptDialog(false);
       setConfirmVoteIsClicked(false);
       if (!votePageIsOpen) {
@@ -949,10 +950,12 @@ function App() {
                   width: "100%",
                 }}
               />
-              {wewaClubId !== "" && !iswewaClubIdValid ? (
-                <p className="inputErrorText">Wewa Club 會員編號無效</p>
-              ) : wewaClubId !== "" ? (
-                <p className="inputSuccessText">Wewa Club 會員編號有效</p>
+              {wewaClubId !== "" ? (
+                !iswewaClubIdValid ? (
+                  <p className="inputErrorText">Wewa Club 會員編號無效</p>
+                ) : (
+                  <p className="inputSuccessText">Wewa Club 會員編號有效</p>
+                )
               ) : (
                 ""
               )}
@@ -985,13 +988,8 @@ function App() {
               >
                 <MenuItem value={0}>-請選擇-</MenuItem>
                 <MenuItem value={1}>1</MenuItem>
-                <MenuItem
-                  value={2}
-                  disabled={!(wewaClubId !== "" && iswewaClubIdValid)}
-                >
-                  {wewaClubId !== "" && iswewaClubIdValid
-                    ? "2"
-                    : "2 (Wewa Club會員)"}
+                <MenuItem value={2} disabled={!iswewaClubIdValid}>
+                  2 (Wewa Club會員)
                 </MenuItem>
               </Select>
               <p className="inputErrorText">
