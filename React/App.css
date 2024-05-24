@@ -53,7 +53,7 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .section {
-  margin: 0 0 4rem 0;
+  margin: 0 0 6rem 0;
 }
 
 .columnBox {
@@ -100,13 +100,20 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .voteMethodText {
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 200;
   /* white-space: nowrap; */
 }
 
+.joinMemberText {
+  text-decoration: underline;
+  font-size: 18px;
+  font-weight: 600;
+  /* white-space: nowrap; */
+}
+
 .voteMethodTextBold {
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 900;
   /* white-space: nowrap; */
 }
@@ -120,6 +127,12 @@ span p label h1 h2 h3 h4 h5 h6 {
   .voteMethodTextBold {
     font-size: 12px;
     font-weight: 900;
+    /* white-space: nowrap; */
+  }
+
+  .joinMemberText {
+    font-size: 14px;
+    font-weight: 600;
     /* white-space: nowrap; */
   }
 }
@@ -199,6 +212,7 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .eventCountDownDateText {
+  font-family: "Noto Sans HK", sans-serif;
   margin-left: 2px;
   font-size: 10px;
   font-weight: 100;

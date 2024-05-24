@@ -72,6 +72,7 @@ function App() {
   const [iswewaClubIdValid, setIswewaClubIdValid] = useState(true);
   const [showOptDialog, setShowOptDialog] = useState(false);
   const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.up("sm"));
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isOptValid, setIsOptValid] = useState(false);
@@ -889,7 +890,7 @@ function App() {
             direction="up"
             closeIcon
           >
-            {!showOptDialog ? (
+            {false ? (
               <Box
                 sx={{
                   paddingX: "50px",
@@ -1051,7 +1052,7 @@ function App() {
               <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
                 {/* </FormControl> */}
               </Box>
-            ) : isVoteSuccess ? (
+            ) : false ? (
               (console.log("isVoteSuccessXXXXXX:", isVoteSuccess),
               (
                 <Box
@@ -1070,12 +1071,12 @@ function App() {
               <Box
                 sx={{
                   paddingY: {
-                    xs: "10px",
-                    md: "40px",
+                    xs: "20px",
+                    sm: "40px",
                   },
                   paddingX: {
-                    xs: "5px",
-                    md: "40px",
+                    xs: "15px",
+                    sm: "40px",
                   },
                 }}
               >
@@ -1085,7 +1086,15 @@ function App() {
                     marginBottom: "20px",
                   }}
                 >
-                  請輸入6位數字的手機驗證碼
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      color: "#e04478",
+                      fontWeight: "500",
+                    }}
+                  >
+                    請輸入6位數字的手機驗證碼
+                  </Typography>
                 </InputLabel>
                 <MuiOtpInput
                   TextFieldsProps={{ size: isMd ? "large" : "small" }}
@@ -1093,6 +1102,7 @@ function App() {
                   onChange={(newValue) => {
                     setOtp(newValue);
                   }}
+                  gap={isSm ? 2 : 1}
                   length={6}
                   autoFocus
                   // validateChar={validateChar}
@@ -1196,7 +1206,7 @@ function App() {
                   container
                   sx={{
                     display: showVoteMethod ? "block" : "none",
-                    padding: "10px 0px",
+                    padding: "50px 0px",
                   }}
                 >
                   <Grid item xs={12}>
@@ -1217,7 +1227,7 @@ function App() {
                       </Typography>
                       <Stack
                         direction="column"
-                        spacing={0}
+                        spacing={isMd ? 3 : 2}
                         sx={{
                           fontFamily: "Noto Sans HK",
                         }}
@@ -1292,10 +1302,10 @@ function App() {
                               position: "absolute",
                               right: {
                                 xs: "10%",
-                                sm: "50%",
-                                md: "50%",
+                                sm: "30%",
+                                md: "40%",
                               },
-                              bottom: "-20px",
+                              bottom: "-30px",
                               ":hover": {
                                 backgroundColor: "#e04478",
                               },
@@ -1313,9 +1323,7 @@ function App() {
                               );
                             }}
                           >
-                            <span className="voteMethodTextBold">
-                              立即登記會員
-                            </span>
+                            <span className="joinMemberText">立即登記會員</span>
                           </Button>
                         </Item>
                         <Item className="flexRow">
@@ -1591,6 +1599,7 @@ function App() {
                         className="flexRow"
                         sx={{
                           cursor: "pointer",
+                          paddingBottom: "10px",
                         }}
                         onClick={() => {
                           onParticipantClick(item);
@@ -1600,13 +1609,13 @@ function App() {
                           display="inline"
                           sx={{
                             fontSize: {
-                              xs: "16px",
-                              sm: "18px",
-                              md: "20px",
+                              xs: "20px",
+                              sm: "22px",
+                              md: "24px",
                             },
                             color: "#e04478",
                             fontWeight: "bold",
-                            marginRight: "3px",
+                            marginRight: "6px",
                             fontFamily: "gensen font master",
                           }}
                         >
