@@ -405,6 +405,13 @@ function App() {
     }
   }, [votePageIsOpen, voteDialogIsOpen]);
 
+  useEffect(() => {
+    //reform phone to +852
+    if (!phoneNumber.startsWith("+852") && phoneNumber.length > 0) {
+      setPhoneNumber("+852");
+    }
+  }, [phoneNumber]);
+
   return (
     <Box className="PageContainer">
       <Dialog
@@ -1159,7 +1166,8 @@ function App() {
                           sm: "32px",
                           md: "36px",
                         },
-                        fontWeight: "bold",
+                        fontWeight: "900",
+                        fontFamily: "Hiragino Sans GB W05 W4",
                       }}
                     >
                       投票方法
@@ -1301,6 +1309,7 @@ function App() {
                     md: "36px",
                   },
                   fontWeight: "bold",
+                  fontFamily: "Hiragino Sans GB W05 W4",
                 }}
               >
                 投票走勢
@@ -1368,6 +1377,7 @@ function App() {
                               className="rankingNameText"
                               sx={{
                                 fontSize: 18 - index * 4 + "px",
+                                fontFamily: "Hiragino Sans GB W05 W4",
                               }}
                             >
                               {item.participationNo}
@@ -1376,6 +1386,7 @@ function App() {
                               className="rankingNameText"
                               sx={{
                                 fontSize: 18 - index * 4 + "px",
+                                fontFamily: "Hiragino Sans GB W05 W4",
                               }}
                             >
                               {item.chineseName}
@@ -1384,6 +1395,7 @@ function App() {
                               className="rankingNameText"
                               sx={{
                                 fontSize: 18 - index * 4 + "px",
+                                fontFamily: "Hiragino Sans GB W05 W4",
                               }}
                             >
                               {item.name}
@@ -1422,6 +1434,8 @@ function App() {
                     sm: "32px",
                     md: "36px",
                   },
+                  fontFamily: "Hiragino Sans GB W05 W4",
+                  fontWeight: "100",
                 }}
               >
                 投選
@@ -1436,6 +1450,7 @@ function App() {
                     md: "36px",
                   },
                   fontWeight: "bold",
+                  fontFamily: "Hiragino Sans GB W05 W4",
                 }}
               >
                 你
@@ -1449,6 +1464,8 @@ function App() {
                     sm: "32px",
                     md: "36px",
                   },
+                  fontFamily: "Hiragino Sans GB W05 W4",
+                  fontWeight: "100",
                 }}
               >
                 想
@@ -1463,6 +1480,7 @@ function App() {
                     md: "36px",
                   },
                   fontWeight: "bold",
+                  fontFamily: "Hiragino Sans GB W05 W4",
                 }}
               >
                 復活的選手

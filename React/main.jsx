@@ -7,9 +7,12 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Noto Sans HK", "Hiragino Sans", "gensen-font-master"].join(
-      ","
-    ),
+    fontFamily: [
+      "Noto Sans HK",
+      "Hiragino Sans",
+      "gensen-font-master",
+      "Hiragino Sans GB W05 W4",
+    ].join(","),
   },
 });
 
