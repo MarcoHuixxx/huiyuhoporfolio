@@ -92,14 +92,13 @@ function App() {
       try {
         if (!isListLoaded) {
           const windowLocation = window.location.href;
-          console.log("windowLocation:", windowLocation);
+
           const isAdminVar = windowLocation.includes(
             "664b20f7cbd11e4bca2386c8"
           );
 
           setIsAdmin(isAdminVar);
 
-          console.log("isAdmin:", isAdmin);
           const getEventResult = await axios.get(`/event/${eventId}`);
           if (getEventResult?.data?.timeEnd) {
             setEventDeadlineDate(getEventResult.data.timeEnd);
@@ -116,7 +115,6 @@ function App() {
           );
           setTotalVotes(totalVotes);
 
-          console.log("participantListResult:", participantListResult);
           if (participantListResult?.data?.participants?.length > 0) {
             const thirdList = participantListResult?.data.participants?.slice(
               0,
@@ -135,7 +133,6 @@ function App() {
         setRankingList([]);
         setThirdRankingList([]);
         setWindowErrorMesssage("獲取排名列表失敗");
-        console.log("error:", error);
       }
     };
     fetchRankingList();
@@ -148,13 +145,12 @@ function App() {
   };
 
   const onParticipantClick = (item) => {
-    console.log("item", item);
     setVotePageIsOpen(true);
     setSelectedParticipant(item);
   };
 
   const onVoteButonClick = (item) => {
-    console.log("item", item);
+    //console.log("item", item);
     setVoteDialogIsOpen(true);
     setShowOptDialog(false);
   };
@@ -162,7 +158,7 @@ function App() {
   const onConfirmVote = async () => {
     try {
       setIsConfirmVoteLoading(true);
-      console.log("onConfirmVote");
+      //console.log("onConfirmVote");
       setConfirmVoteIsClicked(true);
       if (!isPhoneValid || votes === 0) {
         setIsConfirmVoteLoading(false);
@@ -179,7 +175,7 @@ function App() {
       }
 
       const isPhoneVerified = await checkIsPhoneVerified();
-      console.log("isPhoneVerified:", isPhoneVerified);
+      //console.log("isPhoneVerified:", isPhoneVerified);
       if (isPhoneVerified.success) {
         setIsPhoneVerified(true);
         setErrorMesssage("");
@@ -196,7 +192,7 @@ function App() {
       }
       const senOptResult = await sendOtp();
       // const senOptResult = { success: true };
-      console.log("senOptResult:", senOptResult);
+      //console.log("senOptResult:", senOptResult);
 
       if (senOptResult.success) {
         setErrorMesssage("");
@@ -206,7 +202,7 @@ function App() {
       }
       setIsConfirmVoteLoading(false);
     } catch (error) {
-      console.log("error:", error);
+      //console.log("error:", error);
       setIsConfirmVoteLoading(false);
       setErrorMesssage("發送驗證碼失敗, 請重試一次");
     }
@@ -215,10 +211,10 @@ function App() {
   const checkIsVotedToday = async () => {
     try {
       const result = await axios.get(`/check-vote/${phoneNumber}/${eventId}`);
-      console.log("checkIsVotedToday result:", result);
+      //console.log("checkIsVotedToday result:", result);
       return result.data.isVoted;
     } catch (error) {
-      console.log("error:", error);
+      //console.log("error:", error);
       return true;
     }
   };
@@ -228,10 +224,10 @@ function App() {
       const result = await axios.get(
         `/check-phone-verified/${phoneNumber}/${eventId}`
       );
-      console.log("checkIsPhoneVerified result:", result);
+      //console.log("checkIsPhoneVerified result:", result);
       return { success: result.data.isPhoneVerified };
     } catch (error) {
-      console.log("error:", error);
+      //console.log("error:", error);
       return { success: false, error: true };
     }
   };
@@ -247,7 +243,7 @@ function App() {
       }
       const result = await axios.get(`/verify-otp/${phoneNumber}/${otp}`);
       // const result = { data: { success: true } };
-      console.log("verify result:", result);
+      //console.log("verify result:", result);
 
       if (result.data.success) {
         setIsOptValid(true);
@@ -271,7 +267,7 @@ function App() {
         setIsOptValid(false);
       }
       setIsConfirmOptLoading(false);
-      console.log("error:", error);
+      //console.log("error:", error);
     }
   };
 
@@ -286,12 +282,12 @@ function App() {
         participantId: selectedParticipant.id,
       };
       const voteResult = await axios.post("/vote", voteData);
-      console.log("voteResult:", voteResult);
+      //console.log("voteResult:", voteResult);
       return {
         success: voteResult.data.success,
       };
     } catch (error) {
-      console.log("error:", error);
+      //console.log("error:", error);
       return {
         success: false,
       };
@@ -304,14 +300,14 @@ function App() {
         phoneNumber: phoneNumber,
       });
 
-      console.log("sendOtp sendOtp result:", result);
+      //console.log("sendOtp sendOtp result:", result);
 
       return {
         success: result.data.success,
       };
-      console.log("result:", result);
+      //console.log("result:", result);
     } catch (error) {
-      console.log("error:", error);
+      //console.log("error:", error);
       return {
         success: false,
       };
@@ -324,7 +320,7 @@ function App() {
         const voteResult = await makeVote();
         // const voteResult = { data: { success: true } };
 
-        console.log("voteResult:", voteResult);
+        //console.log("voteResult:", voteResult);
 
         if (voteResult.success) {
           // setVoteDialogIsOpen(false);
@@ -339,9 +335,9 @@ function App() {
   }, [isPhoneVerified]);
 
   useEffect(() => {
-    console.log("errorMessage:", errorMessage);
+    //console.log("errorMessage:", errorMessage);
     if (errorMessage !== "") {
-      console.log("errorMessage   dscdsnclnsdlnjl:");
+      //console.log("errorMessage   dscdsnclnsdlnjl:");
       setConfirmVoteIsClicked(false);
     }
   }, [errorMessage]);
@@ -355,10 +351,10 @@ function App() {
           : false;
 
       if (iswewaClubIdValidVar) {
-        console.log("setVotes 2");
+        //console.log("setVotes 2");
         setVotes(2);
       } else {
-        console.log("setVotes 0");
+        //console.log("setVotes 0");
         setVotes(0);
       }
 
@@ -373,8 +369,8 @@ function App() {
       const isPhoneValidVar = !(
         phoneNumber === "" || phoneNumber?.length !== 14
       );
-      console.log("phoneNumber:", phoneNumber.length);
-      console.log("isPhoneValidVar:", isPhoneValidVar);
+      //console.log("phoneNumber:", phoneNumber.length);
+      //console.log("isPhoneValidVar:", isPhoneValidVar);
       setIsPhoneValid(isPhoneValidVar);
     };
 
@@ -386,7 +382,7 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("votePageIsOpen:", votePageIsOpen);
+    //console.log("votePageIsOpen:", votePageIsOpen);
     if (!votePageIsOpen || !voteDialogIsOpen) {
       //redirect to home page after vote success and close the dialog
       if (isVoteSuccess) {
@@ -394,7 +390,7 @@ function App() {
         setVoteDialogIsOpen(false);
       }
 
-      console.log("voteDialogIsOpen:", voteDialogIsOpen);
+      //console.log("voteDialogIsOpen:", voteDialogIsOpen);
       setIsPhoneVerified(false);
       setErrorMesssage("");
       setIsOptChecked(false);
@@ -890,7 +886,7 @@ function App() {
             direction="up"
             closeIcon
           >
-            {false ? (
+            {!showOptDialog ? (
               <Box
                 sx={{
                   paddingX: "50px",
@@ -1052,21 +1048,19 @@ function App() {
               <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
                 {/* </FormControl> */}
               </Box>
-            ) : false ? (
-              (console.log("isVoteSuccessXXXXXX:", isVoteSuccess),
-              (
-                <Box
-                  sx={{
-                    padding: "40px",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Alert variant="outlined" severity="success">
-                    投票成功
-                  </Alert>
-                </Box>
-              ))
+            ) : isVoteSuccess ? (
+              //console.log("isVoteSuccessXXXXXX:", isVoteSuccess),
+              <Box
+                sx={{
+                  padding: "40px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Alert variant="outlined" severity="success">
+                  投票成功
+                </Alert>
+              </Box>
             ) : (
               <Box
                 sx={{
