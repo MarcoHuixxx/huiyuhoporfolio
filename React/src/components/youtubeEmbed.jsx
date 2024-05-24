@@ -6,14 +6,15 @@ const YoutubeEmbed = ({ embedId }) => (
   <Box
     className="video-responsive"
     sx={{
-      borderRadius: 4,
       marginLeft: {
         xs: 0,
         md: "10px",
       },
+      // overflow: "hidden",
     }}
   >
     <iframe
+      borderRadius="4"
       width="853"
       height="480"
       src={`https://www.youtube.com/embed/${embedId}`}

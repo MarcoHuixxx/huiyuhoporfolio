@@ -368,11 +368,6 @@ function App() {
   useEffect(() => {
     console.log("votePageIsOpen:", votePageIsOpen);
     if (!votePageIsOpen || !voteDialogIsOpen) {
-      if (!votePageIsOpen) {
-        // setSelectedParticipant({});
-        setVoteDialogIsOpen(false);
-      }
-
       //redirect to home page after vote success and close the dialog
       if (isVoteSuccess) {
         setIsListLoaded(false);
@@ -393,6 +388,10 @@ function App() {
       setIswewaClubIdValid(true);
       setShowOptDialog(false);
       setConfirmVoteIsClicked(false);
+      if (!votePageIsOpen) {
+        setSelectedParticipant({});
+        setVoteDialogIsOpen(false);
+      }
     }
   }, [votePageIsOpen, voteDialogIsOpen]);
 
