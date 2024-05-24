@@ -1,13 +1,19 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
 
-/* @font-face {
+@font-face {
   font-family: "Hiragino Sans";
-  src: url("assets/fonts/Hiragino_Sans/1.ttc");
+  src: url("assets/fonts/Hiragino_Sans/2.woff") format("woff");
+}
+
+/* @font-face {
+  font-family: "gensen-font-master";
+  src: url("assets/fonts/gensen-font-master");
 } */
 
 @font-face {
-  font-family: "gensen-font-master";
-  src: url("assets/fonts/gensen-font-master");
+  font-family: "gensen font master";
+  src: url("assets/fonts/gensen-font-master/GenSenRounded-H.woff")
+    format("woff");
 }
 
 .notoSansHk {
@@ -16,9 +22,9 @@
   font-style: normal;
 }
 
-.hiraginoSans {
+/* .hiraginoSans {
   font-family: "Hiragino Sans GB W05 W4";
-}
+} */
 
 #root {
   display: flex;

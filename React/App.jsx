@@ -463,9 +463,11 @@ function App() {
                           display={"inline"}
                           sx={{
                             fontSize: {
-                              xs: "14px",
-                              md: "18px",
+                              xs: "20px",
+                              md: "24px",
                             },
+                            marginRight: "5px",
+                            fontFamily: "gensen font master",
                           }}
                         >
                           {selectedParticipant.chineseName}
@@ -477,6 +479,7 @@ function App() {
                               xs: "14px",
                               md: "18px",
                             },
+                            fontFamily: "gensen font master",
                           }}
                         >
                           {selectedParticipant.name}
@@ -496,6 +499,7 @@ function App() {
                               xs: "14px",
                               md: "18px",
                             },
+                            fontFamily: "gensen font master",
                           }}
                         >
                           Year {selectedParticipant.studyingYear}
@@ -546,6 +550,7 @@ function App() {
                             xs: "14px",
                             md: "18px",
                           },
+                          fontFamily: "gensen font master",
                         }}
                       >
                         {selectedParticipant.university}
@@ -727,10 +732,25 @@ function App() {
                         參賽者
                       </Typography>
                       <Typography className="votePageInfoText">
-                        <Typography display={"inline"}>
+                        <Typography
+                          display={"inline"}
+                          sx={{
+                            fontFamily: "gensen font master",
+                            fontSize: {
+                              xs: "20px",
+                              md: "24px",
+                            },
+                            marginRight: "5px",
+                          }}
+                        >
                           {selectedParticipant.chineseName}
                         </Typography>
-                        <Typography display={"inline"}>
+                        <Typography
+                          display={"inline"}
+                          sx={{
+                            fontFamily: "gensen font master",
+                          }}
+                        >
                           {selectedParticipant.name}
                         </Typography>
                       </Typography>
@@ -741,11 +761,21 @@ function App() {
                           flexDirection: "row",
                         }}
                       >
-                        <Typography display={"inline"}>
+                        <Typography
+                          display={"inline"}
+                          sx={{
+                            fontFamily: "gensen font master",
+                          }}
+                        >
                           Year {selectedParticipant.studyingYear}
                         </Typography>
                       </Box>
-                      <Typography className="votePageInfoText">
+                      <Typography
+                        className="votePageInfoText"
+                        sx={{
+                          fontFamily: "gensen font master",
+                        }}
+                      >
                         {selectedParticipant.university}
                       </Typography>
                       <Box
@@ -1167,7 +1197,7 @@ function App() {
                           md: "36px",
                         },
                         fontWeight: "900",
-                        fontFamily: "Hiragino Sans GB W05 W4",
+                        fontFamily: "Hiragino Sans",
                       }}
                     >
                       投票方法
@@ -1309,7 +1339,7 @@ function App() {
                     md: "36px",
                   },
                   fontWeight: "bold",
-                  fontFamily: "Hiragino Sans GB W05 W4",
+                  fontFamily: "Hiragino Sans",
                 }}
               >
                 投票走勢
@@ -1377,7 +1407,7 @@ function App() {
                               className="rankingNameText"
                               sx={{
                                 fontSize: 18 - index * 4 + "px",
-                                fontFamily: "Hiragino Sans GB W05 W4",
+                                fontFamily: "gensen font master",
                               }}
                             >
                               {item.participationNo}
@@ -1386,7 +1416,7 @@ function App() {
                               className="rankingNameText"
                               sx={{
                                 fontSize: 18 - index * 4 + "px",
-                                fontFamily: "Hiragino Sans GB W05 W4",
+                                fontFamily: "gensen font master",
                               }}
                             >
                               {item.chineseName}
@@ -1395,7 +1425,7 @@ function App() {
                               className="rankingNameText"
                               sx={{
                                 fontSize: 18 - index * 4 + "px",
-                                fontFamily: "Hiragino Sans GB W05 W4",
+                                fontFamily: "gensen font master",
                               }}
                             >
                               {item.name}
@@ -1434,7 +1464,7 @@ function App() {
                     sm: "32px",
                     md: "36px",
                   },
-                  fontFamily: "Hiragino Sans GB W05 W4",
+                  fontFamily: "Hiragino Sans",
                   fontWeight: "100",
                 }}
               >
@@ -1450,7 +1480,7 @@ function App() {
                     md: "36px",
                   },
                   fontWeight: "bold",
-                  fontFamily: "Hiragino Sans GB W05 W4",
+                  fontFamily: "Hiragino Sans",
                 }}
               >
                 你
@@ -1464,7 +1494,7 @@ function App() {
                     sm: "32px",
                     md: "36px",
                   },
-                  fontFamily: "Hiragino Sans GB W05 W4",
+                  fontFamily: "Hiragino Sans",
                   fontWeight: "100",
                 }}
               >
@@ -1480,7 +1510,7 @@ function App() {
                     md: "36px",
                   },
                   fontWeight: "bold",
-                  fontFamily: "Hiragino Sans GB W05 W4",
+                  fontFamily: "Hiragino Sans",
                 }}
               >
                 復活的選手
@@ -1561,6 +1591,7 @@ function App() {
                           color: "#e04478",
                           fontWeight: "bold",
                           marginRight: "3px",
+                          fontFamily: "gensen font master",
                         }}
                       >
                         {item.participationNo}
@@ -1575,6 +1606,7 @@ function App() {
                           },
                           color: "#e04478",
                           marginRight: "2px",
+                          fontFamily: "gensen font master",
                         }}
                       >
                         {item.chineseName}
@@ -1588,6 +1620,7 @@ function App() {
                             md: "14px",
                           },
                           color: "#e04478",
+                          fontFamily: "gensen font master",
                         }}
                       >
                         {item.name}

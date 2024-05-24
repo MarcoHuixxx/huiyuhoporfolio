@@ -12,6 +12,7 @@ const theme = createTheme({
       "Hiragino Sans",
       "gensen-font-master",
       "Hiragino Sans GB W05 W4",
+      "gensen font master",
     ].join(","),
   },
 });
