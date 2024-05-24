@@ -86,22 +86,24 @@ function App() {
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
   useEffect(() => {
-    const windowLocation = window.location.href;
-    if (windowLocation.includes("664b20f7cbd11e4bca2386c8")) {
-      setIsAdmin(true);
-    }
-  }, []);
-
-  useEffect(() => {
     const fetchRankingList = async () => {
       try {
         if (!isListLoaded) {
+          const windowLocation = window.location.href;
+          console.log("windowLocation:", windowLocation);
+          const isAdminVar = windowLocation.includes(
+            "664b20f7cbd11e4bca2386c8"
+          );
+
+          setIsAdmin(isAdminVar);
+
+          console.log("isAdmin:", isAdmin);
           const getEventResult = await axios.get(`/event/${eventId}`);
           if (getEventResult?.data?.timeEnd) {
             setEventDeadlineDate(getEventResult.data.timeEnd);
           }
           const participantListResult = await axios.get(
-            `/participant/${eventId}/${roundNumber}/100`
+            `/participant/${eventId}/${roundNumber}/100/${isAdminVar}`
           );
 
           const totalVotes = participantListResult.data.reduce((acc, item) => {
@@ -178,7 +180,7 @@ function App() {
         return;
       } else if (isPhoneVerified.error) {
         setIsConfirmVoteLoading(false);
-        setErrorMesssage("驗證電話號碼失敗, 請再試一次");
+        setErrorMesssage("發送驗證碼失敗, 請重試一次");
         return;
       }
       const senOptResult = await sendOtp();
@@ -189,13 +191,13 @@ function App() {
         setErrorMesssage("");
         setShowOptDialog(true);
       } else {
-        setErrorMesssage("發送驗證碼失敗, 請再試一次");
+        setErrorMesssage("發送驗證碼失敗, 請重試一次");
       }
       setIsConfirmVoteLoading(false);
     } catch (error) {
       console.log("error:", error);
       setIsConfirmVoteLoading(false);
-      setErrorMesssage("發送驗證碼失敗, 請再試一次");
+      setErrorMesssage("發送驗證碼失敗, 請重試一次");
     }
   };
 
@@ -847,22 +849,34 @@ function App() {
                   fontWeight: "500",
                 }}
               >
-                電話號碼
+                電話號碼 <span>*</span>
               </Typography>
-              <MuiPhoneNumber
+              <Box
                 sx={{
-                  "& svg": { height: "1em" },
+                  paddingY:
+                    confirmVoteIsClicked && !isPhoneValid ? "10px" : "0px",
+                  paddingX:
+                    confirmVoteIsClicked && !isPhoneValid ? "2px" : "0px",
+                  border:
+                    confirmVoteIsClicked && !isPhoneValid
+                      ? "2px solid red"
+                      : "",
+                  borderRadius: "5px",
                 }}
-                defaultCountry={"hk"}
-                value={phoneNumber}
-                onChange={(value) => setPhoneNumber(value)}
-                onlyCountries={["hk"]}
-              />
+              >
+                <MuiPhoneNumber
+                  sx={{
+                    "& svg": { height: "1em" },
+                  }}
+                  defaultCountry={"hk"}
+                  value={phoneNumber}
+                  onChange={(value) => setPhoneNumber(value)}
+                  onlyCountries={["hk"]}
+                />
+              </Box>
               {(!isPhoneValid && phoneNumber !== "") ||
               (confirmVoteIsClicked && phoneNumber === "") ? (
                 <p className="inputErrorText">請輸入8位數字電話號碼</p>
-              ) : phoneNumber !== "" ? (
-                <p className="inputSuccessText">電話號碼正確</p>
               ) : (
                 ""
               )}
@@ -888,7 +902,9 @@ function App() {
               {wewaClubId !== "" && !iswewaClubIdValid ? (
                 <p className="inputErrorText">Wewa Club 會員編號無效</p>
               ) : wewaClubId !== "" ? (
-                <p className="inputSuccessText">Wewa Club 會員編號有效</p>
+                <p className="inputSuccessText">
+                  Wewa Club 會員編號有效 (現可選擇投取2票)
+                </p>
               ) : (
                 ""
               )}
@@ -902,7 +918,7 @@ function App() {
                   marginBottom: "10px",
                 }}
               >
-                投取票數
+                投取票數 <span>*</span>
               </Typography>
               <Select
                 labelId="demo-simple-select-label"

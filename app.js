@@ -60,6 +60,11 @@ const voteRecordSchema = new mongoose.Schema({
   votedAt: Date,
 });
 
+const errorLogSchema = new mongoose.Schema({
+  error: String,
+  time: Date,
+});
+
 
 
 const participantSchema = new mongoose.Schema({
@@ -93,6 +98,7 @@ const participantSchema = new mongoose.Schema({
 const voteRecord = mongoose.model("voteRecord", voteRecordSchema);
 const event = mongoose.model("event", eventSchema);
 const participant = mongoose.model("participant", participantSchema);
+const errorLog = mongoose.model("errorLog", errorLogSchema);
 
 
 // const participantCount = await participant.countDocuments();
@@ -183,6 +189,14 @@ app.get('/', (req, res) => {
 app.get('/send-otp/:phone', async (req, res) => {
   try {
     const phone = req.params.phone;
+    console.log("phone:", phone)
+    console.log("phone.length:", phone.length)
+    console.log("phone.startsWith(+852):", phone.startsWith("+852"))
+
+    if (phone.length !== 14 || !phone.startsWith("+852")) {
+      return res.status(400).send({ success: false, message: 'Invalid Phone Number' });
+    }
+
     const result = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
       .verifications
       .create({
@@ -192,6 +206,7 @@ app.get('/send-otp/:phone', async (req, res) => {
 
     res.send({ success: true });
   } catch (error) {
+    errorLog.create({ error: error, time: new Date() });
     console.error('Error sending OTP:', error);
     res.status(500).send({ success: false });
   }
@@ -202,11 +217,19 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
     const voterPhone = req.params.phone;
     const eventId = req.params.eventId;
 
+    if (!voterPhone || !eventId) {
+      return res.status(400).send({ isVoted: false });
+    }
+
     var dayStart = new Date();
-    dayStart.setTime(dayStart.getTime() +8 * 60 * 60 * 1000);
+    dayStart.setHours(0, 0, 0, 0);
+    // dayStart.setHours(dayStart.getHours() - 8);
     let dayEnd = new Date();
     dayEnd.setDate(dayStart.getDate() + 1);
-    dayEnd.setTime(dayEnd.getTime() +8 * 60 * 60 * 1000);
+    dayEnd.setHours(0, 0, 0, 0);
+    // dayEnd.setHours(dayEnd.getHours() - 8);
+    console.log("dayStart:", dayStart)
+    console.log("dayEnd:", dayEnd)
     const voteRecords = await voteRecord.find({
       voterPhone: voterPhone, votedAt: { $gte: dayStart, $lt: dayEnd },
       eventId: eventId
@@ -217,6 +240,7 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
     }
     res.send({ isVoted: false });
   } catch (e) {
+    errorLog.create({ error: error, time: new Date() });
     console.log(e)
     res.send({ isVoted: true, error: e });
   }
@@ -226,6 +250,10 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
   try {
     const phone = req.params.phone;
     const eventId = req.params.eventId;
+    if (!phone || !eventId) {
+      return res.status(400).send({ isPhoneVerified: false });
+    }
+
 
     const voteRecords = await voteRecord.find({
       voterPhone: phone,
@@ -237,6 +265,7 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
     }
     res.send({ isPhoneVerified: false });
   } catch (e) {
+    errorLog.create({ error: error, time: new Date() });
     console.log(e)
     res.send({ isPhoneVerified: false, error: e });
   }
@@ -249,6 +278,9 @@ app.post('/vote', async (req, res) => {
   try {
 
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
+    if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
+      return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
 
     if (voteCount > 2) {
       return res.status(400).send({ success: false, message: 'Vote Count Invalid' });
@@ -297,8 +329,10 @@ app.post('/vote', async (req, res) => {
     }
 
   } catch (e) {
-    res.send({ success: false });
+    errorLog.create({ error: error, time: new Date() });
     console.log(e)
+    res.send({ success: false });
+
   }
 })
 
@@ -306,6 +340,10 @@ app.get('/verify-otp/:phone/:otp', async (req, res) => {
   try {
     const phone = req.params.phone;
     const otp = req.params.otp;
+    if (!phone || !otp) {
+      return res.status(400).send({ success: false });
+    }
+
     const result = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
       .verificationChecks
       .create({ to: phone, code: otp });
@@ -317,6 +355,7 @@ app.get('/verify-otp/:phone/:otp', async (req, res) => {
     }
   } catch (e) {
     console.error('Error verifying OTP:', e);
+    errorLog.create({ error: error, time: new Date() });
     res.status(500).send({ success: false });
   }
 })
@@ -333,11 +372,16 @@ app.get('/event/:event_id', async (req, res) => {
 
 
 
-app.get('/participant/:event_id/:round_number/:limit', async (req, res) => {
+app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res) => {
   try {
     const eventId = req.params.event_id;
     const limit = req.params.limit;
     const roundNumber = req.params.round_number;
+    const isAdmin = req.params.isAdmin === 'true';
+    if (!eventId || !limit || !roundNumber) {
+      return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
+
     const participants = await participant.aggregate(
       [
         {
@@ -362,7 +406,11 @@ app.get('/participant/:event_id/:round_number/:limit', async (req, res) => {
           '$match': {
             'event.round.roundNumber': parseInt(roundNumber)
           }
-        }, {
+        },
+        {
+          '$sort': { 'event.round.voteCount': -1 }
+        },
+        {
           '$project': {
             'id': '$_id',
             'chineseName': '$fullname',
@@ -373,11 +421,8 @@ app.get('/participant/:event_id/:round_number/:limit', async (req, res) => {
             'video': '$event.round.video',
             'instagram': '$ig',
             'image': '$event.round.image',
-            'votes': '$event.round.voteCount'
+            ...(isAdmin ? { 'votes': '$event.round.voteCount' } : {})
           }
-        },
-        {
-          '$sort': { 'votes': -1 }
         },
         {
           '$limit': parseInt(limit)
@@ -391,11 +436,6 @@ app.get('/participant/:event_id/:round_number/:limit', async (req, res) => {
     console.log(e)
   }
 })
-
-
-
-
-
 
 
 app.use(express.static('public'));
