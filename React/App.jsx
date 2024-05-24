@@ -84,6 +84,7 @@ function App() {
   const [isConfirmVoteLoading, setIsConfirmVoteLoading] = useState(false);
   const [isConfirmOptLoading, setIsConfirmOptLoading] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [firstThreeVotes, setFirstThreeVotes] = useState([]);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -106,16 +107,25 @@ function App() {
             `/participant/${eventId}/${roundNumber}/100/${isAdminVar}`
           );
 
-          const totalVotes = participantListResult.data.reduce((acc, item) => {
-            return acc + item.votes;
-          }, 0);
+          const totalVotes = participantListResult.data.participants.reduce(
+            (acc, item) => {
+              return acc + item.votes;
+            },
+            0
+          );
           setTotalVotes(totalVotes);
 
           console.log("participantListResult:", participantListResult);
-          if (participantListResult?.data?.length > 0) {
-            const thirdList = participantListResult?.data.slice(0, 3);
+          if (participantListResult?.data?.participants?.length > 0) {
+            const thirdList = participantListResult?.data.participants?.slice(
+              0,
+              3
+            );
             setThirdRankingList(thirdList);
-            setRankingList(participantListResult.data);
+            setRankingList(participantListResult?.data?.participants);
+            setFirstThreeVotes(
+              participantListResult?.data?.firstThreeRaningPercent
+            );
           }
           setIsListLoaded(true);
         }
@@ -1347,11 +1357,7 @@ function App() {
                               borderRadius: "2px",
                               height: "30px",
                               width:
-                                (
-                                  item.votes / thirdRankingList[0]["votes"]
-                                ).toFixed(2) *
-                                  70 +
-                                "%",
+                                firstThreeVotes[index].toFixed(2) * 70 + "%",
                               marginLeft: "-10px",
                             }}
                           />

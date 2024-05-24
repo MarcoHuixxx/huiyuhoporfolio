@@ -382,7 +382,7 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res)
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
 
-    const participants = await participant.aggregate(
+    let participants = await participant.aggregate(
       [
         {
           '$unwind': {
@@ -421,7 +421,7 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res)
             'video': '$event.round.video',
             'instagram': '$ig',
             'image': '$event.round.image',
-            ...(isAdmin ? { 'votes': '$event.round.voteCount' } : {})
+            'votes': '$event.round.voteCount'
           }
         },
         {
@@ -431,7 +431,23 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res)
       ]
     )
 
-    res.send(participants);
+    const firstVoteCount = participants[0].votes;
+    const secondVoteCountPercent = participants[1].votes / firstVoteCount;
+    const thirdVoteCountPercent = participants[2].votes / firstVoteCount;
+    const firstThreeRaningPercent = [1, secondVoteCountPercent, thirdVoteCountPercent];
+
+    if (!isAdmin) {
+      participants = participants.map((participant) => {
+        return {
+          ...participant,
+          votes: undefined
+        }
+      }
+      )
+    }
+
+
+    res.send({ participants, firstThreeRaningPercent });
   } catch (e) {
     console.log(e)
   }
