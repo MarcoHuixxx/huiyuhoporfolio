@@ -118,6 +118,12 @@ span p label h1 h2 h3 h4 h5 h6 {
   /* white-space: nowrap; */
 }
 
+.voteMethodTextDesc {
+  font-size: 14px;
+  font-weight: 100;
+  /* white-space: nowrap; */
+}
+
 @media screen and (max-width: 600px) {
   .voteMethodText {
     font-size: 12px;
@@ -135,12 +141,12 @@ span p label h1 h2 h3 h4 h5 h6 {
     font-weight: 600;
     /* white-space: nowrap; */
   }
-}
 
-.voteMethodTextDesc {
-  font-size: 14px;
-  font-weight: 100;
-  /* white-space: nowrap; */
+  .voteMethodTextDesc {
+    font-size: 8px;
+    font-weight: 100;
+    /* white-space: nowrap; */
+  }
 }
 
 .sectionTitleBold {
@@ -250,8 +256,8 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .checkedIcon {
-  height: 37px;
-  width: 37px;
+  height: 48px;
+  width: 48px;
 }
 
 @media screen and (max-width: 600px) {
