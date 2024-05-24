@@ -355,6 +355,8 @@ function App() {
 
       if (iswewaClubIdValidVar) {
         setVotes(2);
+      } else {
+        setVotes(0);
       }
 
       setIswewaClubIdValid(iswewaClubIdValidVar);
