@@ -352,6 +352,10 @@ function App() {
           wewaClubId.toLocaleUpperCase().startsWith("WWC")
         : true;
 
+      if (iswewaClubIdValidVar) {
+        setVotes(2);
+      }
+
       setIswewaClubIdValid(iswewaClubIdValidVar);
     };
 
@@ -948,9 +952,7 @@ function App() {
               {wewaClubId !== "" && !iswewaClubIdValid ? (
                 <p className="inputErrorText">Wewa Club 會員編號無效</p>
               ) : wewaClubId !== "" ? (
-                <p className="inputSuccessText">
-                  Wewa Club 會員編號有效 (現可選擇投取2票)
-                </p>
+                <p className="inputSuccessText">Wewa Club 會員編號有效</p>
               ) : (
                 ""
               )}
@@ -979,6 +981,7 @@ function App() {
                     borderWidth: votes === 0 && confirmVoteIsClicked ? 2 : 1,
                   },
                 }}
+                disabled={iswewaClubIdValid && wewaClubId !== ""}
               >
                 <MenuItem value={0}>-請選擇-</MenuItem>
                 <MenuItem value={1}>1</MenuItem>
