@@ -106,9 +106,9 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .joinMemberText {
-  text-decoration: underline;
+  /* text-decoration: underline; */
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   /* white-space: nowrap; */
 }
 
@@ -126,19 +126,19 @@ span p label h1 h2 h3 h4 h5 h6 {
 
 @media screen and (max-width: 600px) {
   .voteMethodText {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 200;
     /* white-space: nowrap; */
   }
   .voteMethodTextBold {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 900;
     /* white-space: nowrap; */
   }
 
   .joinMemberText {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 800;
     /* white-space: nowrap; */
   }
 
