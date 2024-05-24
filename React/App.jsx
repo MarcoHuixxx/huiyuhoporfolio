@@ -354,8 +354,10 @@ function App() {
           : false;
 
       if (iswewaClubIdValidVar) {
+        console.log("setVotes 2");
         setVotes(2);
       } else {
+        console.log("setVotes 0");
         setVotes(0);
       }
 
