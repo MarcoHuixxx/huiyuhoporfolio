@@ -23,7 +23,7 @@ const mongodb = require('mongodb');
 const cors = require("cors")
 
 const corsOptions = {
-  origin: 'http://icmahk.org',
+  origin: 'https://icmahk.org',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
