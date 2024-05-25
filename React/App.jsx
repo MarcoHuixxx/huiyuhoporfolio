@@ -145,8 +145,9 @@ function App() {
   };
 
   const onParticipantClick = (item) => {
-    setVotePageIsOpen(true);
+    window.history.pushState({}, "", `/voting`);
     setSelectedParticipant(item);
+    setVotePageIsOpen(true);
   };
 
   const onVoteButonClick = (item) => {
@@ -333,6 +334,18 @@ function App() {
 
     makeVoteHandler();
   }, [isPhoneVerified]);
+
+  useEffect(() => {
+    const handlePopstate = () => {
+      setVotePageIsOpen(false);
+    };
+
+    window.addEventListener("popstate", handlePopstate);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopstate);
+    };
+  }, []);
 
   useEffect(() => {
     //console.log("errorMessage:", errorMessage);
@@ -622,7 +635,9 @@ function App() {
                       >
                         複賽影片
                       </Typography>
-                      <YoutubeEmbed embedId={selectedParticipant.video} />
+                      {selectedParticipant.video && (
+                        <YoutubeEmbed embedId={selectedParticipant.video} />
+                      )}
                     </Box>
                   </Grid>
                 </Grid>
@@ -870,8 +885,9 @@ function App() {
                       >
                         複賽影片
                       </Typography>
-
-                      <YoutubeEmbed embedId={selectedParticipant.video} />
+                      {selectedParticipant.video && (
+                        <YoutubeEmbed embedId={selectedParticipant.video} />
+                      )}
                     </Box>
                   </Grid>
                 </Grid>
