@@ -141,20 +141,18 @@ app.set('view engine', 'ejs');
 // })
 
 const checkIsFromDomain = (req, res) => {
-  console.log("req.rawHeaders:", req.rawHeaders)
-  if (req.rawHeaders.includes
+  return (req.rawHeaders.includes
     ("https://icmahk.org/") 
-  ) {
-    next();
-  } else {
-    return res.status(400).send({ success: false, message: '求財姐，求大佬放過，嘻嘻' });
-  }
+  );
 }
 
 
 app.get('/send-otp/:phone', async (req, res,next) => {
   try {
-    checkIsFromDomain(req, res,next);
+    const isFromDomain=checkIsFromDomain(req, res);
+    if(!isFromDomain){
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
     const phone = req.params.phone;
     console.log("phone:", phone)
     console.log("phone.length:", phone.length)
@@ -181,7 +179,10 @@ app.get('/send-otp/:phone', async (req, res,next) => {
 
 app.get("/check-vote/:phone/:eventId", async (req, res) => {
   try {
-    console.log("containe:",req.rawHeaders.includes("https://icmahk.org/"))
+    const isFromDomain=checkIsFromDomain(req, res);
+    if(!isFromDomain){
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
     const voterPhone = req.params.phone;
     const eventId = req.params.eventId;
 
@@ -220,6 +221,10 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
 
 app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
   try {
+    const isFromDomain=checkIsFromDomain(req, res);
+    if(!isFromDomain){
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
     const phone = req.params.phone;
     const eventId = req.params.eventId;
     if (!phone || !eventId) {
@@ -248,6 +253,10 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
 
 app.post('/vote', async (req, res) => {
   try {
+    const isFromDomain=checkIsFromDomain(req, res);
+    if(!isFromDomain){
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
 
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
     if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
@@ -310,6 +319,10 @@ app.post('/vote', async (req, res) => {
 
 app.get('/verify-otp/:phone/:otp', async (req, res) => {
   try {
+    const isFromDomain=checkIsFromDomain(req, res);
+    if(!isFromDomain){
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
     const phone = req.params.phone;
     const otp = req.params.otp;
     if (!phone || !otp) {
@@ -334,6 +347,10 @@ app.get('/verify-otp/:phone/:otp', async (req, res) => {
 
 app.get('/event/:event_id', async (req, res) => {
   try {
+    const isFromDomain=checkIsFromDomain(req, res);
+    if(!isFromDomain){
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
     const eventId = req.params.event_id;
     const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
     res.send(eventResult);
@@ -346,6 +363,10 @@ app.get('/event/:event_id', async (req, res) => {
 
 app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res) => {
   try {
+    const isFromDomain=checkIsFromDomain(req, res);
+    if(!isFromDomain){
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
     const eventId = req.params.event_id;
     const limit = req.params.limit;
     const roundNumber = req.params.round_number;
