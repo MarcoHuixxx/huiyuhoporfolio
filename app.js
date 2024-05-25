@@ -223,17 +223,18 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
 
     var dayStart = new Date();
     dayStart.setHours(0, 0, 0, 0);
-    // dayStart.setHours(dayStart.getHours() - 8);
+    dayStart.setHours(dayStart.getHours() - 8);
     let dayEnd = new Date();
     dayEnd.setDate(dayStart.getDate() + 1);
     dayEnd.setHours(0, 0, 0, 0);
-    // dayEnd.setHours(dayEnd.getHours() - 8);
+    dayEnd.setHours(dayEnd.getHours() - 8);
     console.log("dayStart:", dayStart)
     console.log("dayEnd:", dayEnd)
     const voteRecords = await voteRecord.find({
       voterPhone: voterPhone, votedAt: { $gte: dayStart, $lt: dayEnd },
       eventId: eventId
     });
+    console.log("voteRecords:", voteRecords)
     if (voteRecords.length > 0) {
       res.send({ isVoted: true });
       return;
