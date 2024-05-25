@@ -12,6 +12,9 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const cors = require("cors")
+
+app.use(cors());
 const { CronJob } = require('cron');
 // support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -20,9 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const mongodb = require('mongodb');
 
-const cors = require("cors")
 
-app.use(cors());
 // app.get('/', (req, res) => {
 //   res.sendFile(__dirname + '/index.html')
 // })
