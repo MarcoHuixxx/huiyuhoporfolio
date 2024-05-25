@@ -22,7 +22,12 @@ const mongodb = require('mongodb');
 
 const cors = require("cors")
 
-app.use(cors())
+app.use(cors({
+  origin: "https://icmahk.org",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}))
 // app.get('/', (req, res) => {
 //   res.sendFile(__dirname + '/index.html')
 // })
