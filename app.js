@@ -169,6 +169,7 @@ app.get('/send-otp/:phone', async (req, res) => {
 
 app.get("/check-vote/:phone/:eventId", async (req, res) => {
   try {
+    console.log("req:",req.rawHeaders)
     const voterPhone = req.params.phone;
     const eventId = req.params.eventId;
 
