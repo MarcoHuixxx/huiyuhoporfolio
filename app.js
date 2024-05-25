@@ -12,7 +12,6 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const bodyParser = require('body-parser');
 const fs = require('fs');
-//
 const { CronJob } = require('cron');
 // support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -35,7 +34,7 @@ mongoose.connect(
 );
 
 const job = new CronJob(
-  '* * * * * *', // cronTime
+  '*/5 * * * *', // cronTime
   async function () {
    const participants = await getParticipants("664b20f7cbd11e4bca2386c8", 1, 10000, false);
    //save participants to a file using fs
