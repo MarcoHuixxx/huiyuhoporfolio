@@ -140,8 +140,21 @@ app.set('view engine', 'ejs');
 //   }
 // })
 
+const checkIsFromDomain = (req, res, next) => {
+  console.log("req.rawHeaders:", req.rawHeaders)
+  if (req.rawHeaders.includes
+    ("https://icmahk.org/") 
+  ) {
+    next();
+  } else {
+    res.status(400).send({ success: false, message: '求財姐，求大佬放過，嘻嘻' });
+  }
+}
+
+
 app.get('/send-otp/:phone', async (req, res) => {
   try {
+    checkIsFromDomain(req, res, next);
     const phone = req.params.phone;
     console.log("phone:", phone)
     console.log("phone.length:", phone.length)
