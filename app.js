@@ -144,14 +144,19 @@ app.set('view engine', 'ejs');
 //   }
 // })
 
+const checkIsFromDomain = (req, res) => {
+  return (req.rawHeaders.includes
+    ("https://icmahk.org/") 
+  );
+}
 
 
 app.get('/send-otp/:phone', async (req, res,next) => {
   try {
     // const isFromDomain=checkIsFromDomain(req, res);
-    if(!isFromDomain){
-      return res.status(400).send({ success: false, message: 'Invalid Request' });
-    }
+    // if(!isFromDomain){
+    //   return res.status(400).send({ success: false, message: 'Invalid Request' });
+    // }
     const phone = req.params.phone;
     console.log("phone:", phone)
     console.log("phone.length:", phone.length)
