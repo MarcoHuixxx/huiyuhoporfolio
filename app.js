@@ -23,7 +23,7 @@ const mongodb = require('mongodb');
 const cors = require("cors")
 
 app.use(cors({
-  origin: "https://icmahk.org",
+  origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
   optionsSuccessStatus: 204
