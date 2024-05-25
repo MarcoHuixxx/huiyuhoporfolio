@@ -20,7 +20,11 @@ const mongodb = require('mongodb');
 
 const cors = require("cors")
 
-app.use(cors())
+const corsOptions = {
+  origin: 'https://icmahk.org',
+};
+
+app.use(cors(corsOptions));
 // app.get('/', (req, res) => {
 //   res.sendFile(__dirname + '/index.html')
 // })
@@ -140,16 +144,11 @@ app.set('view engine', 'ejs');
 //   }
 // })
 
-const checkIsFromDomain = (req, res) => {
-  return (req.rawHeaders.includes
-    ("https://icmahk.org/") 
-  );
-}
 
 
 app.get('/send-otp/:phone', async (req, res,next) => {
   try {
-    const isFromDomain=checkIsFromDomain(req, res);
+    // const isFromDomain=checkIsFromDomain(req, res);
     if(!isFromDomain){
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
