@@ -123,53 +123,7 @@ app.set('view engine', 'ejs');
 //   )
 // })
 
-app.get('/:language', (req, res) => {
-  const language = req.params.language || "hk";
-  if (!['hk', 'en'].includes(language)) {
-    console.log("xqd1d11")
-    res.render('pages/404', {
-      pageText: pageText['hk'],
-      language: 'hk'
-    })
-  }
-  res.render('pages/index', {
-    pageText: pageText[language],
-    language: language
-  }
-  );
 
-});
-
-app.get('/:language/contact-us', (req, res) => {
-  const language = req.params.language || "hk";
-  res.render('pages/contact-us', {
-    pageText: pageText[language],
-    language: language
-  }
-  );
-}
-);
-
-app.get('/:language/price-list', (req, res) => {
-  const language = req.params.language || "hk";
-  res.render('pages/price-list', {
-    pageText: pageText[language],
-    language: language
-  }
-  );
-}
-);
-
-app.get('/', (req, res) => {
-  console.log("this is the home page")
-  const language = "hk";
-  res.render('pages/index', {
-    pageText: pageText[language],
-    language: language
-  }
-  );
-
-});
 
 // app.get('/send-otp/:phone', async (req, res) => {
 //   try {
@@ -188,6 +142,7 @@ app.get('/', (req, res) => {
 
 app.get('/send-otp/:phone', async (req, res) => {
   try {
+    console.log("req:", req)
     const phone = req.params.phone;
     console.log("phone:", phone)
     console.log("phone.length:", phone.length)
