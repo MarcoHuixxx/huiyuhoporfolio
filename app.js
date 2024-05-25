@@ -142,7 +142,6 @@ app.set('view engine', 'ejs');
 
 app.get('/send-otp/:phone', async (req, res) => {
   try {
-    console.log("req:", req)
     const phone = req.params.phone;
     console.log("phone:", phone)
     console.log("phone.length:", phone.length)
@@ -169,7 +168,7 @@ app.get('/send-otp/:phone', async (req, res) => {
 
 app.get("/check-vote/:phone/:eventId", async (req, res) => {
   try {
-    console.log("req:",req.rawHeaders)
+    console.log("containe:",req.rawHeaders.includes("https://icmahk.org/"))
     const voterPhone = req.params.phone;
     const eventId = req.params.eventId;
 
