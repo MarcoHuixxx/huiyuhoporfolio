@@ -223,10 +223,11 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
 
     var dayStart = new Date();
     console.log("dayStart1:", dayStart)
+    dayStart.setDate(dayStart.getDate() + 1);
     dayStart.setHours(0, 0, 0, 0);
     dayStart.setHours(dayStart.getHours() - 8);
     let dayEnd = new Date();
-    dayEnd.setDate(dayEnd.getDate() + 1);
+    dayEnd.setDate(dayEnd.getDate() + 2);
     console.log("dayEnd1:", dayEnd)
     dayEnd.setHours(0, 0, 0, 0);
     dayEnd.setHours(dayEnd.getHours() - 8);
