@@ -11,8 +11,6 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const { CronJob } = require('cron');
 // support parsing of application/json type post data
 app.use(bodyParser.json());
 
@@ -22,7 +20,7 @@ const mongodb = require('mongodb');
 
 const cors = require("cors")
 
-app.use(cors());
+app.use(cors())
 // app.get('/', (req, res) => {
 //   res.sendFile(__dirname + '/index.html')
 // })
@@ -31,21 +29,6 @@ mongoose.connect(
   {
 
   }
-);
-
-const job = new CronJob(
-  '*/5 * * * *', // cronTime
-  async function () {
-   const participants = await getParticipants("664b20f7cbd11e4bca2386c8", 1, 10000, false);
-   //save participants to a file using fs
-   const date= new Date();
-    const fileName = `./public/backup/participants_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}.json`;
-    fs.writeFileSync
-    (fileName, JSON.stringify(participants));
-  }, // onTick
-  null, // onComplete
-  true, // start
-  'America/Los_Angeles' // timeZone
 );
 
 const eventSchema = new mongoose.Schema({
@@ -157,19 +140,21 @@ app.set('view engine', 'ejs');
 //   }
 // })
 
-const checkIsFromDomain = (req, res) => {
-  return (req.rawHeaders.includes
-    ("https://icmahk.org/")
-  );
+const checkIsFromDomain = (req, res, next) => {
+  console.log("req.rawHeaders:", req.rawHeaders)
+  if (req.rawHeaders.includes
+    ("https://icmahk.org/") 
+  ) {
+    next();
+  } else {
+    res.status(400).send({ success: false, message: '求財姐，求大佬放過，嘻嘻' });
+  }
 }
 
 
-app.get('/send-otp/:phone', async (req, res, next) => {
+app.get('/send-otp/:phone', async (req, res) => {
   try {
-    const isFromDomain = checkIsFromDomain(req, res);
-    if (!isFromDomain) {
-      return res.status(400).send({ success: false, message: 'Invalid Request' });
-    }
+    checkIsFromDomain(req, res, next);
     const phone = req.params.phone;
     console.log("phone:", phone)
     console.log("phone.length:", phone.length)
@@ -196,10 +181,7 @@ app.get('/send-otp/:phone', async (req, res, next) => {
 
 app.get("/check-vote/:phone/:eventId", async (req, res) => {
   try {
-    const isFromDomain = checkIsFromDomain(req, res);
-    if (!isFromDomain) {
-      return res.status(400).send({ success: false, message: 'Invalid Request' });
-    }
+    console.log("containe:",req.rawHeaders.includes("https://icmahk.org/"))
     const voterPhone = req.params.phone;
     const eventId = req.params.eventId;
 
@@ -238,10 +220,6 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
 
 app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
   try {
-    const isFromDomain = checkIsFromDomain(req, res);
-    if (!isFromDomain) {
-      return res.status(400).send({ success: false, message: 'Invalid Request' });
-    }
     const phone = req.params.phone;
     const eventId = req.params.eventId;
     if (!phone || !eventId) {
@@ -270,10 +248,6 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
 
 app.post('/vote', async (req, res) => {
   try {
-    const isFromDomain = checkIsFromDomain(req, res);
-    if (!isFromDomain) {
-      return res.status(400).send({ success: false, message: 'Invalid Request' });
-    }
 
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
     if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
@@ -336,10 +310,6 @@ app.post('/vote', async (req, res) => {
 
 app.get('/verify-otp/:phone/:otp', async (req, res) => {
   try {
-    const isFromDomain = checkIsFromDomain(req, res);
-    if (!isFromDomain) {
-      return res.status(400).send({ success: false, message: 'Invalid Request' });
-    }
     const phone = req.params.phone;
     const otp = req.params.otp;
     if (!phone || !otp) {
@@ -364,10 +334,6 @@ app.get('/verify-otp/:phone/:otp', async (req, res) => {
 
 app.get('/event/:event_id', async (req, res) => {
   try {
-    const isFromDomain = checkIsFromDomain(req, res);
-    if (!isFromDomain) {
-      return res.status(400).send({ success: false, message: 'Invalid Request' });
-    }
     const eventId = req.params.event_id;
     const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
     res.send(eventResult);
@@ -380,11 +346,6 @@ app.get('/event/:event_id', async (req, res) => {
 
 app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res) => {
   try {
-    console.log("hihihihihihihi")
-    const isFromDomain = checkIsFromDomain(req, res);
-    if (!isFromDomain) {
-      return res.status(400).send({ success: false, message: 'Invalid Request' });
-    }
     const eventId = req.params.event_id;
     const limit = req.params.limit;
     const roundNumber = req.params.round_number;
@@ -393,7 +354,54 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res)
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
 
-    let participants = await getParticipants(eventId, roundNumber, limit, true);
+    let participants = await participant.aggregate(
+      [
+        {
+          '$unwind': {
+            'path': '$event',
+            'includeArrayIndex': 'string',
+            'preserveNullAndEmptyArrays': false
+          }
+        },
+        {
+          '$match': {
+            'event.eventId': new mongodb.ObjectId(eventId)
+          }
+        },
+        {
+          '$unwind': {
+            'path': '$event.round',
+            'includeArrayIndex': 'string',
+            'preserveNullAndEmptyArrays': false
+          }
+        }, {
+          '$match': {
+            'event.round.roundNumber': parseInt(roundNumber)
+          }
+        },
+        {
+          '$sort': { 'event.round.voteCount': -1 }
+        },
+        {
+          '$project': {
+            'id': '$_id',
+            'chineseName': '$fullname',
+            'name': '$name',
+            'participationNo': '$event.round.participationNo',
+            'studyingYear': '$studyingYear',
+            'university': '$institution',
+            'video': '$event.round.video',
+            'instagram': '$ig',
+            'image': '$event.round.image',
+            'votes': '$event.round.voteCount'
+          }
+        },
+        {
+          '$limit': parseInt(limit)
+        }
+
+      ]
+    )
 
     const firstVoteCount = participants[0].votes;
     const secondVoteCountPercent = participants[1].votes / firstVoteCount;
@@ -416,59 +424,6 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res)
     console.log(e)
   }
 })
-
-const getParticipants = async (eventId, roundNumber, limit, needPhoto) => {
-  const participants = await participant.aggregate(
-    [
-      {
-        '$unwind': {
-          'path': '$event',
-          'includeArrayIndex': 'string',
-          'preserveNullAndEmptyArrays': false
-        }
-      },
-      {
-        '$match': {
-          'event.eventId': new mongodb.ObjectId(eventId)
-        }
-      },
-      {
-        '$unwind': {
-          'path': '$event.round',
-          'includeArrayIndex': 'string',
-          'preserveNullAndEmptyArrays': false
-        }
-      }, {
-        '$match': {
-          'event.round.roundNumber': parseInt(roundNumber)
-        }
-      },
-      {
-        '$sort': { 'event.round.voteCount': -1 }
-      },
-      {
-        '$project': {
-          'id': '$_id',
-          'chineseName': '$fullname',
-          'name': '$name',
-          'participationNo': '$event.round.participationNo',
-          'studyingYear': '$studyingYear',
-          'university': '$institution',
-          'video': '$event.round.video',
-          'instagram': '$ig',
-          'image': needPhoto ? '$event.round.image' : undefined,
-          'votes': '$event.round.voteCount'
-        }
-      },
-      {
-        '$limit': parseInt(limit)
-      }
-
-    ]
-  );
-  return participants;
-}
-
 
 
 app.use(express.static('public'));
