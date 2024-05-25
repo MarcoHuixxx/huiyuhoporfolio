@@ -123,7 +123,53 @@ app.set('view engine', 'ejs');
 //   )
 // })
 
+app.get('/:language', (req, res) => {
+  const language = req.params.language || "hk";
+  if (!['hk', 'en'].includes(language)) {
+    console.log("xqd1d11")
+    res.render('pages/404', {
+      pageText: pageText['hk'],
+      language: 'hk'
+    })
+  }
+  res.render('pages/index', {
+    pageText: pageText[language],
+    language: language
+  }
+  );
 
+});
+
+app.get('/:language/contact-us', (req, res) => {
+  const language = req.params.language || "hk";
+  res.render('pages/contact-us', {
+    pageText: pageText[language],
+    language: language
+  }
+  );
+}
+);
+
+app.get('/:language/price-list', (req, res) => {
+  const language = req.params.language || "hk";
+  res.render('pages/price-list', {
+    pageText: pageText[language],
+    language: language
+  }
+  );
+}
+);
+
+app.get('/', (req, res) => {
+  console.log("this is the home page")
+  const language = "hk";
+  res.render('pages/index', {
+    pageText: pageText[language],
+    language: language
+  }
+  );
+
+});
 
 // app.get('/send-otp/:phone', async (req, res) => {
 //   try {
@@ -140,21 +186,8 @@ app.set('view engine', 'ejs');
 //   }
 // })
 
-const checkIsFromDomain = (req, res, next) => {
-  console.log("req.rawHeaders:", req.rawHeaders)
-  if (req.rawHeaders.includes
-    ("https://icmahk.org/") 
-  ) {
-    next();
-  } else {
-    res.status(400).send({ success: false, message: '求財姐，求大佬放過，嘻嘻' });
-  }
-}
-
-
 app.get('/send-otp/:phone', async (req, res) => {
   try {
-    checkIsFromDomain(req, res, next);
     const phone = req.params.phone;
     console.log("phone:", phone)
     console.log("phone.length:", phone.length)
@@ -181,7 +214,6 @@ app.get('/send-otp/:phone', async (req, res) => {
 
 app.get("/check-vote/:phone/:eventId", async (req, res) => {
   try {
-    console.log("containe:",req.rawHeaders.includes("https://icmahk.org/"))
     const voterPhone = req.params.phone;
     const eventId = req.params.eventId;
 
