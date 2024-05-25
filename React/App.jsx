@@ -29,7 +29,7 @@ import pravoIcon from "./assets/pravo.svg";
 import singIcon from "./assets/sing.svg";
 import wewaIcon from "./assets/wewa.svg";
 import checkedIcon from "./assets/checked.svg";
-import sponsorIcon from "./assets/sponsor.svg";
+import sponsorIcon from "./assets/sponsor.png";
 import voteMethodImage from "./assets/voteMethod.png";
 import icmaIcon from "./assets/icma.svg";
 import Dialog from "./src/components/dialog";
