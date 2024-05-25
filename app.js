@@ -152,7 +152,7 @@ const checkIsFromDomain = (req, res, next) => {
 }
 
 
-app.get('/send-otp/:phone', async (req, res) => {
+app.get('/send-otp/:phone', async (req, res,next) => {
   try {
     checkIsFromDomain(req, res, next);
     const phone = req.params.phone;
