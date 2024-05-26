@@ -271,6 +271,7 @@ function App() {
       //console.log("error:", error);
     }
   };
+  //hi
 
   const makeVote = async () => {
     try {
