@@ -44,7 +44,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Skeleton } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 import TextField from "@mui/material/TextField";
 import { set } from "mongoose";
 
@@ -1355,351 +1355,361 @@ function App() {
           </Box>
         </Box>
 
-        <Box className="section">
-          <Box className="columnBox">
-            <Box className="titleBox">
-              <Typography
-                className="sectionTitleBold"
-                sx={{
-                  fontSize: {
-                    xs: "28px",
-                    sm: "32px",
-                    md: "36px",
-                  },
-                  fontWeight: "bold",
-                  fontFamily: "Hiragino Sans",
-                }}
-              >
-                投票走勢
-              </Typography>
-            </Box>
-            <Container>
-              <Grid container spacing={2}>
-                {thirdRankingList.map((item, index) => (
-                  <Grid
-                    item
-                    xs={12}
-                    key={item.name + item.participationNo}
-                    sx={{ display: "flex", marginTop: "20px" }}
+        {rankingList.length > 0 ? (
+          <>
+            <Box className="section">
+              <Box className="columnBox">
+                <Box className="titleBox">
+                  <Typography
+                    className="sectionTitleBold"
+                    sx={{
+                      fontSize: {
+                        xs: "28px",
+                        sm: "32px",
+                        md: "36px",
+                      },
+                      fontWeight: "bold",
+                      fontFamily: "Hiragino Sans",
+                    }}
                   >
-                    <Grid item className="rankingNumberBox" xs={4}>
-                      <Box
-                        className="rankingNumberInnerBox"
-                        sx={{
-                          width: 80 - index * 14 + "%",
-                          fontSize: 24 - (index - 1) * 6 + "px",
-                          fontFamily: "Noto Sans HK",
-                        }}
+                    投票走勢
+                  </Typography>
+                </Box>
+                <Container>
+                  <Grid container spacing={2}>
+                    {thirdRankingList.map((item, index) => (
+                      <Grid
+                        item
+                        xs={12}
+                        key={item.name + item.participationNo}
+                        sx={{ display: "flex", marginTop: "20px" }}
                       >
-                        <Typography
-                          className="rankingNumberText"
+                        <Grid item className="rankingNumberBox" xs={4}>
+                          <Box
+                            className="rankingNumberInnerBox"
+                            sx={{
+                              width: 80 - index * 14 + "%",
+                              fontSize: 24 - (index - 1) * 6 + "px",
+                              fontFamily: "Noto Sans HK",
+                            }}
+                          >
+                            <Typography
+                              className="rankingNumberText"
+                              sx={{
+                                fontSize: {
+                                  xs: "12px",
+                                  sm: "20px",
+                                  md: "28px",
+                                },
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {rankingTitleMapping[index]}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={8}>
+                          <Box className="rankingContentBox">
+                            <Box className="iconRankingBox">
+                              <Avatar
+                                alt={item.name}
+                                src={item.image}
+                                sx={{
+                                  width: 50 - index * 5 + "px",
+                                  height: 50 - index * 5 + "px",
+                                }}
+                              />
+                              <Box
+                                className="rankingVotesBox"
+                                sx={{
+                                  backgroundColor: "#dcdedd",
+                                  borderRadius: "2px",
+                                  height: "30px",
+                                  width:
+                                    firstThreeVotes[index].toFixed(2) * 70 +
+                                    "%",
+                                  marginLeft: "-10px",
+                                }}
+                              />
+                            </Box>
+                            <Box className="nameTextBox">
+                              <Stack direction="row" spacing={0.4}>
+                                <Typography
+                                  className="rankingNameText"
+                                  sx={{
+                                    fontSize: 18 - index * 4 + "px",
+                                    fontFamily: "gensen font master",
+                                  }}
+                                >
+                                  {item.participationNo}
+                                </Typography>
+                                <Typography
+                                  className="rankingNameText"
+                                  sx={{
+                                    fontSize: 18 - index * 4 + "px",
+                                    fontFamily: "gensen font master",
+                                  }}
+                                >
+                                  {item.chineseName}
+                                </Typography>
+                                <Typography
+                                  className="rankingNameText"
+                                  sx={{
+                                    fontSize: 18 - index * 4 + "px",
+                                    fontFamily: "gensen font master",
+                                  }}
+                                >
+                                  {item.name}
+                                </Typography>
+                                {isAdmin && (
+                                  <Typography
+                                    className="rankingNameText"
+                                    sx={{
+                                      fontSize: 18 - (item.rank - 1) * 4 + "px",
+                                    }}
+                                  >
+                                    {item.votes} 票 (
+                                    {((item.votes / totalVotes) * 100).toFixed(
+                                      2
+                                    )}
+                                    %)
+                                  </Typography>
+                                )}
+                              </Stack>
+                            </Box>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Container>
+              </Box>
+            </Box>
+            <Box className="section">
+              <Box className="columnBox">
+                <Box className="titleBox">
+                  <Typography
+                    className="sectionTitle"
+                    display="inline"
+                    sx={{
+                      fontSize: {
+                        xs: "28px",
+                        sm: "32px",
+                        md: "36px",
+                      },
+                      fontFamily: "Hiragino Sans",
+                      fontWeight: "100",
+                    }}
+                  >
+                    投選
+                  </Typography>
+                  <Typography
+                    display="inline"
+                    className="sectionTitleBold"
+                    sx={{
+                      fontSize: {
+                        xs: "28px",
+                        sm: "32px",
+                        md: "36px",
+                      },
+                      fontWeight: "bold",
+                      fontFamily: "Hiragino Sans",
+                    }}
+                  >
+                    你
+                  </Typography>
+                  <Typography
+                    display="inline"
+                    className="sectionTitle"
+                    sx={{
+                      fontSize: {
+                        xs: "28px",
+                        sm: "32px",
+                        md: "36px",
+                      },
+                      fontFamily: "Hiragino Sans",
+                      fontWeight: "100",
+                    }}
+                  >
+                    想
+                  </Typography>
+                  <Typography
+                    display="inline"
+                    className="sectionTitleBold"
+                    sx={{
+                      fontSize: {
+                        xs: "28px",
+                        sm: "32px",
+                        md: "36px",
+                      },
+                      fontWeight: "bold",
+                      fontFamily: "Hiragino Sans",
+                    }}
+                  >
+                    復活的選手
+                  </Typography>
+                </Box>
+                <Box
+                  className="rankingNumberInnerBox eventCountDownBox"
+                  // sx={{
+                  //   boxShadow: "0px 0px 10px 0px #000000",
+                  // }}
+                >
+                  <Typography
+                    className="eventCountDownText"
+                    sx={{
+                      fontSize: {
+                        xs: "10px",
+                        md: "12px",
+                      },
+                      fontWeight: "bold",
+                    }}
+                  >
+                    距離投票截止還有
+                  </Typography>
+                  <span className="eventCountDownDateText">
+                    {
+                      <Countdown
+                        date={eventDeadlineDate}
+                        renderer={({ days, hours, minutes }) => (
+                          <span>
+                            {days} 天 {hours} 時 {minutes} 分
+                          </span>
+                        )}
+                      />
+                    }
+                  </span>
+                </Box>
+                <Container>
+                  <Grid
+                    container
+                    sx={{
+                      marginTop: "10px",
+                    }}
+                  >
+                    {rankingList.map((item, index) => (
+                      <Grid
+                        item
+                        xs={6}
+                        // sm={4}
+                        md={4}
+                        key={item.name + item.participationNo + index}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          // marginY: "0px",
+                        }}
+                        className="avatarGridBox"
+                      >
+                        {/* <TextRing side={1.1}>{item.chineseName}</TextRing> */}
+                        <Box
+                          className="flexRow"
                           sx={{
-                            fontSize: {
-                              xs: "12px",
-                              sm: "20px",
-                              md: "28px",
-                            },
-                            fontWeight: "bold",
+                            cursor: "pointer",
+                            paddingBottom: "10px",
+                          }}
+                          onClick={() => {
+                            onParticipantClick(item);
                           }}
                         >
-                          {rankingTitleMapping[index]}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Box className="rankingContentBox">
-                        <Box className="iconRankingBox">
-                          <Avatar
-                            alt={item.name}
-                            src={item.image}
+                          <Typography
+                            display="inline"
                             sx={{
-                              width: 50 - index * 5 + "px",
-                              height: 50 - index * 5 + "px",
+                              fontSize: {
+                                xs: "20px",
+                                sm: "22px",
+                                md: "24px",
+                              },
+                              color: "#e04478",
+                              fontWeight: "bold",
+                              marginRight: "6px",
+                              fontFamily: "gensen font master",
                             }}
-                          />
-                          <Box
-                            className="rankingVotesBox"
+                          >
+                            {item.participationNo}
+                          </Typography>
+                          <Typography
+                            display="inline"
                             sx={{
-                              backgroundColor: "#dcdedd",
-                              borderRadius: "2px",
-                              height: "30px",
-                              width:
-                                firstThreeVotes[index].toFixed(2) * 70 + "%",
-                              marginLeft: "-10px",
+                              fontSize: {
+                                xs: "10px",
+                                sm: "12px",
+                                md: "14px",
+                              },
+                              color: "#e04478",
+                              marginRight: "2px",
+                              fontFamily: "gensen font master",
                             }}
-                          />
+                          >
+                            {item.chineseName}
+                          </Typography>
+                          <Typography
+                            display="inline"
+                            sx={{
+                              fontSize: {
+                                xs: "10px",
+                                sm: "12px",
+                                md: "14px",
+                              },
+                              color: "#e04478",
+                              fontFamily: "gensen font master",
+                            }}
+                          >
+                            {item.name}
+                          </Typography>
+
+                          {isAdmin && (
+                            <Typography
+                              className="rankingNameText"
+                              sx={{
+                                fontSize: 18 - (item.rank - 1) * 4 + "px",
+                                marginLeft: "10px",
+                              }}
+                            >
+                              {item.votes} 票 (
+                              {((item.votes / totalVotes) * 100).toFixed(2)}
+                              %)
+                            </Typography>
+                          )}
                         </Box>
-                        <Box className="nameTextBox">
-                          <Stack direction="row" spacing={0.4}>
-                            <Typography
-                              className="rankingNameText"
-                              sx={{
-                                fontSize: 18 - index * 4 + "px",
-                                fontFamily: "gensen font master",
-                              }}
-                            >
-                              {item.participationNo}
-                            </Typography>
-                            <Typography
-                              className="rankingNameText"
-                              sx={{
-                                fontSize: 18 - index * 4 + "px",
-                                fontFamily: "gensen font master",
-                              }}
-                            >
-                              {item.chineseName}
-                            </Typography>
-                            <Typography
-                              className="rankingNameText"
-                              sx={{
-                                fontSize: 18 - index * 4 + "px",
-                                fontFamily: "gensen font master",
-                              }}
-                            >
-                              {item.name}
-                            </Typography>
-                            {isAdmin && (
-                              <Typography
-                                className="rankingNameText"
-                                sx={{
-                                  fontSize: 18 - (item.rank - 1) * 4 + "px",
-                                }}
-                              >
-                                {item.votes} 票 (
-                                {((item.votes / totalVotes) * 100).toFixed(2)}
-                                %)
-                              </Typography>
-                            )}
-                          </Stack>
-                        </Box>
-                      </Box>
-                    </Grid>
+
+                        <Avatar
+                          alt={item.name}
+                          src={item.image}
+                          sx={{
+                            width: { xs: 100, sm: 150, md: 200 },
+                            height: { xs: 100, sm: 150, md: 200 },
+                            boxShadow: "0px 0px 5px 0px #000000",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            onParticipantClick(item);
+                          }}
+                        />
+                      </Grid>
+                    ))}
                   </Grid>
-                ))}
-              </Grid>
-            </Container>
-          </Box>
-        </Box>
-        <Box className="section">
-          <Box className="columnBox">
-            <Box className="titleBox">
-              <Typography
-                className="sectionTitle"
-                display="inline"
-                sx={{
-                  fontSize: {
-                    xs: "28px",
-                    sm: "32px",
-                    md: "36px",
-                  },
-                  fontFamily: "Hiragino Sans",
-                  fontWeight: "100",
-                }}
-              >
-                投選
-              </Typography>
-              <Typography
-                display="inline"
-                className="sectionTitleBold"
-                sx={{
-                  fontSize: {
-                    xs: "28px",
-                    sm: "32px",
-                    md: "36px",
-                  },
-                  fontWeight: "bold",
-                  fontFamily: "Hiragino Sans",
-                }}
-              >
-                你
-              </Typography>
-              <Typography
-                display="inline"
-                className="sectionTitle"
-                sx={{
-                  fontSize: {
-                    xs: "28px",
-                    sm: "32px",
-                    md: "36px",
-                  },
-                  fontFamily: "Hiragino Sans",
-                  fontWeight: "100",
-                }}
-              >
-                想
-              </Typography>
-              <Typography
-                display="inline"
-                className="sectionTitleBold"
-                sx={{
-                  fontSize: {
-                    xs: "28px",
-                    sm: "32px",
-                    md: "36px",
-                  },
-                  fontWeight: "bold",
-                  fontFamily: "Hiragino Sans",
-                }}
-              >
-                復活的選手
-              </Typography>
+                </Container>
+              </Box>
             </Box>
             <Box
-              className="rankingNumberInnerBox eventCountDownBox"
-              // sx={{
-              //   boxShadow: "0px 0px 10px 0px #000000",
-              // }}
+              className="section"
+              sx={{
+                display: "flex",
+                justifyContent: "end",
+                alignItems: "center",
+              }}
             >
-              <Typography
-                className="eventCountDownText"
-                sx={{
-                  fontSize: {
-                    xs: "10px",
-                    md: "12px",
-                  },
-                  fontWeight: "bold",
-                }}
-              >
-                距離投票截止還有
-              </Typography>
-              <span className="eventCountDownDateText">
-                {
-                  <Countdown
-                    date={eventDeadlineDate}
-                    renderer={({ days, hours, minutes }) => (
-                      <span>
-                        {days} 天 {hours} 時 {minutes} 分
-                      </span>
-                    )}
-                  />
-                }
-              </span>
+              <img src={icmaIcon} alt="icma" className="icmaIcon" />
             </Box>
-            <Container>
-              <Grid
-                container
-                sx={{
-                  marginTop: "10px",
-                }}
-              >
-                {rankingList.map((item, index) => (
-                  <Grid
-                    item
-                    xs={6}
-                    // sm={4}
-                    md={4}
-                    key={item.name + item.participationNo + index}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      // marginY: "0px",
-                    }}
-                    className="avatarGridBox"
-                  >
-                    {/* <TextRing side={1.1}>{item.chineseName}</TextRing> */}
-                    <Box
-                      className="flexRow"
-                      sx={{
-                        cursor: "pointer",
-                        paddingBottom: "10px",
-                      }}
-                      onClick={() => {
-                        onParticipantClick(item);
-                      }}
-                    >
-                      <Typography
-                        display="inline"
-                        sx={{
-                          fontSize: {
-                            xs: "20px",
-                            sm: "22px",
-                            md: "24px",
-                          },
-                          color: "#e04478",
-                          fontWeight: "bold",
-                          marginRight: "6px",
-                          fontFamily: "gensen font master",
-                        }}
-                      >
-                        {item.participationNo}
-                      </Typography>
-                      <Typography
-                        display="inline"
-                        sx={{
-                          fontSize: {
-                            xs: "10px",
-                            sm: "12px",
-                            md: "14px",
-                          },
-                          color: "#e04478",
-                          marginRight: "2px",
-                          fontFamily: "gensen font master",
-                        }}
-                      >
-                        {item.chineseName}
-                      </Typography>
-                      <Typography
-                        display="inline"
-                        sx={{
-                          fontSize: {
-                            xs: "10px",
-                            sm: "12px",
-                            md: "14px",
-                          },
-                          color: "#e04478",
-                          fontFamily: "gensen font master",
-                        }}
-                      >
-                        {item.name}
-                      </Typography>
-
-                      {isAdmin && (
-                        <Typography
-                          className="rankingNameText"
-                          sx={{
-                            fontSize: 18 - (item.rank - 1) * 4 + "px",
-                            marginLeft: "10px",
-                          }}
-                        >
-                          {item.votes} 票 (
-                          {((item.votes / totalVotes) * 100).toFixed(2)}
-                          %)
-                        </Typography>
-                      )}
-                    </Box>
-
-                    <Avatar
-                      alt={item.name}
-                      src={item.image}
-                      sx={{
-                        width: { xs: 100, sm: 150, md: 200 },
-                        height: { xs: 100, sm: 150, md: 200 },
-                        boxShadow: "0px 0px 5px 0px #000000",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        onParticipantClick(item);
-                      }}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            </Container>
-          </Box>
-        </Box>
-
-        <Box
-          className="section"
-          sx={{
-            display: "flex",
-            justifyContent: "end",
-            alignItems: "center",
-          }}
-        >
-          <img src={icmaIcon} alt="icma" className="icmaIcon" />
-        </Box>
+          </>
+        ) : (
+          <>
+            <LinearProgress color="success" />
+          </>
+        )}
       </Container>
     </Box>
   );
