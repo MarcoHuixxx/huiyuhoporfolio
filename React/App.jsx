@@ -451,6 +451,10 @@ function App() {
                 xs: "start",
                 md: "center",
               },
+              marginTop: {
+                xs: "30px",
+                md: "0px",
+              },
             }}
           >
             <img src={icmaIcon} alt="icma" className="icmaIcon" />
@@ -1173,13 +1177,26 @@ function App() {
           <Box className="columnBox">
             <img src={BannerImage} alt="Banner" className="BannerImage" />
             <Box className="navBar">
-              <Grid container>
-                <Grid item xs={8}>
-                  <Box className="iconRowBox">
-                    <img src={sponsorIcon} alt="wewa" className="sponsorIcon" />
-                  </Box>
+              <Grid
+                container
+                sx={{
+                  display: "flex",
+                  flexDirection: isMd ? "row" : "column",
+                }}
+              >
+                <Grid item xs={isMd ? 8 : 12}>
+                  {/* <Box className="iconRowBox"> */}
+                  <img src={sponsorIcon} alt="wewa" className="sponsorIcon" />
+                  {/* </Box> */}
                 </Grid>
-                <Grid item xs={4} className="voteBox">
+                <Grid
+                  item
+                  xs={isMd ? 4 : 12}
+                  className="voteBox"
+                  sx={{
+                    marginBottom: isMd ? "0px" : "20px",
+                  }}
+                >
                   <Button
                     endIcon={
                       showVoteMethod ? (
@@ -1197,8 +1214,7 @@ function App() {
                       className="voteMethodTitleText"
                       sx={{
                         fontSize: {
-                          xs: "12px",
-                          sm: "16px",
+                          xs: "16px",
                           md: "18px",
                         },
                         fontWeight: "bold",
@@ -1300,6 +1316,7 @@ function App() {
                         <Button
                           variant="contained"
                           sx={{
+                            zIndex: 9999999,
                             backgroundColor: "#e04478",
                             color: "#ffffff",
                             borderRadius: "0px",
