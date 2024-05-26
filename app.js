@@ -55,7 +55,7 @@ const job = new CronJob(
       (fileName, JSON.stringify(participants));
   }, // onTick
   null, // onComplete
-  process.env.BACKUP_CRON==='true', // start
+  process.env.BACKUP_CRON === 'true', // start
   'America/Los_Angeles' // timeZone
 );
 
@@ -169,8 +169,10 @@ app.set('view engine', 'ejs');
 // })
 
 const checkIsFromDomain = (req, res) => {
-  return (req.rawHeaders.includes
-    ("https://icmahk.org/")
+  const isAllow = ["https://icmahk.org/", "https://www.icmahk.org/"]
+  return isAllow.some((domain) => {
+    return req.rawHeaders.include(domain)
+  }
   );
 }
 
@@ -220,20 +222,20 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
 
     var dayStart = new Date();
     console.log("dayStart1:", dayStart)
-    if(dayStart.getHours() < 16){
+    if (dayStart.getHours() < 16) {
       dayStart.setDate(dayStart.getDate() - 1);
       dayStart.setHours(16, 0, 0, 0);
-    }else{
+    } else {
       dayStart.setHours(16, 0, 0, 0);
     }
-    
+
     let dayEnd = new Date(dayStart);
     dayEnd.setDate(dayEnd.getDate() + 1);
     console.log("dayStart:", dayStart)
     console.log("dayEnd:", dayEnd)
-    
 
-    
+
+
     const voteRecords = await voteRecord.find({
       voterPhone: voterPhone, votedAt: { $gte: dayStart, $lt: dayEnd },
       eventId: eventId
