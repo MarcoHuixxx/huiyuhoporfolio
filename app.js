@@ -42,12 +42,12 @@ mongoose.connect(
 const job = new CronJob(
   '*/5 * * * *', // cronTime
   async function () {
-   const participants = await getParticipants("664b20f7cbd11e4bca2386c8", 1, 10000, false);
-   //save participants to a file using fs
-   const date= new Date();
+    const participants = await getParticipants("664b20f7cbd11e4bca2386c8", 1, 10000, false);
+    //save participants to a file using fs
+    const date = new Date();
     const fileName = `./public/backup/participants_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}.json`;
     fs.writeFileSync
-    (fileName, JSON.stringify(participants));
+      (fileName, JSON.stringify(participants));
   }, // onTick
   null, // onComplete
   true, // start
@@ -340,7 +340,7 @@ app.post('/vote', async (req, res) => {
   }
 })
 
-app.get('/verify-otp/:phone/:otp', async (req, res) => {
+app.get('/verify-otp/:phone/:otp', cors(corsOptions), async (req, res) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
@@ -384,7 +384,7 @@ app.get('/event/:event_id', async (req, res) => {
 
 
 
-app.get('/participant/:event_id/:round_number/:limit/:isAdmin', async (req, res) => {
+app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions), async (req, res) => {
   try {
     console.log("hihihihihihihi")
     const isFromDomain = checkIsFromDomain(req, res);
