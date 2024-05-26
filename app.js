@@ -13,8 +13,13 @@ const client = require('twilio')(accountSid, authToken);
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require("cors")
+const corsOptions = {
+  origin: "https://icmahk.org",
+  optionsSuccessStatus: 200
+};
 
-app.use(cors());
+
+app.use(cors(corsOptions));
 const { CronJob } = require('cron');
 // support parsing of application/json type post data
 app.use(bodyParser.json());
