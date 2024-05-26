@@ -17,7 +17,8 @@ const corsOptions = {
   origin: [
     'http://icmahk.org',
     'https://icmahk.org',
-    'http://localhost:8080',
+    'http://www.icmahk.org',
+    'https://www.icmahk.org',
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: ['Content-Type', 'Authorization'],
