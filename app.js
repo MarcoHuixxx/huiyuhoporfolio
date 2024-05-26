@@ -50,7 +50,7 @@ const job = new CronJob(
       (fileName, JSON.stringify(participants));
   }, // onTick
   null, // onComplete
-  true, // start
+  process.env.backupCronIsOn==='true', // start
   'America/Los_Angeles' // timeZone
 );
 
