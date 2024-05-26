@@ -169,6 +169,7 @@ app.set('view engine', 'ejs');
 // })
 
 const checkIsFromDomain = (req, res) => {
+  console.log("req.rawHeaders:", req.rawHeaders)
   const isAllow = ["https://icmahk.org/", "https://www.icmahk.org/"]
   return isAllow.some((domain) => {
     return req.rawHeaders.includes(domain)
