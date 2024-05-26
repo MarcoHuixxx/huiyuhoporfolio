@@ -14,8 +14,13 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require("cors")
 const corsOptions = {
-  origin: "https://icmahk.org",
-  optionsSuccessStatus: 200
+  origin: [
+    'http://icmahk.org',
+    'https://icmahk.org',
+    'http://localhost:8080',
+  ],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 
