@@ -51,7 +51,7 @@ const job = new CronJob(
   }, // onTick
   null, // onComplete
   process.env.BACKUP_CRON==='true', // start
-  'America/Los_Angeles' // timeZone
+  'Hong Kong', // timezone
 );
 
 const eventSchema = new mongoose.Schema({
