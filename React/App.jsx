@@ -252,7 +252,7 @@ function App() {
       } else {
         setIsOptValid(false);
       }
-      setIsConfirmOptLoading(false);
+
       setIsOptChecked(true);
     } catch (error) {
       setIsOptChecked(true);
@@ -289,6 +289,7 @@ function App() {
       };
     } catch (error) {
       //console.log("error:", error);
+      setIsConfirmOptLoading(false);
       return {
         success: false,
       };
@@ -319,6 +320,7 @@ function App() {
     const makeVoteHandler = async () => {
       if (isPhoneVerified) {
         const voteResult = await makeVote();
+
         // const voteResult = { data: { success: true } };
 
         //console.log("voteResult:", voteResult);
@@ -329,6 +331,7 @@ function App() {
         } else {
           setErrorMesssage("投票失敗, 請再試一次");
         }
+        setIsConfirmOptLoading(false);
       }
     };
 
