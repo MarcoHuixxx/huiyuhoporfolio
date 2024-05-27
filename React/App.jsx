@@ -1182,6 +1182,7 @@ function App() {
                 sx={{
                   display: "flex",
                   flexDirection: isMd ? "row" : "column",
+                  paddingX: isMd ? "10px" : "5px",
                 }}
               >
                 <Grid item xs={isMd ? 8 : 12}>
@@ -1207,6 +1208,7 @@ function App() {
                     }
                     sx={{
                       color: "#e04478",
+                      marginRight: "-5px",
                     }}
                     onClick={() => setShowVoteMethod(!showVoteMethod)}
                   >
@@ -1218,6 +1220,8 @@ function App() {
                           md: "18px",
                         },
                         fontWeight: "bold",
+                        marginRight: "-5px",
+                        marginTop: "-6px",
                       }}
                     >
                       投票方法
