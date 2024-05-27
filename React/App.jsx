@@ -1194,7 +1194,7 @@ function App() {
                   xs={isMd ? 4 : 12}
                   className="voteBox"
                   sx={{
-                    marginBottom: isMd ? "0px" : "20px",
+                    marginBottom: isMd ? "0px" : "10px",
                   }}
                 >
                   <Button
