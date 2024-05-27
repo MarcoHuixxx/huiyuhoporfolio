@@ -19,6 +19,9 @@ const corsOptions = {
     'https://icmahk.org',
     'http://www.icmahk.org',
     'https://www.icmahk.org',
+    'http://localhost:5173',
+    'https://localhost:5173',
+
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -170,7 +173,13 @@ app.set('view engine', 'ejs');
 // })
 
 const checkIsFromDomain = (req, res) => {
-  const isAllow = ["https://icmahk.org","https://icmahk.org/", "https://www.icmahk.org","https://www.icmahk.org/"]
+  const isAllow = ["https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
+  if (process.env.NODE_ENV === "development") {
+    isAllow.push("http://localhost:5173")
+    isAllow.push("http://localhost:5173/")
+    isAllow.push("https://localhost:5173")
+    isAllow.push("https://localhost:5173/")
+  }
   return isAllow.some((domain) => {
     return req.rawHeaders.includes(domain)
   }
