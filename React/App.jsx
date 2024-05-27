@@ -45,6 +45,7 @@ import { useTheme } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LinearProgress from "@mui/material/LinearProgress";
+import Footer from "./components/footer";
 import TextField from "@mui/material/TextField";
 import { set } from "mongoose";
 
@@ -669,6 +670,7 @@ function App() {
                   </Button>
                 </Box>
               </Container>
+              <Footer type="votePage" isMd={isMd} />
             </Container>
           </Box>
         )}
@@ -900,6 +902,7 @@ function App() {
                   </Grid>
                 </Grid>
               </Container>
+              <Footer type="votePage" isMd={isMd} />
             </Container>
           </Box>
         </Container>
@@ -1172,7 +1175,7 @@ function App() {
         </Dialog>
       </Dialog>
 
-      <Container>
+      <Container disableGutters={isSm === false}>
         <Box className="section">
           <Box className="columnBox">
             <img src={BannerImage} alt="Banner" className="BannerImage" />
@@ -1195,7 +1198,19 @@ function App() {
                   xs={isMd ? 4 : 12}
                   className="voteBox"
                   sx={{
-                    marginBottom: isMd ? "0px" : "10px",
+                    marginBottom: {
+                      xs: "10px",
+                      md: "0px",
+                    },
+                    display: "flex",
+                    justifyContent: {
+                      xs: "center",
+                      md: "flex-end",
+                    },
+                    marginLeft: {
+                      xs: "4%",
+                      md: "0px",
+                    },
                   }}
                 >
                   <Button
@@ -1611,7 +1626,7 @@ function App() {
                     {rankingList.map((item, index) => (
                       <Grid
                         item
-                        xs={6}
+                        xs={4}
                         // sm={4}
                         md={4}
                         key={item.name + item.participationNo + index}
@@ -1715,16 +1730,6 @@ function App() {
                 </Container>
               </Box>
             </Box>
-            <Box
-              className="section"
-              sx={{
-                display: "flex",
-                justifyContent: "end",
-                alignItems: "center",
-              }}
-            >
-              <img src={icmaIcon} alt="icma" className="icmaIcon" />
-            </Box>
           </>
         ) : (
           <>
@@ -1732,6 +1737,7 @@ function App() {
           </>
         )}
       </Container>
+      <Footer type="home" isMd={isMd} />
     </Box>
   );
 }
