@@ -1182,7 +1182,7 @@ function App() {
                 sx={{
                   display: "flex",
                   flexDirection: isMd ? "row" : "column",
-                  paddingX: isMd ? "10px" : "5px",
+                  // paddingX: isMd ? "10px" : "5px",
                 }}
               >
                 <Grid item xs={isMd ? 8 : 12}>
