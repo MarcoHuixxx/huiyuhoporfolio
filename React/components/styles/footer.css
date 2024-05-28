@@ -28,8 +28,8 @@
   height: 120px;
   width: 100px;
   position: absolute;
-  bottom: 0px;
-  left: 20px;
+  bottom: -5px;
+  left: 30px;
 }
 
 .socialIconMobile {
