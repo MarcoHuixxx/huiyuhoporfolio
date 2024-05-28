@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Item from "@mui/material/ListItem";
+import { InstagramEmbed } from "react-social-media-embed";
 import axios from "axios";
 import moment from "moment";
 // import { dummyList } from "./constants";
@@ -567,6 +568,8 @@ function App() {
                             textDecoration: "underline",
                             alignSelf: "center",
                             maxWidth: "30px",
+                            lineHeight: "20px",
+                            textUnderlinePosition: "under",
                           }}
                         >
                           @{selectedParticipant.instagram}
@@ -748,7 +751,7 @@ function App() {
                 <Grid container>
                   <Grid
                     item
-                    xs={8}
+                    xs={12}
                     sx={{
                       paddingX: "10px",
                       marginTop: "50px",
@@ -851,6 +854,19 @@ function App() {
                           @{selectedParticipant.instagram}
                         </Typography>
                       </Box>
+                      <Box style={{ display: "flex", justifyContent: "start" }}>
+                        {selectedParticipant.instagram && (
+                          <InstagramEmbed
+                            url={
+                              "https://www.instagram.com/" +
+                              selectedParticipant.instagram +
+                              "/"
+                            }
+                            // width={"320px"}
+                            // height={"220px"}
+                          />
+                        )}
+                      </Box>
                     </Stack>
                   </Grid>
                   <Grid
@@ -867,7 +883,7 @@ function App() {
                 <Grid container>
                   <Grid
                     item
-                    xs={6}
+                    xs={9}
                     sx={{
                       paddingX: "10px",
                     }}
@@ -1396,7 +1412,16 @@ function App() {
           <>
             <Box className="section">
               <Box className="columnBox">
-                <Box className="titleBox">
+                <Box
+                  className="titleBox"
+                  sx={{
+                    display: "flex",
+                    justifyContent: {
+                      xs: "center",
+                      md: "start",
+                    },
+                  }}
+                >
                   <Typography
                     className="sectionTitleBold"
                     sx={{
@@ -1524,7 +1549,16 @@ function App() {
             </Box>
             <Box className="section">
               <Box className="columnBox">
-                <Box className="titleBox">
+                <Box
+                  className="titleBox"
+                  sx={{
+                    display: "flex",
+                    justifyContent: {
+                      xs: "center",
+                      md: "start",
+                    },
+                  }}
+                >
                   <Typography
                     className="sectionTitle"
                     display="inline"
@@ -1588,15 +1622,24 @@ function App() {
                 </Box>
                 <Box
                   className="rankingNumberInnerBox eventCountDownBox"
-                  // sx={{
-                  //   boxShadow: "0px 0px 10px 0px #000000",
-                  // }}
+                  sx={{
+                    marginTop: {
+                      xs: "10px",
+                      md: "5px",
+                    },
+                    display: "flex",
+                    flexDirection: "row",
+                    alignSelf: {
+                      xs: "center",
+                      md: "start",
+                    },
+                  }}
                 >
                   <Typography
                     className="eventCountDownText"
                     sx={{
                       fontSize: {
-                        xs: "10px",
+                        xs: "16px",
                         md: "12px",
                       },
                       fontWeight: "bold",
