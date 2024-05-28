@@ -566,6 +566,7 @@ function App() {
                             fontWeight: "100",
                             textDecoration: "underline",
                             alignSelf: "center",
+                            maxWidth: "30px",
                           }}
                         >
                           @{selectedParticipant.instagram}
@@ -1733,7 +1734,12 @@ function App() {
           </>
         ) : (
           <>
-            <LinearProgress color="success" />
+            <LinearProgress
+              sx={{
+                marginTop: "-20px",
+              }}
+              color="success"
+            />
           </>
         )}
       </Container>
