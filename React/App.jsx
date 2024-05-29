@@ -607,16 +607,22 @@ function App() {
                       <Avatar
                         alt={selectedParticipant.name}
                         src={selectedParticipant.image}
+                        // sx={{
+                        //   width: {
+                        //     xs: "95%",
+                        //     sm: "95%",
+                        //   },
+                        //   height: {
+                        //     xs: "100%",
+                        //     sm: "100%",
+                        //   },
+                        //   boxShadow: "0px 0px 5px 0px #000000",
+                        // }}
                         sx={{
-                          width: {
-                            xs: "95%",
-                            sm: "95%",
-                          },
-                          height: {
-                            xs: "100%",
-                            sm: "100%",
-                          },
+                          width: { xs: 150, sm: 180 },
+                          height: { xs: 150, sm: 180 },
                           boxShadow: "0px 0px 5px 0px #000000",
+                          cursor: "pointer",
                         }}
                       />
                     </Box>
@@ -710,15 +716,10 @@ function App() {
                   alt={selectedParticipant.name}
                   src={selectedParticipant.image}
                   sx={{
-                    width: {
-                      xs: "100%",
-                      sm: "100%",
-                    },
-                    height: {
-                      xs: "100%",
-                      sm: "100%",
-                    },
+                    width: 170,
+                    height: 170,
                     boxShadow: "0px 0px 5px 0px #000000",
+                    cursor: "pointer",
                   }}
                 />
               </Box>
