@@ -51,7 +51,8 @@ mongoose.connect(
 const job = new CronJob(
   '*/5 * * * *', // cronTime
   async function () {
-    const participants = await getParticipants("664b20f7cbd11e4bca2386c8", 1, 10000, false);
+
+    const participants = await getParticipants("664b20f7cbd11e4bca2386c8", 1, 10000, { 'event.round.participationNo': 1 }, false);
     //save participants to a file using fs
     const date = new Date();
     const fileName = `./public/backup/participants_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}.json`;
@@ -420,11 +421,12 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
 
-    let participants = await getParticipants(eventId, roundNumber, limit, true);
+    let participants = await getParticipants(eventId, roundNumber, limit, { 'event.round.participationNo': 1 }, true);
+    let firstThree = await getParticipants(eventId, roundNumber, 3, { 'event.round.voteCount': -1 }, true);
 
-    const firstVoteCount = participants[0].votes;
-    const secondVoteCountPercent = participants[1].votes / firstVoteCount;
-    const thirdVoteCountPercent = participants[2].votes / firstVoteCount;
+    const firstVoteCount = firstThree[0]?.votes || 1;
+    const secondVoteCountPercent = firstThree[1]?.votes / firstVoteCount || 1;
+    const thirdVoteCountPercent = firstThree[2]?.votes / firstVoteCount || 1;
     const firstThreeRaningPercent = [1, secondVoteCountPercent, thirdVoteCountPercent];
 
     if (!isAdmin) {
@@ -435,16 +437,24 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
         }
       }
       )
+
+      firstThree = firstThree.map((participant) => {
+        return {
+          ...participant,
+          votes: undefined
+        }
+      }
+      )
     }
 
 
-    res.send({ participants, firstThreeRaningPercent });
+    res.send({ participants, firstThreeRaningPercent, firstThree });
   } catch (e) {
     console.log(e)
   }
 })
 
-const getParticipants = async (eventId, roundNumber, limit, needPhoto) => {
+const getParticipants = async (eventId, roundNumber, limit, sortBy, needPhoto) => {
   const participants = await participant.aggregate(
     [
       {
@@ -471,7 +481,7 @@ const getParticipants = async (eventId, roundNumber, limit, needPhoto) => {
         }
       },
       {
-        '$sort': { 'event.round.voteCount': -1 }
+        '$sort': sortBy
       },
       {
         '$project': {

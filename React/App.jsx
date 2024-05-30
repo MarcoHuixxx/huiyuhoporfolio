@@ -118,10 +118,7 @@ function App() {
           setTotalVotes(totalVotes);
 
           if (participantListResult?.data?.participants?.length > 0) {
-            const thirdList = participantListResult?.data.participants?.slice(
-              0,
-              3
-            );
+            const thirdList = participantListResult?.data.firstThree || [];
             setThirdRankingList(thirdList);
             setRankingList(participantListResult?.data?.participants);
             setFirstThreeVotes(
