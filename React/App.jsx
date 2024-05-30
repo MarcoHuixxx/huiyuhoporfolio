@@ -606,7 +606,7 @@ function App() {
                     >
                       <Avatar
                         alt={selectedParticipant.name}
-                        src={selectedParticipant.image}
+                        src={`assets/event1/${selectedParticipant.fullName}.jpg`}
                         // sx={{
                         //   width: {
                         //     xs: "95%",
@@ -712,9 +712,12 @@ function App() {
                 }}
                 className="webAvatarBox"
               >
+                <img
+                  src={`public/assets/event1/${selectedParticipant.chineseName}.jpg`}
+                />
                 <Avatar
                   alt={selectedParticipant.name}
-                  src={selectedParticipant.image}
+                  src={`assets/event1/${selectedParticipant.chineseName}.jpg`}
                   sx={{
                     width: 170,
                     height: 170,

@@ -483,7 +483,7 @@ const getParticipants = async (eventId, roundNumber, limit, needPhoto) => {
           'university': '$institution',
           'video': '$event.round.video',
           'instagram': '$ig',
-          'image': needPhoto ? '$event.round.image' : undefined,
+          // 'image': needPhoto ? '$event.round.image' : undefined,
           'votes': '$event.round.voteCount'
         }
       },
