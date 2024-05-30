@@ -606,7 +606,7 @@ function App() {
                     >
                       <Avatar
                         alt={selectedParticipant.name}
-                        src={`assets/event1/${selectedParticipant.fullName}.jpg`}
+                        src={`event1/${selectedParticipant.chineseName}.jpg`}
                         // sx={{
                         //   width: {
                         //     xs: "95%",
@@ -712,12 +712,9 @@ function App() {
                 }}
                 className="webAvatarBox"
               >
-                <img
-                  src={`public/assets/event1/${selectedParticipant.chineseName}.jpg`}
-                />
                 <Avatar
                   alt={selectedParticipant.name}
-                  src={`assets/event1/${selectedParticipant.chineseName}.jpg`}
+                  src={`event1/${selectedParticipant.chineseName}.jpg`}
                   sx={{
                     width: 170,
                     height: 170,
@@ -1479,7 +1476,7 @@ function App() {
                             <Box className="iconRankingBox">
                               <Avatar
                                 alt={item.name}
-                                src={item.image}
+                                src={`event1/${item.chineseName}.jpg`}
                                 sx={{
                                   width: 50 - index * 5 + "px",
                                   height: 50 - index * 5 + "px",
@@ -1761,7 +1758,7 @@ function App() {
 
                         <Avatar
                           alt={item.name}
-                          src={item.image}
+                          src={`event1/${item.chineseName}.jpg`}
                           sx={{
                             width: { xs: 100, sm: 150, md: 200 },
                             height: { xs: 100, sm: 150, md: 200 },
