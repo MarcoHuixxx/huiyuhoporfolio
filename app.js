@@ -422,7 +422,7 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
     }
 
     let participants = await getParticipants(eventId, roundNumber, limit, { 'event.round.participationNo': 1 }, true);
-    let firstThree = await getParticipants(eventId, roundNumber, 3, { 'event.round.participationNo': -1 }, true);
+    let firstThree = await getParticipants(eventId, roundNumber, 3, { 'event.round.voteCount': -1 }, true);
 
     const firstVoteCount = firstThree[0]?.votes || 1;
     const secondVoteCountPercent = firstThree[1]?.votes / firstVoteCount || 1;
