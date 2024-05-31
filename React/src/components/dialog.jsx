@@ -22,8 +22,6 @@ export default function FullScreenDialog({
     setOpen(false);
   };
 
-  console.log("closeIcon:", closeIcon);
-
   return (
     <React.Fragment>
       <Dialog

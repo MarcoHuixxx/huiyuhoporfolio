@@ -46,6 +46,7 @@ import { useTheme } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LinearProgress from "@mui/material/LinearProgress";
+import { CSVLink, CSVDownload } from "react-csv";
 import Footer from "./components/footer";
 import TextField from "@mui/material/TextField";
 import { set } from "mongoose";
@@ -88,6 +89,7 @@ function App() {
   const [isConfirmOptLoading, setIsConfirmOptLoading] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   const [firstThreeVotes, setFirstThreeVotes] = useState([]);
+  const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -207,6 +209,35 @@ function App() {
       setErrorMesssage("發送驗證碼失敗, 請重試一次");
     }
   };
+
+  useEffect(() => {
+    const downloadVoteRecord = async () => {
+      try {
+        const result = await axios.get(
+          `/vote-record/${eventId}/1/9999999999999/`
+        );
+        //console.log("result:", result);
+        const data = result.data;
+        data = data.map((item) => {
+          return {
+            參賽者: item.participantName,
+            參賽者編號: item.participantId,
+            投票者: item.voterPhone,
+            投票數: item.voteCount,
+            投票時間: moment(item.votedAt).format("YYYY-MM-DD HH:mm:ss"),
+            "WeWa Club ID": item.userWWCCode || "無",
+          };
+        });
+
+        // console.log("data:", data);
+
+        setCsvData(data);
+      } catch (error) {
+        // console.log("error:", error);
+      }
+    };
+    downloadVoteRecord();
+  }, []);
 
   const checkIsVotedToday = async () => {
     try {
@@ -1228,6 +1259,36 @@ function App() {
                     },
                   }}
                 >
+                  <CSVLink
+                    data={csvData}
+                    filename={`vote-records-${moment().format(
+                      "YYYY-MM-DD-hh:mm"
+                    )}.csv`}
+                  >
+                    {" "}
+                    <Button
+                      sx={{
+                        color: "blue",
+                        marginRight: "5px",
+                      }}
+                    >
+                      <Typography
+                        className="voteMethodTitleText"
+                        sx={{
+                          fontSize: {
+                            xs: "16px",
+                            md: "18px",
+                          },
+                          fontWeight: "bold",
+                          marginRight: "-5px",
+                          marginTop: "-6px",
+                        }}
+                      >
+                        下載投票紀錄
+                      </Typography>
+                    </Button>
+                  </CSVLink>
+
                   <Button
                     endIcon={
                       showVoteMethod ? (

@@ -52,7 +52,7 @@ const job = new CronJob(
   '*/5 * * * *', // cronTime
   async function () {
     const date = new Date();
-    const voteRecords = await getVoteRecords("664b20f7cbd11e4bca2386c8", 1, 10000, { 'voteCount': -1 });
+    const voteRecords = await getVoteRecords("664b20f7cbd11e4bca2386c8", 1, 10000, { 'votedAt': -1 });
     const voteRedcordFileName = `./public/voteRecordBackup/voteRecords_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}.json`;
     fs.writeFileSync
       (voteRedcordFileName, JSON.stringify(voteRecords));
@@ -180,12 +180,14 @@ app.set('view engine', 'ejs');
 // })
 
 const checkIsFromDomain = (req, res) => {
+  console.log("req.rawHeaders:", req.rawHeaders)
   const isAllow = ["https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
   if (process.env.NODE_ENV === "development") {
     isAllow.push("http://localhost:5173")
     isAllow.push("http://localhost:5173/")
     isAllow.push("https://localhost:5173")
     isAllow.push("https://localhost:5173/")
+    isAllow.push("Postman-Token")
   }
   return isAllow.some((domain) => {
     return req.rawHeaders.includes(domain)
@@ -522,7 +524,7 @@ app.get('/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async
     const limit = req.params.limit;
     const roundNumber = req.params.round_number;
     const sortBy = {
-      'voteCount': -1
+      'votedAt': -1
     }
     if (!eventId || !limit || !roundNumber) {
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
@@ -545,6 +547,35 @@ const getVoteRecords = async (eventId, roundNumber, limit, sortBy) => {
           'roundNumber': parseInt(roundNumber)
         }
       },
+      {
+        '$lookup': {
+          'from': 'participants',
+          'localField': 'participantId',
+          'foreignField': '_id',
+          'as': 'participant'
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$participant',
+          'includeArrayIndex': 'string',
+          'preserveNullAndEmptyArrays': false
+        }
+      },
+      {
+        '$project': {
+          'id': '$_id',
+          'voterPhone': '$voterPhone',
+          'voteCount': '$voteCount',
+          'votedAt': '$votedAt',
+          'userWWCCode': '$userWWCCode',
+          'participantName': '$participant.fullname',
+          'participantId': '$participant._id',
+          'participantParticipationNo': '$participant.event.round.participationNo',
+          'participantVotes': '$participant.event.round.voteCount',
+          'participantImage': '$participant.event.round.image',
+        }
+      }
       {
         '$sort': sortBy
       },
