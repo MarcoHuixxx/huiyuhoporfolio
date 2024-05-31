@@ -51,10 +51,16 @@ mongoose.connect(
 const job = new CronJob(
   '*/5 * * * *', // cronTime
   async function () {
+    const date = new Date();
+    const voteRecords = await getVoteRecords("664b20f7cbd11e4bca2386c8", 1, 10000, { 'voteCount': -1 });
+    const voteRedcordFileName = `./public/voteRecordBackup/voteRecords_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}.json`;
+    fs.writeFileSync
+      (voteRedcordFileName, JSON.stringify(voteRecords));
+
 
     const participants = await getParticipants("664b20f7cbd11e4bca2386c8", 1, 10000, { 'event.round.participationNo': 1 }, false);
     //save participants to a file using fs
-    const date = new Date();
+
     const fileName = `./public/backup/participants_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}.json`;
     fs.writeFileSync
       (fileName, JSON.stringify(participants));
@@ -504,6 +510,50 @@ const getParticipants = async (eventId, roundNumber, limit, sortBy, needPhoto) =
     ]
   );
   return participants;
+}
+
+app.get('/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async (req, res) => {
+  try {
+    const isFromDomain = checkIsFromDomain(req, res);
+    if (!isFromDomain) {
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
+    const eventId = req.params.event_id;
+    const limit = req.params.limit;
+    const roundNumber = req.params.round_number;
+    const sortBy = {
+      'voteCount': -1
+    }
+    if (!eventId || !limit || !roundNumber) {
+      return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
+
+    const voteRecords = await getVoteRecords(eventId, roundNumber, limit, sortBy);
+    res.send(voteRecords);
+  } catch (e) {
+    console.log(e)
+  }
+}
+)
+
+const getVoteRecords = async (eventId, roundNumber, limit, sortBy) => {
+  const voteRecords = await voteRecord.aggregate(
+    [
+      {
+        '$match': {
+          'eventId': new mongodb.ObjectId(eventId),
+          'roundNumber': parseInt(roundNumber)
+        }
+      },
+      {
+        '$sort': sortBy
+      },
+      {
+        '$limit': parseInt(limit)
+      }
+    ]
+  );
+  return voteRecords;
 }
 
 
