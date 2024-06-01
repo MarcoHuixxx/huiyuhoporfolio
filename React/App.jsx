@@ -244,7 +244,7 @@ function App() {
         );
       }
     }, eventReloadTime);
-  }, []);
+  }, [eventStartDate, eventDeadlineDate]);
 
   useEffect(() => {
     const downloadVoteRecord = async () => {
