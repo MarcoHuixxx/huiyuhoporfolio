@@ -95,7 +95,7 @@ function App() {
   useEffect(() => {
     const fetchRankingList = async () => {
       try {
-        if (!isListLoaded && new Date(eventStartDate) < new Date()) {
+        if (!isListLoaded) {
           const windowLocation = window.location.href;
 
           const isAdminVar = windowLocation.includes(
@@ -121,6 +121,11 @@ function App() {
             new Date(getEventResult?.data?.timeBegin) < new Date() &&
               new Date(getEventResult?.data?.timeEnd) > new Date()
           );
+
+          //if the event is not started, return
+          if (new Date(getEventResult.data.timeBegin) > new Date()) {
+            return;
+          }
           const participantListResult = await axios.get(
             `/participant/${eventId}/${roundNumber}/100/${isAdminVar}`
           );
@@ -151,7 +156,7 @@ function App() {
       }
     };
     fetchRankingList();
-  }, [isListLoaded, eventStartDate]);
+  }, [isListLoaded]);
 
   const rankingTitleMapping = {
     0: "第一名",
