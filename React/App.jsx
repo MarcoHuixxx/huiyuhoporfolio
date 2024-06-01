@@ -95,7 +95,7 @@ function App() {
   useEffect(() => {
     const fetchRankingList = async () => {
       try {
-        if (!isListLoaded) {
+        if (!isListLoaded && new Date(eventStartDate) < new Date()) {
           const windowLocation = window.location.href;
 
           const isAdminVar = windowLocation.includes(
@@ -151,7 +151,7 @@ function App() {
       }
     };
     fetchRankingList();
-  }, [isListLoaded]);
+  }, [isListLoaded, eventStartDate]);
 
   const rankingTitleMapping = {
     0: "第一名",

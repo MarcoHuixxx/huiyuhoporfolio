@@ -421,7 +421,7 @@ app.get('/event/:event_id', async (req, res) => {
 
 app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions), async (req, res) => {
   try {
-    //console.log("hihihihihihihi")
+    console.log("get list")
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
