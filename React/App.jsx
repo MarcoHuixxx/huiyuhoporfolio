@@ -58,9 +58,10 @@ function App() {
   const eventId = "664b20f7cbd11e4bca2386c8";
   const roundNumber = 1;
   const [isAdmin, setIsAdmin] = useState(false);
-  const [eventDeadlineDate, setEventDeadlineDate] = useState(
-    "2024-08-30T23:59:59"
-  );
+  const [eventDeadlineDate, setEventDeadlineDate] = useState("Invalid Date");
+  const [eventReloadTime, setEventReloadTime] = useState(10000);
+  const [eventStartDate, setEventStartDate] = useState("Invalid Date");
+  const [isWithInEventTime, setIsWithInEventTime] = useState(false);
   const [showVoteMethod, setShowVoteMethod] = useState(false);
   const [rankingList, setRankingList] = useState([]);
   const [thirdRankingList, setThirdRankingList] = useState([]);
@@ -107,6 +108,19 @@ function App() {
           if (getEventResult?.data?.timeEnd) {
             setEventDeadlineDate(getEventResult.data.timeEnd);
           }
+
+          if (getEventResult?.data?.timeBegin) {
+            setEventStartDate(getEventResult.data.timeBegin);
+          }
+
+          if (getEventResult?.data?.timeReload) {
+            setEventReloadTime(parseInt(getEventResult.data.timeReload));
+          }
+
+          setIsWithInEventTime(
+            new Date(getEventResult?.data?.timeBegin) < new Date() &&
+              new Date(getEventResult?.data?.timeEnd) > new Date()
+          );
           const participantListResult = await axios.get(
             `/participant/${eventId}/${roundNumber}/100/${isAdminVar}`
           );
@@ -211,21 +225,48 @@ function App() {
   };
 
   useEffect(() => {
+    if (new Date() > new Date(eventStartDate)) {
+      setShowVoteMethod(false);
+    } else if (new Date(eventStartDate) !== "Invalid Date") {
+      setShowVoteMethod(true);
+    }
+  }, [eventStartDate]);
+
+  useEffect(() => {
+    setInterval(() => {
+      if (
+        new Date(eventStartDate) != "Invalid Date" &&
+        new Date(eventDeadlineDate) != "Invalid Date"
+      ) {
+        setIsWithInEventTime(
+          new Date(eventStartDate) < new Date() &&
+            new Date(eventDeadlineDate) > new Date()
+        );
+      }
+    }, eventReloadTime);
+  }, []);
+
+  useEffect(() => {
     const downloadVoteRecord = async () => {
       try {
+        if (!isAdmin) {
+          return;
+        }
         const result = await axios.get(
           `/vote-record/${eventId}/1/9999999999999/`
         );
-        //console.log("result:", result);
-        const data = result.data;
+
+        let data = result.data;
         data = data.map((item) => {
           return {
             參賽者: item.participantName,
-            參賽者編號: item.participantId,
-            投票者: item.voterPhone,
-            投票數: item.voteCount,
+            參賽者編號: item.participantParticipationNo,
+            參賽者投票前票數: item.participantVoteBofore,
+            參賽者投票後票數: item.participantVoteAfter,
             投票時間: moment(item.votedAt).format("YYYY-MM-DD HH:mm:ss"),
-            "WeWa Club ID": item.userWWCCode || "無",
+            投票者電話: item.voterPhone,
+            "投票者 WeWa Club ID": item.userWWCCode || "無",
+            投票數: item.voteCount,
           };
         });
 
@@ -237,7 +278,7 @@ function App() {
       }
     };
     downloadVoteRecord();
-  }, []);
+  }, [isAdmin]);
 
   const checkIsVotedToday = async () => {
     try {
@@ -361,7 +402,11 @@ function App() {
           setIsVoteSuccess(true);
         } else {
           setErrorMesssage("投票失敗, 請再試一次");
+          setTimeout(() => {
+            setErrorMesssage("");
+          }, 3000);
         }
+        setIsConfirmVoteLoading(false);
         setIsConfirmOptLoading(false);
       }
     };
@@ -703,8 +748,15 @@ function App() {
                       boxShadow: "0px 0px 2px 0px #000000",
                     }}
                     onClick={onVoteButonClick}
+                    disabled={!isWithInEventTime}
                   >
-                    <span className="voteButtonText">投票</span>
+                    <span className="voteButtonText">
+                      {new Date() < new Date(eventStartDate)
+                        ? "投票即將開始"
+                        : new Date() > new Date(eventDeadlineDate)
+                        ? "投票已結束"
+                        : "投票"}
+                    </span>
                   </Button>
                 </Box>
               </Container>
@@ -773,8 +825,16 @@ function App() {
                       boxShadow: "0px 0px 2px 0px #000000",
                     }}
                     onClick={onVoteButonClick}
+                    disabled={!isWithInEventTime}
                   >
-                    <span className="voteButtonText">投票</span>
+                    <span className="voteButtonText">
+                      {" "}
+                      {new Date() < new Date(eventStartDate)
+                        ? "投票即將開始"
+                        : new Date() > new Date(eventDeadlineDate)
+                        ? "投票已結束"
+                        : "投票"}
+                    </span>
                   </Button>
                 </Box>
                 <Grid container>
@@ -1093,6 +1153,7 @@ function App() {
                   loading={isConfirmVoteLoading && isPhoneValid && votes !== 0}
                   onClick={onConfirmVote}
                   className="confirmVoteButton"
+                  disabled={!isWithInEventTime}
                 >
                   <Typography
                     sx={{
@@ -1100,7 +1161,11 @@ function App() {
                       fontWeight: "bold",
                     }}
                   >
-                    投票
+                    {new Date() < new Date(eventStartDate)
+                      ? "投票即將開始"
+                      : new Date() > new Date(eventDeadlineDate)
+                      ? "活動已結束"
+                      : "投票"}
                   </Typography>
                 </LoadingButton>
               </Box>
@@ -1192,6 +1257,7 @@ function App() {
                   onClick={onConfirmOptInput}
                   className="confirmVoteButton"
                   loading={isConfirmOptLoading}
+                  disabled={otp.length !== 6 || !isWithInEventTime}
                 >
                   <Typography
                     sx={{
@@ -1199,7 +1265,7 @@ function App() {
                       fontWeight: "bold",
                     }}
                   >
-                    確認
+                    {isWithInEventTime ? "確認投票" : "投票已結束"}
                   </Typography>
                 </LoadingButton>
               </Box>
@@ -1259,35 +1325,37 @@ function App() {
                     },
                   }}
                 >
-                  <CSVLink
-                    data={csvData}
-                    filename={`vote-records-${moment().format(
-                      "YYYY-MM-DD-hh:mm"
-                    )}.csv`}
-                  >
-                    {" "}
-                    <Button
-                      sx={{
-                        color: "blue",
-                        marginRight: "5px",
-                      }}
+                  {isAdmin && (
+                    <CSVLink
+                      data={csvData}
+                      filename={`vote-records-${moment().format(
+                        "YYYY-MM-DD-hh:mm"
+                      )}.csv`}
                     >
-                      <Typography
-                        className="voteMethodTitleText"
+                      {" "}
+                      <Button
                         sx={{
-                          fontSize: {
-                            xs: "16px",
-                            md: "18px",
-                          },
-                          fontWeight: "bold",
-                          marginRight: "-5px",
-                          marginTop: "-6px",
+                          color: "blue",
+                          marginRight: "5px",
                         }}
                       >
-                        下載投票紀錄
-                      </Typography>
-                    </Button>
-                  </CSVLink>
+                        <Typography
+                          className="voteMethodTitleText"
+                          sx={{
+                            fontSize: {
+                              xs: "16px",
+                              md: "18px",
+                            },
+                            fontWeight: "bold",
+                            marginRight: "-5px",
+                            marginTop: "-6px",
+                          }}
+                        >
+                          下載投票紀錄
+                        </Typography>
+                      </Button>
+                    </CSVLink>
+                  )}
 
                   <Button
                     endIcon={
@@ -1467,7 +1535,7 @@ function App() {
           </Box>
         </Box>
 
-        {rankingList.length > 0 ? (
+        {rankingList.length > 0 && new Date(eventStartDate) < new Date() ? (
           <>
             <Box className="section">
               <Box className="columnBox">
@@ -1694,30 +1762,47 @@ function App() {
                     },
                   }}
                 >
-                  <Typography
-                    className="eventCountDownText"
-                    sx={{
-                      fontSize: {
-                        xs: "16px",
-                        md: "12px",
-                      },
-                      fontWeight: "bold",
-                    }}
-                  >
-                    距離投票截止還有
-                  </Typography>
-                  <span className="eventCountDownDateText">
-                    {
-                      <Countdown
-                        date={eventDeadlineDate}
-                        renderer={({ days, hours, minutes }) => (
-                          <span>
-                            {days} 天 {hours} 時 {minutes} 分
-                          </span>
-                        )}
-                      />
-                    }
-                  </span>
+                  {new Date(eventDeadlineDate) > new Date() ? (
+                    <>
+                      <Typography
+                        className="eventCountDownText"
+                        sx={{
+                          fontSize: {
+                            xs: "16px",
+                            md: "12px",
+                          },
+                          fontWeight: "bold",
+                        }}
+                      >
+                        距離投票截止還有
+                      </Typography>
+                      <span className="eventCountDownDateText">
+                        {
+                          <Countdown
+                            date={eventDeadlineDate}
+                            renderer={({ days, hours, minutes }) => (
+                              <span>
+                                {days} 天 {hours} 時 {minutes} 分
+                              </span>
+                            )}
+                          />
+                        }
+                      </span>
+                    </>
+                  ) : (
+                    <Typography
+                      className="eventCountDownText"
+                      sx={{
+                        fontSize: {
+                          xs: "16px",
+                          md: "12px",
+                        },
+                        fontWeight: "bold",
+                      }}
+                    >
+                      投票已截止
+                    </Typography>
+                  )}
                 </Box>
                 <Container>
                   <Grid
@@ -1834,15 +1919,74 @@ function App() {
               </Box>
             </Box>
           </>
+        ) : new Date(eventStartDate) < new Date() ||
+          new Date(eventStartDate) == "Invalid Date" ? (
+          <LinearProgress
+            sx={{
+              marginTop: "-20px",
+            }}
+            color="success"
+          />
         ) : (
-          <>
-            <LinearProgress
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "10vh",
+            }}
+          >
+            <Typography
               sx={{
-                marginTop: "-20px",
+                fontSize: {
+                  xs: "16px",
+                  md: "20px",
+                },
+                color: "#e04478",
+                fontWeight: "bold",
               }}
-              color="success"
-            />
-          </>
+            >
+              活動即將開始
+            </Typography>
+            <Box
+              className="rankingNumberInnerBox eventCountDownBox"
+              sx={{
+                marginTop: {
+                  xs: "10px",
+                  md: "5px",
+                },
+                display: "flex",
+                flexDirection: "row",
+                alignSelf: "center",
+              }}
+            >
+              <Typography
+                className="eventCountDownText"
+                sx={{
+                  fontSize: {
+                    xs: "16px",
+                    md: "12px",
+                  },
+                  fontWeight: "bold",
+                }}
+              >
+                距離投票開始還有
+              </Typography>
+              <span className="eventCountDownDateText">
+                {
+                  <Countdown
+                    date={eventStartDate}
+                    renderer={({ days, hours, minutes }) => (
+                      <span>
+                        {days} 天 {hours} 時 {minutes} 分
+                      </span>
+                    )}
+                  />
+                }
+              </span>
+            </Box>
+          </Box>
         )}
       </Container>
       <Footer type="home" isMd={isMd} />

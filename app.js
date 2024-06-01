@@ -94,6 +94,8 @@ const voteRecordSchema = new mongoose.Schema({
   eventId: mongoose.Schema.Types.ObjectId,
   roundNumber: Number,
   voteCount: Number,
+  participantVoteBofore: Number,
+  participantVoteAfter: Number,
   voterPhone: String,
   userWWCCode: String,
   votedAt: Date,
@@ -152,9 +154,9 @@ app.set('view engine', 'ejs');
 
 //return not found page
 // app.use((req, res, next) => {
-//   console.log('404')
+//   //console.log('404')
 //   const language = req.params.language || "hk";
-//   console.log(" pageText[language]:", pageText[language])
+//   //console.log(" pageText[language]:", pageText[language])
 //   res.render('pages/404', {
 //     pageText: pageText[language],
 //     language: language
@@ -166,21 +168,21 @@ app.set('view engine', 'ejs');
 
 // app.get('/send-otp/:phone', async (req, res) => {
 //   try {
-//     console.log("hihihihihihihi")
+//     //console.log("hihihihihihihi")
 //     const phone = req.params.phone;
-//     console.log("phone:", phone)
+//     //console.log("phone:", phone)
 //     client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
 //       .verifications
 //       .create({ to: phone, channel: 'sms' })
-//       .then(verification => console.log(verification));
+//       .then(verification => //console.log(verification));
 //     res.send('otp sent')
 //   } catch (e) {
-//     console.log(e)
+//     //console.log(e)
 //   }
 // })
 
 const checkIsFromDomain = (req, res) => {
-  console.log("req.rawHeaders:", req.rawHeaders)
+  //console.log("req.rawHeaders:", req.rawHeaders)
   const isAllow = ["https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
   if (process.env.NODE_ENV === "development") {
     isAllow.push("http://localhost:5173")
@@ -203,9 +205,9 @@ app.get('/send-otp/:phone', async (req, res, next) => {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
     const phone = req.params.phone;
-    console.log("phone:", phone)
-    console.log("phone.length:", phone.length)
-    console.log("phone.startsWith(+852):", phone.startsWith("+852"))
+    //console.log("phone:", phone)
+    //console.log("phone.length:", phone.length)
+    //console.log("phone.startsWith(+852):", phone.startsWith("+852"))
 
     if (phone.length !== 14 || !phone.startsWith("+852")) {
       return res.status(400).send({ success: false, message: 'Invalid Phone Number' });
@@ -220,7 +222,7 @@ app.get('/send-otp/:phone', async (req, res, next) => {
 
     res.send({ success: true });
   } catch (error) {
-    errorLog.create({ error: error, time: new Date() });
+    errorLog.create({ error: error||"Error sending OTP", time: new Date() });
     console.error('Error sending OTP:', error);
     res.status(500).send({ success: false });
   }
@@ -240,7 +242,7 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
     }
 
     var dayStart = new Date();
-    console.log("dayStart1:", dayStart)
+
     if (dayStart.getHours() < 16) {
       dayStart.setDate(dayStart.getDate() - 1);
       dayStart.setHours(16, 0, 0, 0);
@@ -250,8 +252,7 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
 
     let dayEnd = new Date(dayStart);
     dayEnd.setDate(dayEnd.getDate() + 1);
-    console.log("dayStart:", dayStart)
-    console.log("dayEnd:", dayEnd)
+
 
 
 
@@ -259,7 +260,7 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
       voterPhone: voterPhone, votedAt: { $gte: dayStart, $lt: dayEnd },
       eventId: eventId
     });
-    console.log("voteRecords:", voteRecords)
+    // //console.log("voteRecords:", voteRecords)
     if (voteRecords.length > 0) {
       res.send({ isVoted: true });
       return;
@@ -267,7 +268,7 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
     res.send({ isVoted: false });
   } catch (e) {
     errorLog.create({ error: error, time: new Date() });
-    console.log(e)
+    //console.log(e)
     res.send({ isVoted: true, error: e });
   }
 })
@@ -296,7 +297,7 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
     res.send({ isPhoneVerified: false });
   } catch (e) {
     errorLog.create({ error: error, time: new Date() });
-    console.log(e)
+    //console.log(e)
     res.send({ isPhoneVerified: false, error: e });
   }
 })
@@ -320,17 +321,17 @@ app.post('/vote', async (req, res) => {
       return res.status(400).send({ success: false, message: 'Vote Count Invalid' });
     }
 
-    console.log({ participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId })
+    //console.log({ participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId })
     //check if the event is still open
     const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
 
     if (!eventResult) {
-      console.log("The round is not found")
+      //console.log("The round is not found")
       return res.status(400).send({ success: false, message: 'The round is not found' });
     }
 
     if (new Date(eventResult.timeBegin) > new Date() || new Date(eventResult.timeEnd) < new Date()) {
-      console.log("The round is not open")
+      //console.log("The round is not open")
       return res.status(400).send({ success: false, message: 'The round is not open' });
     }
 
@@ -345,10 +346,14 @@ app.post('/vote', async (req, res) => {
       }
     );
 
+    //console.log("updateParticipant:", updateParticipant)
+
     if (updateParticipant) {
       const newVoteRecord = new voteRecord({
         roundNumber: roundNumber,
         voteCount: voteCount,
+        participantVoteBofore: updateParticipant.event[0].round[0].voteCount - voteCount,
+        participantVoteAfter: updateParticipant.event[0].round[0].voteCount,
         voterPhone: voterPhone,
         votedAt: new Date(),
         eventId: eventId,
@@ -358,13 +363,13 @@ app.post('/vote', async (req, res) => {
       newVoteRecord.save();
       res.send({ success: true });
     } else {
-      console.log("The participant is not found")
+      //console.log("The participant is not found")
       res.send({ success: false });
     }
 
   } catch (e) {
     errorLog.create({ error: error, time: new Date() });
-    console.log(e)
+    //console.log(e)
     res.send({ success: false });
 
   }
@@ -391,9 +396,9 @@ app.get('/verify-otp/:phone/:otp', cors(corsOptions), async (req, res) => {
     } else {
       res.send({ success: false });
     }
-  } catch (e) {
-    console.error('Error verifying OTP:', e);
-    errorLog.create({ error: error, time: new Date() });
+  } catch (error) {
+    console.error('Error verifying OTP:', error);
+    errorLog.create({ error: error||"Error verifying OTP", time: new Date() });
     res.status(500).send({ success: false });
   }
 })
@@ -408,7 +413,7 @@ app.get('/event/:event_id', async (req, res) => {
     const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
     res.send(eventResult);
   } catch (e) {
-    console.log(e)
+    //console.log(e)
   }
 })
 
@@ -416,7 +421,7 @@ app.get('/event/:event_id', async (req, res) => {
 
 app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions), async (req, res) => {
   try {
-    console.log("hihihihihihihi")
+    //console.log("hihihihihihihi")
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
@@ -458,7 +463,7 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
 
     res.send({ participants, firstThreeRaningPercent, firstThree });
   } catch (e) {
-    console.log(e)
+    //console.log(e)
   }
 })
 
@@ -533,7 +538,7 @@ app.get('/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async
     const voteRecords = await getVoteRecords(eventId, roundNumber, limit, sortBy);
     res.send(voteRecords);
   } catch (e) {
-    console.log(e)
+    //console.log(e)
   }
 }
 )
@@ -543,7 +548,6 @@ const getVoteRecords = async (eventId, roundNumber, limit, sortBy) => {
     [
       {
         '$match': {
-          'eventId': new mongodb.ObjectId(eventId),
           'roundNumber': parseInt(roundNumber)
         }
       },
@@ -563,6 +567,26 @@ const getVoteRecords = async (eventId, roundNumber, limit, sortBy) => {
         }
       },
       {
+        '$unwind': {
+          'path': '$participant.event',
+          'includeArrayIndex': 'string',
+          'preserveNullAndEmptyArrays': false
+        }
+      },
+      {
+        '$unwind': {
+          'path': '$participant.event.round',
+          'includeArrayIndex': 'string',
+          'preserveNullAndEmptyArrays': false
+        }
+      },
+      {
+        '$match': {
+          'participant.event.round.roundNumber': parseInt(roundNumber),
+          'participant.event.eventId': new mongodb.ObjectId(eventId)
+        }
+      },
+      {
         '$project': {
           'id': '$_id',
           'voterPhone': '$voterPhone',
@@ -572,10 +596,10 @@ const getVoteRecords = async (eventId, roundNumber, limit, sortBy) => {
           'participantName': '$participant.fullname',
           'participantId': '$participant._id',
           'participantParticipationNo': '$participant.event.round.participationNo',
-          'participantVotes': '$participant.event.round.voteCount',
-          'participantImage': '$participant.event.round.image',
+          'participantVoteBofore': '$participantVoteBofore',
+          'participantVoteAfter': '$participantVoteAfter',
         }
-      }
+      },
       {
         '$sort': sortBy
       },
