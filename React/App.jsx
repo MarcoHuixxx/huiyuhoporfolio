@@ -328,7 +328,7 @@ function App() {
       } else {
         setIsOptValid(false);
       }
-
+      setIsConfirmOptLoading(false);
       setIsOptChecked(true);
     } catch (error) {
       setIsOptChecked(true);
@@ -1509,7 +1509,10 @@ function App() {
                             },
                           }}
                           onClick={() => {
-                            window.open("https://club.wewacard.com/", "_blank");
+                            window.open(
+                              "https://ad.doubleclick.net/ddm/trackclk/N555206.4378894ICMA/B31525880.395468533;dc_trk_aid=587164945;dc_trk_cid=216262005;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1",
+                              "_blank"
+                            );
                           }}
                         >
                           <span className="joinMemberText">立即登記會員</span>
