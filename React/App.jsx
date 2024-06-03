@@ -81,7 +81,7 @@ function App() {
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isOptValid, setIsOptValid] = useState(false);
   const [confirmVoteIsClicked, setConfirmVoteIsClicked] = useState(false);
-  const [errorMessage, setErrorMesssage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isVoteSuccess, setIsVoteSuccess] = useState(false);
   const [isOptChecked, setIsOptChecked] = useState(false);
   const [isListLoaded, setIsListLoaded] = useState(false);
@@ -191,7 +191,7 @@ function App() {
 
       if (isVotedToday) {
         setIsConfirmVoteLoading(false);
-        setErrorMesssage("今天已參與投票，請明天再參與");
+        setErrorMessage("今天已參與投票，請明天再參與");
         return;
       }
 
@@ -199,7 +199,7 @@ function App() {
       //console.log("isPhoneVerified:", isPhoneVerified);
       if (isPhoneVerified.success) {
         setIsPhoneVerified(true);
-        setErrorMesssage("");
+        setErrorMessage("");
 
         setTimeout(() => {
           setIsConfirmVoteLoading(false);
@@ -208,7 +208,7 @@ function App() {
         return;
       } else if (isPhoneVerified.error) {
         setIsConfirmVoteLoading(false);
-        setErrorMesssage("發送驗證碼失敗, 請重試一次");
+        setErrorMessage("發送驗證碼失敗, 請重試一次");
         return;
       }
       const senOptResult = await sendOtp();
@@ -216,16 +216,16 @@ function App() {
       //console.log("senOptResult:", senOptResult);
 
       if (senOptResult.success) {
-        setErrorMesssage("");
+        setErrorMessage("");
         setShowOptDialog(true);
       } else {
-        setErrorMesssage("發送驗證碼失敗, 請重試一次");
+        setErrorMessage("發送驗證碼失敗, 請重試一次");
       }
       setIsConfirmVoteLoading(false);
     } catch (error) {
       //console.log("error:", error);
       setIsConfirmVoteLoading(false);
-      setErrorMesssage("發送驗證碼失敗, 請重試一次");
+      setErrorMessage("發送驗證碼失敗, 請重試一次");
     }
   };
 
@@ -334,11 +334,11 @@ function App() {
       setIsOptChecked(true);
       if (error.response.status === 400) {
         if (error.response.data.message === "The round is not open") {
-          setErrorMesssage("活動已經結束，投票失敗");
+          setErrorMessage("活動已經結束，投票失敗");
         } else if (
           error.response.data.message === "The participant is not found"
         ) {
-          setErrorMesssage("參賽者不存在，投票失敗");
+          setErrorMessage("參賽者不存在，投票失敗");
         }
       } else {
         setIsOptValid(false);
@@ -406,9 +406,9 @@ function App() {
           // setVoteDialogIsOpen(false);
           setIsVoteSuccess(true);
         } else {
-          setErrorMesssage("投票失敗, 請再試一次");
+          setErrorMessage("投票失敗, 請再試一次");
           setTimeout(() => {
-            setErrorMesssage("");
+            setErrorMessage("");
           }, 3000);
         }
         setIsConfirmVoteLoading(false);
@@ -489,7 +489,7 @@ function App() {
 
       //console.log("voteDialogIsOpen:", voteDialogIsOpen);
       setIsPhoneVerified(false);
-      setErrorMesssage("");
+      setErrorMessage("");
       setIsOptChecked(false);
       setIsOptValid(false);
       setIsPhoneValid(false);

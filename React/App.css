@@ -26,6 +26,12 @@
   font-family: "Hiragino Sans GB W05 W4";
 } */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 #root {
   display: flex;
   flex-direction: column;
