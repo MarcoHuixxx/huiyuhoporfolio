@@ -14,7 +14,7 @@ const pageText = {
         emailUs: "電郵",
         callUs: "電話",
         // slogan: "Beauty Is A State Of Mind",
-        slogan: "5月限時優惠HKD1680整眉，立即諮詢！",
+        slogan: "6月限時優惠HKD1980整眉，立即諮詢！",
         ourBeautyServices: "我們的美容服務",
         ourBeautyServicesDescription: "我們提供一系列的美容服務，包括臉部護理、身體護理、美甲、美髮等等。我們的專業美容師會根據您的需要，為您提供最合適的服務。",
         eyebrow: "眉形設計",
