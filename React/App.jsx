@@ -50,6 +50,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 import Footer from "./components/footer";
 import TextField from "@mui/material/TextField";
 import { set } from "mongoose";
+import Checkbox from "@mui/material/Checkbox";
 
 //set axios default url
 axios.defaults.baseURL = serverUrl;
@@ -91,6 +92,8 @@ function App() {
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   const [firstThreeVotes, setFirstThreeVotes] = useState([]);
   const [csvData, setCsvData] = useState([]);
+  const [isAgree, setIsAgree] = useState(false);
+  const [showUserAgreement, setShowUserAgreement] = useState(false);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -110,7 +113,8 @@ function App() {
           }
 
           if (getEventResult?.data?.timeBegin) {
-            setEventStartDate(getEventResult.data.timeBegin);
+            // setEventStartDate(getEventResult.data.timeBegin);
+            setEventStartDate("2024-6-4");
           }
 
           if (getEventResult?.data?.timeReload) {
@@ -118,12 +122,14 @@ function App() {
           }
 
           setIsWithInEventTime(
-            new Date(getEventResult?.data?.timeBegin) < new Date() &&
+            // new Date(getEventResult?.data?.timeBegin) < new Date() &&
+            new Date("2024-6-4") < new Date() &&
               new Date(getEventResult?.data?.timeEnd) > new Date()
           );
 
           //if the event is not started, return
-          if (new Date(getEventResult.data.timeBegin) > new Date()) {
+          // if (new Date(getEventResult.data.timeBegin) > new Date()) {
+          if (new Date("2024-6-4") > new Date()) {
             return;
           }
           const participantListResult = await axios.get(
@@ -230,9 +236,13 @@ function App() {
   };
 
   useEffect(() => {
+    console.log("eventStartDate:", eventStartDate);
     if (new Date() > new Date(eventStartDate)) {
       setShowVoteMethod(false);
-    } else if (new Date(eventStartDate) !== "Invalid Date") {
+    } else if (
+      new Date(eventStartDate) !== "Invalid Date" &&
+      new Date() < new Date(eventStartDate)
+    ) {
       setShowVoteMethod(true);
     }
   }, [eventStartDate]);
@@ -1137,6 +1147,41 @@ function App() {
 
               <Box
                 sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <Checkbox
+                  Checked={isAgree}
+                  onChange={() => setIsAgree(!isAgree)}
+                />
+                <Typography
+                  sx={{
+                    fontSize: "16px",
+                    color: "#e04478",
+                    fontWeight: "500",
+                  }}
+                >
+                  本人已細閱並同意
+                  <span
+                    style={{
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      textDecoration: "underline",
+                    }}
+                    onClick={() => {
+                      setShowUserAgreement(true);
+                    }}
+                  >
+                    本條款細則的所有內容{" "}
+                  </span>
+                  <span>*</span>
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
                   marginTop: "40px",
                   display: "flex",
                   justifyContent: "center",
@@ -1290,6 +1335,77 @@ function App() {
             </Box>
           )}
         </Dialog>
+      </Dialog>
+
+      <Dialog
+        open={showUserAgreement}
+        setOpen={setShowUserAgreement}
+        direction="up"
+        closeIcon
+        zIndex={100000000}
+      >
+        <Box
+          sx={{
+            padding: "40px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "16px",
+              color: "#e04478",
+              fontWeight: "500",
+              marginBottom: "20px",
+            }}
+          >
+            個人資料收集及用途 <br />
+            1.1投選者在參與復活賽投票時需提供的個人資料包括但不限於電話號碼、WeWa
+            Club會員編號等。這些資料將用於管理和組織投票活動，確保活動順利進行。
+            <br />
+            <br />
+            1.2 投選者明白並同意其提供的個人資料可能會用於以下用途：
+            <br />
+            <br />
+            比賽宣傳：投選者同意其名字等資料可能在比賽節目及宣傳活動中使用，包括但不限於官方網站、社交媒體、新聞稿等。
+            <br />
+            商業贊助宣傳：投選者同意其個人資料可能用於冠名贊助商的商業宣傳活動，包括但不限於冠名贊助商的廣告、促銷材料等。
+            <br />
+            <br />
+            資料安全及保密 <br />
+            2.1ICMA將採取合理的技術和組織措施，確保投選者的個人資料得到妥善保存並防止未經授權的訪問、披露、使用、修改或損失。
+            <br />
+            <br />
+            2.2
+            ICMA僅在舉辦歌唱比賽和相關活動的必要範圍內使用投選者的個人資料，除非事先獲得投選者的明確同意。
+            第三方分享 3.1
+            投選者的個人資料可能會與冠名贊助商以及比賽相關的第三方合作夥伴分享，但僅限於比賽宣傳和商業宣傳的合理範圍內。
+            3.2
+            ICMA將謹慎地選擇合作夥伴，確保他們也遵守相關的私隱條例和資料保護規定。
+            投選者的權利 4.1
+            投選者有權隨時查閱、更正或刪除其提供的個人資料，只需提前通知ICMA。
+            4.2
+            投選者有權隨時撤回其對個人資料的使用同意，但這可能影響其投票資格。
+            法規遵從 5.1
+            本條款細則將嚴格遵守香港個人資料（私隱）條例，並確保其符合當地和國際的相關法規。
+            5.2
+            ICMA將與法律專業人士合作，以確保條款細則在法律框架內得到適當的解釋和遵守。
+            同意及確認 6.1
+            投選者在提交並確認投票時，即表示已經細閱並同意本條款細則的所有內容。
+            6.2
+            ICMA保留隨時修改本條款細則的權利，修改將通過官方網站公佈，並於生效前通知投選者。
+            6.3
+            如投選者未能遵守本條款或未符合參加資格之要求，ICMA有權即時取消其投票資格而不需另行通知。
+            6.4
+            投選者保證其參與本活動及所提供之資料並沒有(i)違反任何法律;(ii)侵犯任何第三方權利(包括但不限於著作權、專利權、商標權、商業機密或其他知識產權);及/或(iii)違反與任何第三方的協議或安排。
+            聯絡方式 7.1
+            如有任何有關個人資料使用的疑問或疑慮，請聯繫ICMA的同事，聯絡方式如下：
+            聯絡人電話：（+852）55310262 (WhatsApp only)
+            以上條款細則由ICMA編製，目的是確保所有投選者的權益得到適當保護，同時符合相關的法規和標準。
+          </Typography>
+        </Box>
       </Dialog>
 
       <Container disableGutters={isSm === false}>

@@ -17,6 +17,7 @@ export default function FullScreenDialog({
   fullScreen,
   direction = "left",
   closeIcon = false,
+  zIndex = 1300,
 }) {
   const handleBackHandler = () => {
     setOpen(false);
@@ -31,6 +32,7 @@ export default function FullScreenDialog({
         keepMounted
         sx={{
           height: "100%",
+          zIndex: zIndex,
           //   "& .MuiDialog-paper": { width: "80%", maxHeight: 435 },
         }}
         aria-describedby="alert-dialog-slide-description"
@@ -42,6 +44,7 @@ export default function FullScreenDialog({
           sx={{
             ...(!closeIcon && { left: "18px" }), // if closeIcon is false, then left: "18px
             ...(closeIcon && { right: "18px" }),
+            position: "absolute",
           }}
         >
           {/* <img className="backButtonIcon" src={ArrowBackIosNewIcon} /> */}
