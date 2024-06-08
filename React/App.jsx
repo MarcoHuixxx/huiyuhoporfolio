@@ -113,8 +113,8 @@ function App() {
           }
 
           if (getEventResult?.data?.timeBegin) {
-            // setEventStartDate(getEventResult.data.timeBegin);
-            setEventStartDate("2024-6-4");
+            setEventStartDate(getEventResult.data.timeBegin);
+            // setEventStartDate("2024-6-4");
           }
 
           if (getEventResult?.data?.timeReload) {
@@ -122,14 +122,14 @@ function App() {
           }
 
           setIsWithInEventTime(
-            // new Date(getEventResult?.data?.timeBegin) < new Date() &&
-            new Date("2024-6-4") < new Date() &&
+            new Date(getEventResult?.data?.timeBegin) < new Date() &&
+              // new Date("2024-6-4") < new Date() &&
               new Date(getEventResult?.data?.timeEnd) > new Date()
           );
 
           //if the event is not started, return
-          // if (new Date(getEventResult.data.timeBegin) > new Date()) {
-          if (new Date("2024-6-4") > new Date()) {
+          if (new Date(getEventResult.data.timeBegin) > new Date()) {
+            // if (new Date("2024-6-4") > new Date()) {
             return;
           }
           const participantListResult = await axios.get(
@@ -187,7 +187,7 @@ function App() {
       setIsConfirmVoteLoading(true);
       //console.log("onConfirmVote");
       setConfirmVoteIsClicked(true);
-      if (!isPhoneValid || votes === 0) {
+      if (!isPhoneValid || votes === 0 || !isAgree) {
         setIsConfirmVoteLoading(false);
         return;
       }
@@ -236,7 +236,7 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("eventStartDate:", eventStartDate);
+    // console.log("eventStartDate:", eventStartDate);
     if (new Date() > new Date(eventStartDate)) {
       setShowVoteMethod(false);
     } else if (
@@ -498,6 +498,7 @@ function App() {
       }
 
       //console.log("voteDialogIsOpen:", voteDialogIsOpen);
+      setIsAgree(false);
       setIsPhoneVerified(false);
       setErrorMessage("");
       setIsOptChecked(false);
@@ -1067,6 +1068,8 @@ function App() {
                 <MuiPhoneNumber
                   sx={{
                     "& svg": { height: "1em" },
+                    // padding: "0px",
+                    width: "100%",
                   }}
                   defaultCountry={"hk"}
                   value={phoneNumber}
@@ -1150,35 +1153,63 @@ function App() {
                   display: "flex",
                   alignItems: "center",
                   marginTop: "20px",
+                  border:
+                    confirmVoteIsClicked && !isAgree ? "2px solid red" : "",
+                  borderRadius: "5px",
                 }}
               >
                 <Checkbox
                   Checked={isAgree}
                   onChange={() => setIsAgree(!isAgree)}
-                />
-                <Typography
                   sx={{
-                    fontSize: "16px",
+                    color: "#e04478",
+                    padding: "0px",
+                    paddingRight: "5px",
+                  }}
+                />
+
+                <Typography
+                  display={"inline"}
+                  sx={{
+                    fontSize: {
+                      xs: "10px",
+                      sm: "16px",
+                    },
                     color: "#e04478",
                     fontWeight: "500",
                   }}
                 >
                   本人已細閱並同意
-                  <span
-                    style={{
-                      cursor: "pointer",
-                      fontWeight: "bold",
-                      textDecoration: "underline",
-                    }}
-                    onClick={() => {
-                      setShowUserAgreement(true);
-                    }}
-                  >
-                    本條款細則的所有內容{" "}
-                  </span>
-                  <span>*</span>
+                </Typography>
+                <Typography
+                  display={"inline"}
+                  sx={{
+                    fontSize: {
+                      xs: "10px",
+                      sm: "16px",
+                    },
+                    color: "#e04478",
+                    fontWeight: "800",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                  onClick={() => {
+                    setShowUserAgreement(true);
+                  }}
+                >
+                  本條款細則的所有內容{" "}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#e04478",
+                  }}
+                >
+                  *
                 </Typography>
               </Box>
+              <p className="inputErrorText">
+                {!isAgree && confirmVoteIsClicked ? "請同意條款細則" : ""}
+              </p>
 
               <Box
                 sx={{
