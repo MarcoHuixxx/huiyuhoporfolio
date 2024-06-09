@@ -28,6 +28,8 @@ const corsOptions = {
 };
 
 
+
+
 app.use(cors(corsOptions));
 const { CronJob } = require('cron');
 // support parsing of application/json type post data
@@ -136,10 +138,18 @@ const participantSchema = new mongoose.Schema({
   status: String,
 });
 
+const optVerifySchema = new mongoose.Schema({
+  phone: String,
+  otp: String,
+  status: String,
+  time: Date,
+});
+
 const voteRecord = mongoose.model("voteRecord", voteRecordSchema);
 const event = mongoose.model("event", eventSchema);
 const participant = mongoose.model("participant", participantSchema);
 const errorLog = mongoose.model("errorLog", errorLogSchema);
+const optVerify = mongoose.model("optVerify", optVerifySchema);
 
 
 // const participantCount = await participant.countDocuments();
@@ -213,12 +223,48 @@ app.get('/send-otp/:phone', async (req, res, next) => {
       return res.status(400).send({ success: false, message: 'Invalid Phone Number' });
     }
 
-    const result = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
-      .verifications
-      .create({
-        to: phone, channel: 'sms', codeLength: 4,
-        // customFriendlyName: "ICMA Verification"
-      });
+    // const result = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
+    //   .verifications
+    //   .create({
+    //     to: phone, channel: 'sms', codeLength: 4,
+    //     // customFriendlyName: "ICMA Verification"
+    //   });
+  const random6Digits = Math.floor(100000 + Math.random() * 900000);
+  console.log("random6Digits:",random6Digits)
+
+   const result=await client.messages
+  .create({
+     body: 'ICMA2024 Verification Code: '+random6Digits,
+     from: '+12073092281',
+     to: phone
+   });
+
+   //find if the phone is already in the database, if yes, update the otp, if not, create a new record
+
+   const optVerifyRecord = await optVerify.findOneAndUpdate(
+    { phone
+    },
+    {
+      phone: phone,
+      otp: random6Digits,
+      status: "pending",
+      time: new Date()
+    }
+  );
+
+  if (!optVerifyRecord) {
+    const newOptVerify = new optVerify({
+      phone: phone,
+      otp: random6Digits,
+      status: "pending",
+      time: new Date()
+    });
+    newOptVerify.save();
+  }
+
+   console.log("result:",result)
+
+
 
     res.send({ success: true });
   } catch (error) {
@@ -387,15 +433,29 @@ app.get('/verify-otp/:phone/:otp', cors(corsOptions), async (req, res) => {
       return res.status(400).send({ success: false });
     }
 
-    const result = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
-      .verificationChecks
-      .create({ to: phone, code: otp });
+    const result = await optVerify.findOneAndUpdate(
+      { phone, otp, status: "pending" },
+      {
+        status: "verified",
+        time: new Date()
+      }
+    );
 
-    if (result.status === 'approved') {
+    if (result) {
       res.send({ success: true });
     } else {
       res.send({ success: false });
     }
+
+    // const result = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
+    //   .verificationChecks
+    //   .create({ to: phone, code: otp });
+
+    // if (result.status === 'approved') {
+    //   res.send({ success: true });
+    // } else {
+    //   res.send({ success: false });
+    // }
   } catch (error) {
     console.error('Error verifying OTP:', error);
     errorLog.create({ error: error||"Error verifying OTP", time: new Date() });

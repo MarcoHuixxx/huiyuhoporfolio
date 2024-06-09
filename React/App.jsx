@@ -498,7 +498,7 @@ function App() {
       }
 
       //console.log("voteDialogIsOpen:", voteDialogIsOpen);
-      setIsAgree(false);
+      // setIsAgree(false);
       setIsPhoneVerified(false);
       setErrorMessage("");
       setIsOptChecked(false);
@@ -1159,6 +1159,9 @@ function App() {
                 }}
               >
                 <Checkbox
+                  //need rerender
+
+                  // key={Math.random()}
                   Checked={isAgree}
                   onChange={() => setIsAgree(!isAgree)}
                   sx={{
@@ -1254,7 +1257,7 @@ function App() {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  // marginTop: "40px",
+                  marginTop: "40px",
                 }}
               >
                 <p className="inputErrorText">{errorMessage}</p>
