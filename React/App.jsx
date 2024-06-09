@@ -235,17 +235,17 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    // console.log("eventStartDate:", eventStartDate);
-    if (new Date() > new Date(eventStartDate)) {
-      setShowVoteMethod(false);
-    } else if (
-      new Date(eventStartDate) !== "Invalid Date" &&
-      new Date() < new Date(eventStartDate)
-    ) {
-      setShowVoteMethod(true);
-    }
-  }, [eventStartDate]);
+  // useEffect(() => {
+  //   // console.log("eventStartDate:", eventStartDate);
+  //   if (new Date() > new Date(eventStartDate)) {
+  //     setShowVoteMethod(false);
+  //   } else if (
+  //     new Date(eventStartDate) !== "Invalid Date" &&
+  //     new Date() < new Date(eventStartDate)
+  //   ) {
+  //     setShowVoteMethod(true);
+  //   }
+  // }, [eventStartDate]);
 
   useEffect(() => {
     setInterval(() => {
