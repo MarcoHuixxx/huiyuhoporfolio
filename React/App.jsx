@@ -63,7 +63,7 @@ function App() {
   const [eventReloadTime, setEventReloadTime] = useState(10000);
   const [eventStartDate, setEventStartDate] = useState("Invalid Date");
   const [isWithInEventTime, setIsWithInEventTime] = useState(false);
-  const [showVoteMethod, setShowVoteMethod] = useState(false);
+  const [showVoteMethod, setShowVoteMethod] = useState(true);
   const [rankingList, setRankingList] = useState([]);
   const [thirdRankingList, setThirdRankingList] = useState([]);
   const [votePageIsOpen, setVotePageIsOpen] = useState(false);
