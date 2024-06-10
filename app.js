@@ -319,6 +319,49 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
   }
 })
 
+app.get("/check-wewa-club-id-used/:wewaId/:eventId", async (req, res) => {
+  try {
+    const isFromDomain = checkIsFromDomain(req, res);
+    if (!isFromDomain) {
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
+    const voterWewaId = req.params.wewaId;
+    const eventId = req.params.eventId;
+
+    if (!voterWewaId || !eventId) {
+      return res.status(400).send({ isVoted: false });
+    }
+
+    var dayStart = new Date();
+
+    if (dayStart.getHours() < 16) {
+      dayStart.setDate(dayStart.getDate() - 1);
+      dayStart.setHours(16, 0, 0, 0);
+    } else {
+      dayStart.setHours(16, 0, 0, 0);
+    }
+
+    let dayEnd = new Date(dayStart);
+    dayEnd.setDate(dayEnd.getDate() + 1);
+
+
+    const voteRecords = await voteRecord.find({
+      userWWCCode: voterWewaId, votedAt: { $gte: dayStart, $lt: dayEnd },
+      eventId: eventId
+    });
+    // //console.log("voteRecords:", voteRecords)
+    if (voteRecords.length > 0) {
+      res.send({ isWewaClubIdUsed: true });
+      return;
+    }
+    res.send({ isWewaClubIdUsed: false });
+  } catch (e) {
+    errorLog.create({ error: error, time: new Date() });
+    //console.log(e)
+    res.send({ isWewaClubIdUsed: true, error: e });
+  }
+})
+
 app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);

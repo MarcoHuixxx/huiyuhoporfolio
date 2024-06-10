@@ -201,6 +201,15 @@ function App() {
         return;
       }
 
+      const iswewaClubIdUsedToday = await checkIsWewaClubIdUsedToday();
+
+      if (iswewaClubIdUsedToday) {
+        setIsConfirmVoteLoading(false);
+        setWewaClubId("");
+        setErrorMessage("Wewa Club 會員編號今天已經使用過，請明天再使用");
+        return;
+      }
+
       const isPhoneVerified = await checkIsPhoneVerified();
       //console.log("isPhoneVerified:", isPhoneVerified);
       if (isPhoneVerified.success) {
@@ -300,6 +309,19 @@ function App() {
       const result = await axios.get(`/check-vote/${phoneNumber}/${eventId}`);
       //console.log("checkIsVotedToday result:", result);
       return result.data.isVoted;
+    } catch (error) {
+      //console.log("error:", error);
+      return true;
+    }
+  };
+
+  const checkIsWewaClubIdUsedToday = async () => {
+    try {
+      const result = await axios.get(
+        `/check-wewa-club-id-used/${wewaClubId}/${eventId}`
+      );
+      //console.log("checkIsWewaClubIdUsedToday result:", result);
+      return result.data.isWewaClubIdUsed;
     } catch (error) {
       //console.log("error:", error);
       return true;
