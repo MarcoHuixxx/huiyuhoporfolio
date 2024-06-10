@@ -328,6 +328,12 @@ app.get("/check-wewa-club-id-used/:wewaId/:eventId", async (req, res) => {
     const voterWewaId = req.params.wewaId;
     const eventId = req.params.eventId;
 
+    console.log("voterWewaId:", voterWewaId)
+    console.log("voterWewaId.trim().length:", voterWewaId.trim().length)
+    if(voterWewaId==='ILOVEWEWACLUB'){
+      return res.send({ isWewaClubIdUsed: false });
+    }
+
     if (!voterWewaId || !eventId) {
       return res.status(400).send({ isVoted: false });
     }

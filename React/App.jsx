@@ -322,7 +322,9 @@ function App() {
   const checkIsWewaClubIdUsedToday = async () => {
     try {
       const result = await axios.get(
-        `/check-wewa-club-id-used/${wewaClubId}/${eventId}`
+        `/check-wewa-club-id-used/${
+          wewaClubId?.trim() !== "" ? wewaClubId : "ILOVEWEWACLUB"
+        }/${eventId}`
       );
       //console.log("checkIsWewaClubIdUsedToday result:", result);
       return result.data.isWewaClubIdUsed;
