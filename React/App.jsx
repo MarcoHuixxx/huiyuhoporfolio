@@ -94,6 +94,7 @@ function App() {
   const [csvData, setCsvData] = useState([]);
   const [isAgree, setIsAgree] = useState(false);
   const [showUserAgreement, setShowUserAgreement] = useState(false);
+  const [canSendAfterSeconds, setCanSendAfterSeconds] = useState(60);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -257,6 +258,18 @@ function App() {
   // }, [eventStartDate]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      if (canSendAfterSeconds > 0) {
+        setCanSendAfterSeconds(canSendAfterSeconds - 1);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [canSendAfterSeconds]);
+
+  useEffect(() => {
     setInterval(() => {
       if (
         new Date(eventStartDate) != "Invalid Date" &&
@@ -413,9 +426,15 @@ function App() {
 
   const sendOtp = async () => {
     try {
+      setCanSendAfterSeconds(60);
       const result = await axios.get(`/send-otp/${phoneNumber}`, {
         phoneNumber: phoneNumber,
       });
+      // const result = {
+      //   data: {
+      //     success: true,
+      //   },
+      // };
 
       //console.log("sendOtp sendOtp result:", result);
 
@@ -1328,6 +1347,7 @@ function App() {
                 }}
               >
                 <Typography
+                  display={isMd ? "inline" : "block"}
                   sx={{
                     fontSize: "16px",
                     color: "#e04478",
@@ -1335,6 +1355,39 @@ function App() {
                   }}
                 >
                   請輸入6位數字的手機驗證碼
+                </Typography>
+                <Typography
+                  display={"inline"}
+                  sx={{
+                    marginLeft: {
+                      xs: "0px",
+                      md: "20px",
+                    },
+                  }}
+                >
+                  <Typography
+                    display={"inline"}
+                    sx={{
+                      fontSize: "10px",
+                      color: "#e04478",
+                      fontWeight: "300",
+                    }}
+                  >
+                    沒有收到驗證碼?
+                    {canSendAfterSeconds > 0 ? (
+                      `${canSendAfterSeconds}秒後可重新發送`
+                    ) : (
+                      <span
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        }}
+                        onClick={sendOtp}
+                      >
+                        重新發送
+                      </span>
+                    )}
+                  </Typography>
                 </Typography>
               </InputLabel>
               <MuiOtpInput
