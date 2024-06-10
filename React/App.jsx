@@ -289,7 +289,11 @@ function App() {
             參賽者投票後票數: item.participantVoteAfter,
             投票時間: moment(item.votedAt).format("YYYY-MM-DD HH:mm:ss"),
             投票者電話: item.voterPhone,
-            "投票者 WeWa Club ID": item.userWWCCode || "無",
+            "投票者 WeWa Club ID":
+              item.userWWCCode?.includes("WWC") &&
+              item.userWWCCode?.length === 11
+                ? item.userWWCCode.toUpperCase()
+                : "-",
             投票數: item.voteCount,
           };
         });
