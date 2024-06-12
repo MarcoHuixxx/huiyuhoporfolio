@@ -545,7 +545,7 @@ function App() {
       }
 
       //console.log("voteDialogIsOpen:", voteDialogIsOpen);
-      // setIsAgree(false);
+      setIsAgree(false);
       setIsPhoneVerified(false);
       setErrorMessage("");
       setIsOptChecked(false);
@@ -572,6 +572,20 @@ function App() {
       setPhoneNumber("+852");
     }
   }, [phoneNumber]);
+
+  const CheckBoxUseCallback = useCallback(() => {
+    return (
+      <Checkbox
+        checked={isAgree}
+        onChange={() => setIsAgree(!isAgree)}
+        sx={{
+          color: "#e04478",
+          padding: "0px",
+          paddingRight: "5px",
+        }}
+      />
+    );
+  }, [isAgree]);
 
   return (
     <Box className="PageContainer">
@@ -1205,7 +1219,7 @@ function App() {
                   borderRadius: "5px",
                 }}
               >
-                <Checkbox
+                {/* <Checkbox
                   //need rerender
 
                   // key={Math.random()}
@@ -1216,7 +1230,8 @@ function App() {
                     padding: "0px",
                     paddingRight: "5px",
                   }}
-                />
+                /> */}
+                <CheckBoxUseCallback />
 
                 <Typography
                   display={"inline"}
@@ -1227,6 +1242,10 @@ function App() {
                     },
                     color: "#e04478",
                     fontWeight: "500",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setIsAgree(!isAgree);
                   }}
                 >
                   本人已細閱並同意
@@ -1379,8 +1398,11 @@ function App() {
                     ) : (
                       <span
                         style={{
+                          marginLeft: "5px",
                           cursor: "pointer",
                           textDecoration: "underline",
+                          fontSize: "12px",
+                          fontWeight: "800",
                         }}
                         onClick={sendOtp}
                       >
@@ -1546,6 +1568,9 @@ function App() {
             聯絡人電話：（+852）55310262 (WhatsApp only)
             <br />
             以上條款細則由ICMA編製，目的是確保所有投選者的權益得到適當保護，同時符合相關的法規和標準。
+            <br></br>
+            <br></br>
+            <br></br>
           </Typography>
         </Box>
       </Dialog>

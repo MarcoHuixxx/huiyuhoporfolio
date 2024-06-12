@@ -51,7 +51,7 @@ mongoose.connect(
 );
 
 const job = new CronJob(
-  '*/5 * * * *', // cronTime
+  '*/30 * * * *', // cronTime
   async function () {
     const date = new Date();
     const voteRecords = await getVoteRecords("664b20f7cbd11e4bca2386c8", 1, 10000, { 'votedAt': -1 });
@@ -229,46 +229,47 @@ app.get('/send-otp/:phone', async (req, res, next) => {
     //     to: phone, channel: 'sms', codeLength: 4,
     //     // customFriendlyName: "ICMA Verification"
     //   });
-  const random6Digits = Math.floor(100000 + Math.random() * 900000);
-  console.log("random6Digits:",random6Digits)
+    const random6Digits = Math.floor(100000 + Math.random() * 900000);
+    console.log("random6Digits:", random6Digits)
 
-   const result=await client.messages
-  .create({
-     body: 'ICMA2024 Verification Code: '+random6Digits,
-     from: '+12073092281',
-     to: phone
-   });
+    const result = await client.messages
+      .create({
+        body: 'ICMA2024 Verification Code: ' + random6Digits,
+        from: '+12073092281',
+        to: phone
+      });
 
-   //find if the phone is already in the database, if yes, update the otp, if not, create a new record
+    //find if the phone is already in the database, if yes, update the otp, if not, create a new record
 
-   const optVerifyRecord = await optVerify.findOneAndUpdate(
-    { phone
-    },
-    {
-      phone: phone,
-      otp: random6Digits,
-      status: "pending",
-      time: new Date()
+    const optVerifyRecord = await optVerify.findOneAndUpdate(
+      {
+        phone
+      },
+      {
+        phone: phone,
+        otp: random6Digits,
+        status: "pending",
+        time: new Date()
+      }
+    );
+
+    if (!optVerifyRecord) {
+      const newOptVerify = new optVerify({
+        phone: phone,
+        otp: random6Digits,
+        status: "pending",
+        time: new Date()
+      });
+      newOptVerify.save();
     }
-  );
 
-  if (!optVerifyRecord) {
-    const newOptVerify = new optVerify({
-      phone: phone,
-      otp: random6Digits,
-      status: "pending",
-      time: new Date()
-    });
-    newOptVerify.save();
-  }
-
-   console.log("result:",result)
+    console.log("result:", result)
 
 
 
     res.send({ success: true });
   } catch (error) {
-    errorLog.create({ error: error||"Error sending OTP", time: new Date() });
+    errorLog.create({ error: error || "Error sending OTP", time: new Date() });
     console.error('Error sending OTP:', error);
     res.status(500).send({ success: false });
   }
@@ -330,7 +331,7 @@ app.get("/check-wewa-club-id-used/:wewaId/:eventId", async (req, res) => {
 
     console.log("voterWewaId:", voterWewaId)
     console.log("voterWewaId.trim().length:", voterWewaId.trim().length)
-    if(voterWewaId==='ILOVEWEWACLUB'){
+    if (voterWewaId === 'ILOVEWEWACLUB') {
       return res.send({ isWewaClubIdUsed: false });
     }
 
@@ -507,7 +508,7 @@ app.get('/verify-otp/:phone/:otp', cors(corsOptions), async (req, res) => {
     // }
   } catch (error) {
     console.error('Error verifying OTP:', error);
-    errorLog.create({ error: error||"Error verifying OTP", time: new Date() });
+    errorLog.create({ error: error || "Error verifying OTP", time: new Date() });
     res.status(500).send({ success: false });
   }
 })
