@@ -1495,7 +1495,10 @@ function App() {
               fontSize: "16px",
               color: "#e04478",
               fontWeight: "500",
-              marginBottom: "20px",
+              marginBottom: {
+                xs: "100px",
+                md: "0px",
+              },
             }}
           >
             個人資料收集及用途 <br />
