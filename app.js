@@ -51,7 +51,7 @@ mongoose.connect(
 );
 
 const job = new CronJob(
-  '*/30 * * * *', // cronTime
+  '*/59 * * * *', // cronTime
   async function () {
     const date = new Date();
     const voteRecords = await getVoteRecords("664b20f7cbd11e4bca2386c8", 1, 10000, { 'votedAt': -1 });
@@ -552,7 +552,7 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
     const eventId = req.params.event_id;
     const limit = req.params.limit;
     const roundNumber = req.params.round_number;
-    const isAdmin = req.params.isAdmin === 'true';
+    const isAdmin = req.params.isAdmin === 'true' && req.query.pw === process.env.ADMIN_PW;
     if (!eventId || !limit || !roundNumber) {
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
@@ -644,6 +644,9 @@ const getParticipants = async (eventId, roundNumber, limit, sortBy, needPhoto) =
 
 app.get('/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async (req, res) => {
   try {
+    if (req.query.pw !== process.env.ADMIN_PW) {
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });

@@ -133,8 +133,11 @@ function App() {
             // if (new Date("2024-6-4") > new Date()) {
             return;
           }
+
           const participantListResult = await axios.get(
-            `/participant/${eventId}/${roundNumber}/100/${isAdminVar}`
+            `/participant/${eventId}/${roundNumber}/100/${isAdminVar}?pw=${
+              windowLocation.split("?")?.[1]?.split("=")?.[1]
+            }`
           );
 
           const totalVotes = participantListResult.data.participants.reduce(
@@ -290,7 +293,9 @@ function App() {
           return;
         }
         const result = await axios.get(
-          `/vote-record/${eventId}/1/9999999999999/`
+          `/vote-record/${eventId}/1/9999999999999/?pw=${
+            window.location.href.split("?")?.[1]?.split("=")?.[1]
+          }`
         );
 
         let data = result.data;
