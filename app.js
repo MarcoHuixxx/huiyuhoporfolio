@@ -669,6 +669,57 @@ app.get('/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async
 }
 )
 
+app.post('/admin/edit/:eventId/:roundNumber', async (req, res) => {
+  try {
+    if (req.query.pw !== process.env.ADMIN_PW) {
+      return res.status(401).send({ success: false, message: 'Authorization Failed' });
+    }
+    const isFromDomain = checkIsFromDomain(req, res);
+    if (!isFromDomain) {
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
+    const { participantId, voteItem, voteCount } = req.body;
+    const eventId = req.params.eventId;
+    const roundNumber = req.params.roundNumber;
+    if (!participantId || !voteItem || !voteCount || !eventId || !roundNumber) {
+      return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
+
+    const updateParticipant = await participant.findOneAndUpdate(
+      { _id: participantId, },
+      {
+        $inc: { [`event.$[event].round.$[round].voteCount`]: voteCount },
+      },
+      {
+        arrayFilters: [{ 'event.eventId': new mongodb.ObjectId(eventId) }, { 'round.roundNumber': parseInt(roundNumber) }],
+        new: true
+      }
+    );
+
+    //insert vote record
+    if (updateParticipant) {
+      const newVoteRecord = new voteRecord({
+        roundNumber: roundNumber,
+        voteCount: voteCount,
+        participantVoteBofore: updateParticipant.event[0].round[0].voteCount - voteCount,
+        participantVoteAfter: updateParticipant.event[0].round[0].voteCount,
+        voterPhone: voteItem,
+        votedAt: new Date(),
+        eventId: eventId,
+        participantId: participantId
+      });
+      newVoteRecord.save();
+      res.send({ success: true });
+    } else {
+      res.send({ success: false });
+    }
+
+  } catch (e) {
+    errorLog.create({ error: e, time: new Date() });
+  }
+})
+
+
 const getVoteRecords = async (eventId, roundNumber, limit, sortBy) => {
   const voteRecords = await voteRecord.aggregate(
     [
