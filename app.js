@@ -401,6 +401,8 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
 
 
 
+
+
 app.post('/vote', async (req, res) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);
@@ -411,6 +413,17 @@ app.post('/vote', async (req, res) => {
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
     if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
+
+    const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
+
+    const voterVoteRecord = await voteRecord.find({
+      voterPhone: voterPhone,
+      eventId: eventId
+    });
+
+    if (!(optVerifyRecord || voterVoteRecord.length > 0)) {
+      return res.status(400).send({ success: false, message: 'Phone not verified' });
     }
 
     if (voteCount > 2) {
