@@ -160,6 +160,12 @@ span p label h1 h2 h3 h4 h5 h6 {
   color: #e04478;
 }
 
+.finalSectionTitleBold {
+  font-size: 36px;
+  color: #fff;
+  text-shadow: 1px 1px 4px #000000;
+}
+
 .votePageInfoText {
   font-size: 36px;
   font-weight: 800;
@@ -415,4 +421,95 @@ span p label h1 h2 h3 h4 h5 h6 {
 .inputSuccessText {
   color: green;
   font-size: 12px;
+}
+
+.finalVoteBackGround {
+  background: radial-gradient(circle at center, #d43c6c 20%, #66438d 83%);
+}
+
+.finalVoteSectionContainer {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.finalVoteSectionPkContainer {
+  padding: 26px 20px 26px 26px;
+}
+
+.finalVoteSectionResurrectionContainer {
+  padding: 2px 20px 2px 26px;
+}
+
+.finalVoteSectionPopularityContainer {
+  padding: 16px 38px 16px 26px;
+}
+
+.finalVoteSectionContainerText {
+  color: #e81b78;
+}
+
+.finalVoteSectionContainerPkIcon {
+  height: 60px;
+  width: 100px;
+}
+
+.finalVoteSectionContainerResurrectionIcon {
+  height: 105px;
+  width: 95px;
+}
+
+.finalVoteSectionContainerPopularityIcon {
+  height: 80px;
+  width: 60px;
+}
+
+.finalVoteSectionLiveContainer {
+  padding: 4px 6px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.8);
+  background: #e81b78;
+  border-radius: 4px;
+}
+
+.realtimeRankingContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 34px;
+  background-color: #ab99c1;
+  padding: 6px 0 6px 6px;
+  align-items: center;
+}
+
+.realtimeRankingLogo {
+  height: 70px;
+  width: 160px;
+  margin-right: 4px;
+}
+
+.realtimeRankingScrollableBox {
+  overflow-x: auto;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+
+.realtimeRankingText {
+  color: #fff;
+  text-shadow: 1px 1px 4px #000000;
+}
+
+.realtimeRankingBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 20px;
 }

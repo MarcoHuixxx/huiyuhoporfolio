@@ -4,6 +4,11 @@
   background: linear-gradient(90deg, #e53972 30%, #f29921 100%);
 }
 
+.webFooterWithParentBackground {
+  margin-top: 6rem;
+  height: 280px;
+}
+
 .icmaHomeFooterIcon {
   height: 150px;
   width: 150px;

@@ -12,7 +12,7 @@ import icmaVotePageIcon from "../assets/icmaWeb.svg";
 
 import "./styles/footer.css";
 
-const Footer = ({ type, isMd }) => {
+const Footer = ({ type, isMd, isInheritBackground }) => {
   const IconButtonStack = () => {
     return (
       <Stack
@@ -66,7 +66,9 @@ const Footer = ({ type, isMd }) => {
   };
   return type === "home" ? (
     <Box
-      className={"webFooter"}
+      className={
+        isInheritBackground ? "webFooterWithParentBackground" : "webFooter"
+      }
       sx={{
         display: "flex",
         flexDirection: "column",
