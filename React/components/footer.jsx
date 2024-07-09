@@ -12,7 +12,9 @@ import icmaVotePageIcon from "../assets/icmaWeb.svg";
 
 import "./styles/footer.css";
 
-const Footer = ({ type, isMd, isInheritBackground }) => {
+const Footer = ({ type, isMd, isInheritBackground, isFinal }) => {
+  console.log("type:", type);
+  console.log("isFinal:", isFinal);
   const IconButtonStack = () => {
     return (
       <Stack
@@ -109,9 +111,10 @@ const Footer = ({ type, isMd, isInheritBackground }) => {
       <Box
         sx={{
           height: "60px",
-          marginTop: isMd ? "80px" : 0,
+          marginTop: isMd || isFinal ? "80px" : 0,
           borderTop: {
             md: "1px solid #FFF",
+            xs: isFinal == true ? "1px solid #FFF" : "",
           },
           width: "40%",
         }}

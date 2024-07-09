@@ -47,6 +47,7 @@ export default function FullScreenDialog({
               ...(!closeIcon && { left: "18px" }), // if closeIcon is false, then left: "18px
               ...(closeIcon && { right: "18px" }),
               position: "absolute",
+              zIndex: 999999999,
             }}
           >
             {/* <img className="backButtonIcon" src={ArrowBackIosNewIcon} /> */}

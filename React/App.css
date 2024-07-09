@@ -359,6 +359,27 @@ span p label h1 h2 h3 h4 h5 h6 {
   height: 100%;
 }
 
+.finalMobileVotePageBox {
+  background: radial-gradient(circle at center, #d43c6c 20%, #66438d 83%);
+  display: flex;
+  flexdirection: column;
+  height: 2000%;
+  margin-top: 180px;
+}
+
+.finalWebVotePageBox {
+  margin-top: 180px;
+  background: radial-gradient(circle at center, #d43c6c 20%, #66438d 83%);
+  display: flex;
+  flexdirection: column;
+  height: 100%;
+}
+
+.finalIcmaIcon {
+  height: 180px;
+  width: 180px;
+}
+
 .video-responsive {
   overflow: hidden;
   padding-bottom: 56.25%;
@@ -396,6 +417,30 @@ span p label h1 h2 h3 h4 h5 h6 {
 .webAvatarBox {
   position: absolute;
   transform: translate(100%, -60%);
+}
+
+.finalIcmaIconWebBox {
+  position: absolute;
+  transform: translate(95%, -60%);
+}
+
+.finalIcmaIconMobileBox {
+  position: absolute;
+  transform: translate(-50%, -100px);
+  left: 50%;
+}
+
+.finalVoteTitleBox {
+  position: absolute;
+  transform: translate(-50%, -180px);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.finalVoteTitleText {
+  color: black;
 }
 
 .webIgBox {
