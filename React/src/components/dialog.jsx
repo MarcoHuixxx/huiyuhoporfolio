@@ -48,6 +48,7 @@ export default function FullScreenDialog({
               ...(closeIcon && { right: "18px" }),
               position: "absolute",
               zIndex: 999999999,
+              color: "#e81b78",
             }}
           >
             {/* <img className="backButtonIcon" src={ArrowBackIosNewIcon} /> */}

@@ -101,6 +101,7 @@ function App() {
   const [showUserAgreement, setShowUserAgreement] = useState(false);
   const [canSendAfterSeconds, setCanSendAfterSeconds] = useState(60);
   const [eventType, setEventType] = useState("");
+  const [selectBattle, setSelectBattle] = useState({});
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -178,12 +179,6 @@ function App() {
     0: "第一名",
     1: "第二名",
     2: "第三名",
-  };
-
-  const onParticipantClick = (item) => {
-    window.history.pushState({}, "", `/voting`);
-    setSelectedParticipant(item);
-    setVotePageIsOpen(true);
   };
 
   const onVoteButonClick = (item) => {
@@ -599,8 +594,14 @@ function App() {
   }, [isAgree]);
 
   const onEventClickHandler = (type) => {
+    window.history.pushState({}, "", `/final`);
     setEventType(type);
     setVotePageIsOpenHandler(true);
+  };
+
+  const onParticipantClick = (item) => {
+    setSelectedParticipant(item);
+    setVoteDialogIsOpen(true);
   };
 
   const PkView = () => {
@@ -631,6 +632,7 @@ function App() {
                 },
                 fontWeight: "bold",
                 color: "#FFF",
+                fontFamily: "Hiragino Sans W8",
               }}
             >
               Battle {index + 1}
@@ -661,6 +663,7 @@ function App() {
                   justifyContent: "center",
                   flexDirection: "column",
                 }}
+                onClick={() => onParticipantClick(rankingList[index * 2])}
               >
                 <Avatar
                   alt={selectedParticipant.name}
@@ -716,6 +719,7 @@ function App() {
                   justifyContent: "center",
                   flexDirection: "column",
                 }}
+                onClick={() => onParticipantClick(rankingList[index * 2 + 1])}
               >
                 <Avatar
                   alt={selectedParticipant.name}
@@ -798,6 +802,7 @@ function App() {
                   justifyContent: "center",
                   flexDirection: "row",
                 }}
+                onClick={() => onParticipantClick(item)}
               >
                 <Avatar
                   alt={selectedParticipant.name}
@@ -842,7 +847,152 @@ function App() {
   };
 
   const RecView = () => {
-    return <></>;
+    if (rankingList.length != 0) {
+      return (
+        <Box
+          sx={{
+            marginTop: "60px",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: {
+                xs: "20px",
+                md: "24px",
+              },
+              fontWeight: "bold",
+              color: "#FFF",
+              textAlign: "center",
+              fontFamily: "Noto Sans HK",
+              textShadow: "0px 0px 5px #000000",
+            }}
+          >
+            復活你心水的選手
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: {
+                xs: "34px",
+                md: "38px",
+              },
+              fontWeight: "bold",
+              color: "#FFF",
+              textAlign: "center",
+              fontFamily: "Noto Sans HK",
+              textShadow: "0px 0px 5px #000000",
+              marginLeft: "20px",
+            }}
+          >
+            進入下回合！
+          </Typography>
+
+          {[0, 1, 2, 3, 4, 5].map((item, index) => {
+            return (
+              <Grid
+                container
+                sx={{
+                  marginTop: index !== 0 ? "0px" : "40px",
+                  paddingY: "20px",
+                  // borderBottom: "1px solid #FFF",
+                }}
+              >
+                <Grid
+                  item
+                  xs={4}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        xs: "20px",
+                        md: "24px",
+                      },
+                      fontWeight: "bold",
+                      color: "#FFF",
+                      fontFamily: "Hiragino Sans W8",
+                    }}
+                  >
+                    Battle {index + 1}
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  xs={8}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Stack
+                    direction="row"
+                    spacing={3}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "row",
+                      }}
+                      onClick={() =>
+                        onParticipantClick(rankingList?.[index * 2])
+                      }
+                    >
+                      <Avatar
+                        alt={rankingList?.[index * 2].name}
+                        src={`/event1/${
+                          rankingList?.[index * 2].chineseName
+                        }.jpg`}
+                        // sx={{
+                        //   width: {
+                        //     xs: "95%",
+                        //     sm: "95%",
+                        //   },
+                        //   height: {
+                        //     xs: "100%",
+                        //     sm: "100%",
+                        //   },
+                        //   boxShadow: "0px 0px 5px 0px #000000",
+                        // }}
+                        sx={{
+                          width: { xs: "60px", sm: "80px" },
+                          height: { xs: "60px", sm: "80px" },
+                          boxShadow: "0px 0px 5px 0px #000000",
+                          cursor: "pointer",
+                          marginRight: "8px",
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: {
+                            xs: "12px",
+                            md: "14px",
+                          },
+                          fontWeight: "bold",
+                          color: "#FFF",
+                        }}
+                      >
+                        {rankingList?.[index * 2].chineseName}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Grid>
+              </Grid>
+            );
+          })}
+        </Box>
+      );
+    }
   };
   return (
     <Box className="finalPageContainer finalVoteBackGround">
@@ -929,33 +1079,6 @@ function App() {
                 ) : (
                   <RecView />
                 )}
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    sx={{
-                      backgroundColor: "#FFF",
-                      color: "#e04478",
-                      borderRadius: "75px",
-                      padding: "10px 30px",
-                      boxShadow: "0px 0px 2px 0px #000000",
-                    }}
-                    onClick={onVoteButonClick}
-                    disabled={!isWithInEventTime}
-                  >
-                    <span className="voteButtonText">
-                      {new Date() < new Date(eventStartDate)
-                        ? "投票即將開始"
-                        : new Date() > new Date(eventDeadlineDate)
-                        ? "投票已結束"
-                        : "投票"}
-                    </span>
-                  </Button>
-                </Box>
               </Container>
               <Footer type="votePage" isMd={isMd} isFinal={true} />
             </Container>
@@ -1057,33 +1180,6 @@ function App() {
                 ) : (
                   <RecView />
                 )}
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    sx={{
-                      backgroundColor: "#FFF",
-                      color: "#e04478",
-                      borderRadius: "75px",
-                      padding: "10px 30px",
-                      boxShadow: "0px 0px 2px 0px #000000",
-                    }}
-                    onClick={onVoteButonClick}
-                    disabled={!isWithInEventTime}
-                  >
-                    <span className="voteButtonText">
-                      {" "}
-                      {new Date() < new Date(eventStartDate)
-                        ? "投票即將開始"
-                        : new Date() > new Date(eventDeadlineDate)
-                        ? "投票已結束"
-                        : "投票"}
-                    </span>
-                  </Button>
-                </Box>
               </Container>
               <Footer type="votePage" isMd={isMd} />
             </Container>
@@ -1095,487 +1191,170 @@ function App() {
           direction="up"
           closeIcon
         >
-          {!showOptDialog ? (
+          <Box
+            sx={{
+              paddingY: {
+                xs: "20px",
+                sm: "40px",
+              },
+              paddingX: {
+                xs: "15px",
+                sm: "40px",
+              },
+            }}
+          >
             <Box
               sx={{
-                paddingX: "50px",
-                paddingTop: "50px",
-                paddingBottom: "20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "-20px",
               }}
             >
-              {/* <FormControl> */}
               <Typography
+                display={isMd ? "inline" : "block"}
                 sx={{
                   fontSize: "16px",
                   color: "#e04478",
-                  fontWeight: "500",
+                  fontWeight: "700",
+                  fontFamily: "Hiragino Sans W8",
                 }}
               >
-                電話號碼 <span>*</span>
+                {eventType === "pk"
+                  ? "Battle " + (selectBattle?.number || 1)
+                  : eventType === "pop"
+                  ? "WeWa最強人氣大獎"
+                  : "復活投票"}
               </Typography>
               <Box
                 sx={{
-                  paddingY:
-                    confirmVoteIsClicked && !isPhoneValid ? "10px" : "0px",
-                  paddingX:
-                    confirmVoteIsClicked && !isPhoneValid ? "2px" : "0px",
-                  border:
-                    confirmVoteIsClicked && !isPhoneValid
-                      ? "2px solid red"
-                      : "",
-                  borderRadius: "5px",
-                }}
-              >
-                <MuiPhoneNumber
-                  sx={{
-                    "& svg": { height: "1em" },
-                    // padding: "0px",
-                    width: "100%",
-                  }}
-                  defaultCountry={"hk"}
-                  value={phoneNumber}
-                  onChange={(value) => setPhoneNumber(value)}
-                  onlyCountries={["hk"]}
-                />
-              </Box>
-              {(!isPhoneValid && phoneNumber !== "") ||
-              (confirmVoteIsClicked && phoneNumber === "") ? (
-                <p className="inputErrorText">請輸入8位數字電話號碼</p>
-              ) : (
-                ""
-              )}
-              <Typography
-                sx={{
-                  fontSize: "16px",
-                  color: "#e04478",
-                  fontWeight: "500",
-                  marginTop: "20px",
-                }}
-              >
-                Wewa Club 會員編號 (如有)
-              </Typography>
-              <Input
-                id="my-input"
-                aria-describedby="my-helper-text"
-                value={wewaClubId}
-                onChange={(e) => setWewaClubId(e.target.value)}
-                sx={{
-                  width: "100%",
+                  height: "1px",
+                  width: eventType === "pop" ? "220px" : "120px",
+                  background: "#e81b78",
+                  marginY: "4px",
                 }}
               />
-              {wewaClubId !== "" ? (
-                !iswewaClubIdValid ? (
-                  <p className="inputErrorText">Wewa Club 會員編號無效</p>
-                ) : (
-                  <p className="inputSuccessText">Wewa Club 會員編號有效</p>
-                )
-              ) : (
-                ""
-              )}
-
-              <Typography
-                sx={{
-                  fontSize: "16px",
-                  color: "#e04478",
-                  fontWeight: "500",
-                  marginTop: "20px",
-                  marginBottom: "10px",
-                }}
-              >
-                投取票數 <span>*</span>
-              </Typography>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={votes}
-                onChange={(e) => setVotes(e.target.value)}
-                sx={{
-                  width: "100%",
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor:
-                      votes === 0 && confirmVoteIsClicked ? "red" : "#e04478",
-                    borderWidth: votes === 0 && confirmVoteIsClicked ? 2 : 1,
-                  },
-                }}
-                disabled={iswewaClubIdValid && wewaClubId !== ""}
-              >
-                <MenuItem value={0}>-請選擇-</MenuItem>
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2} disabled={!iswewaClubIdValid}>
-                  2 (Wewa Club會員)
-                </MenuItem>
-              </Select>
-              <p className="inputErrorText">
-                {votes === 0 && confirmVoteIsClicked ? "請選擇投票數" : ""}
-              </p>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginTop: "20px",
-                  border:
-                    confirmVoteIsClicked && !isAgree ? "2px solid red" : "",
-                  borderRadius: "5px",
-                }}
-              >
-                {/* <Checkbox
-                  //need rerender
-
-                  // key={Math.random()}
-                  Checked={isAgree}
-                  onChange={() => setIsAgree(!isAgree)}
-                  sx={{
-                    color: "#e04478",
-                    padding: "0px",
-                    paddingRight: "5px",
-                  }}
-                /> */}
-                <CheckBoxUseCallback />
-
-                <Typography
-                  display={"inline"}
-                  sx={{
-                    fontSize: {
-                      xs: "10px",
-                      sm: "16px",
-                    },
-                    color: "#e04478",
-                    fontWeight: "500",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    setIsAgree(!isAgree);
-                  }}
-                >
-                  本人已細閱並同意
-                </Typography>
-                <Typography
-                  display={"inline"}
-                  sx={{
-                    fontSize: {
-                      xs: "10px",
-                      sm: "16px",
-                    },
-                    color: "#e04478",
-                    fontWeight: "800",
-                    cursor: "pointer",
-                    textDecoration: "underline",
-                  }}
-                  onClick={() => {
-                    setShowUserAgreement(true);
-                  }}
-                >
-                  本條款細則的所有內容{" "}
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#e04478",
-                  }}
-                >
-                  *
-                </Typography>
-              </Box>
-              <p className="inputErrorText">
-                {!isAgree && confirmVoteIsClicked ? "請同意條款細則" : ""}
-              </p>
-
-              <Box
-                sx={{
-                  marginTop: "40px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                }}
-              >
-                <LoadingButton
-                  sx={{
-                    backgroundColor: "#e04478",
-                    color: "#ffffff",
-                    borderRadius: "75px",
-                    padding: "10px 30px",
-                    boxShadow: "0px 0px 2px 0px #000000",
-                    ":hover": {
-                      backgroundColor: "#e04478",
-                    },
-                  }}
-                  loading={isConfirmVoteLoading && isPhoneValid && votes !== 0}
-                  onClick={onConfirmVote}
-                  className="confirmVoteButton"
-                  disabled={!isWithInEventTime}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {new Date() < new Date(eventStartDate)
-                      ? "投票即將開始"
-                      : new Date() > new Date(eventDeadlineDate)
-                      ? "活動已結束"
-                      : "投票"}
-                  </Typography>
-                </LoadingButton>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "40px",
-                }}
-              >
-                <p className="inputErrorText">{errorMessage}</p>
-              </Box>
-              {/* <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
-              {/* <InputLabel htmlFor="my-input">驗證碼</InputLabel>
-              <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
-              {/* </FormControl> */}
             </Box>
-          ) : isVoteSuccess ? (
-            //console.log("isVoteSuccessXXXXXX:", isVoteSuccess),
             <Box
               sx={{
-                padding: "40px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "20px",
+                paddingY: "10px",
+                paddingX: "50px",
+              }}
+            >
+              <Avatar
+                alt={selectedParticipant.name}
+                src={`/event1/${selectedParticipant.chineseName}.jpg`}
+                sx={{
+                  width: { xs: "100px", sm: "120px" },
+                  height: { xs: "100px", sm: "120px" },
+                  boxShadow: "0px 0px 5px 0px #000000",
+                  cursor: "pointer",
+                  marginBottom: "4px",
+                }}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  marginTop: "-30px",
+                  zIndex: 9999999999,
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "20px",
+                      md: "24px",
+                    },
+                    fontWeight: "bold",
+                    color: "#FFF",
+                    textShadow: "0px 0px 5px #000000",
+                  }}
+                >
+                  {selectedParticipant.chineseName}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "20px",
+                      md: "24px",
+                    },
+                    fontWeight: "bold",
+                    color: "#FFF",
+                    textShadow: "0px 0px 5px #000000",
+                    marginTop: "-10px",
+                  }}
+                >
+                  {selectedParticipant.name}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: "300",
+                    color: "#e81b78",
+                  }}
+                >
+                  {selectedParticipant.university}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                marginY: "20px",
                 display: "flex",
                 justifyContent: "center",
               }}
             >
-              <Alert variant="outlined" severity="success">
-                投票成功
-              </Alert>
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                paddingY: {
-                  xs: "20px",
-                  sm: "40px",
-                },
-                paddingX: {
-                  xs: "15px",
-                  sm: "40px",
-                },
-              }}
-            >
-              <InputLabel
-                htmlFor="my-input"
+              <LoadingButton
                 sx={{
-                  marginBottom: "20px",
+                  backgroundColor: "#e04478",
+                  color: "#ffffff",
+                  borderRadius: "75px",
+                  padding: "10px 30px",
+                  boxShadow: "0px 0px 2px 0px #000000",
+                  ":hover": {
+                    backgroundColor: "#e04478",
+                  },
                 }}
+                onClick={onConfirmOptInput}
+                className="confirmVoteButton"
+                loading={isConfirmOptLoading}
+                disabled={otp.length !== 6 || !isWithInEventTime}
               >
                 <Typography
-                  display={isMd ? "inline" : "block"}
                   sx={{
                     fontSize: "16px",
-                    color: "#e04478",
-                    fontWeight: "500",
+                    fontWeight: "bold",
                   }}
                 >
-                  請輸入6位數字的手機驗證碼
+                  {isWithInEventTime ? "投票" : "投票已結束"}
                 </Typography>
-                <Typography
-                  display={"inline"}
-                  sx={{
-                    marginLeft: {
-                      xs: "0px",
-                      md: "20px",
-                    },
-                  }}
-                >
-                  <Typography
-                    display={"inline"}
-                    sx={{
-                      fontSize: "10px",
-                      color: "#e04478",
-                      fontWeight: "300",
-                    }}
-                  >
-                    沒有收到驗證碼?
-                    {canSendAfterSeconds > 0 ? (
-                      `${canSendAfterSeconds}秒後可重新發送`
-                    ) : (
-                      <span
-                        style={{
-                          marginLeft: "5px",
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                          fontSize: "12px",
-                          fontWeight: "800",
-                        }}
-                        onClick={sendOtp}
-                      >
-                        重新發送
-                      </span>
-                    )}
-                  </Typography>
-                </Typography>
-              </InputLabel>
-              <MuiOtpInput
-                TextFieldsProps={{ size: isMd ? "large" : "small" }}
-                value={otp}
-                onChange={(newValue) => {
-                  setOtp(newValue);
-                }}
-                gap={isSm ? 2 : 1}
-                length={6}
-                autoFocus
-                // validateChar={validateChar}
-              />
+              </LoadingButton>
+            </Box>
+            {isOptChecked && (!isOptValid || errorMessage !== "") && (
               <Box
                 sx={{
-                  marginTop: "20px",
+                  paddingTop: "10px",
                   display: "flex",
                   justifyContent: "center",
                 }}
               >
-                <LoadingButton
-                  sx={{
-                    backgroundColor: "#e04478",
-                    color: "#ffffff",
-                    borderRadius: "75px",
-                    padding: "10px 30px",
-                    boxShadow: "0px 0px 2px 0px #000000",
-                    ":hover": {
-                      backgroundColor: "#e04478",
-                    },
-                  }}
-                  onClick={onConfirmOptInput}
-                  className="confirmVoteButton"
-                  loading={isConfirmOptLoading}
-                  disabled={otp.length !== 6 || !isWithInEventTime}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {isWithInEventTime ? "確認投票" : "投票已結束"}
-                  </Typography>
-                </LoadingButton>
+                <p className="inputErrorText text-center">
+                  {errorMessage ? errorMessage : "驗證碼錯誤"}
+                </p>
               </Box>
-              {isOptChecked && (!isOptValid || errorMessage !== "") && (
-                <Box
-                  sx={{
-                    paddingTop: "10px",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <p className="inputErrorText text-center">
-                    {errorMessage ? errorMessage : "驗證碼錯誤"}
-                  </p>
-                </Box>
-              )}
-            </Box>
-          )}
+            )}
+          </Box>
         </Dialog>
-      </Dialog>
-
-      <Dialog
-        open={showUserAgreement}
-        setOpen={setShowUserAgreement}
-        direction="up"
-        closeIcon
-        zIndex={100000000}
-      >
-        <Box
-          sx={{
-            padding: "40px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: "16px",
-              color: "#e04478",
-              fontWeight: "500",
-              marginBottom: {
-                xs: "100px",
-                md: "0px",
-              },
-            }}
-          >
-            個人資料收集及用途 <br />
-            1.1投選者在參與復活賽投票時需提供的個人資料包括但不限於電話號碼、WeWa
-            Club會員編號等。這些資料將用於管理和組織投票活動，確保活動順利進行。
-            <br />
-            <br />
-            1.2 投選者明白並同意其提供的個人資料可能會用於以下用途：
-            <br />
-            <br />
-            比賽宣傳：投選者同意其名字等資料可能在比賽節目及宣傳活動中使用，包括但不限於官方網站、社交媒體、新聞稿等。
-            <br />
-            商業贊助宣傳：投選者同意其個人資料可能用於冠名贊助商的商業宣傳活動，包括但不限於冠名贊助商的廣告、促銷材料等。
-            <br />
-            <br />
-            資料安全及保密 <br />
-            2.1ICMA將採取合理的技術和組織措施，確保投選者的個人資料得到妥善保存並防止未經授權的訪問、披露、使用、修改或損失。
-            <br />
-            <br />
-            2.2
-            ICMA僅在舉辦歌唱比賽和相關活動的必要範圍內使用投選者的個人資料，除非事先獲得投選者的明確同意。
-            <br /> <br />
-            第三方分享 3.1
-            <br />
-            投選者的個人資料可能會與冠名贊助商以及比賽相關的第三方合作夥伴分享，但僅限於比賽宣傳和商業宣傳的合理範圍內。
-            <br />
-            <br />
-            3.2
-            ICMA將謹慎地選擇合作夥伴，確保他們也遵守相關的私隱條例和資料保護規定。
-            <br />
-            <br />
-            投選者的權利 <br /> 4.1
-            投選者有權隨時查閱、更正或刪除其提供的個人資料，只需提前通知ICMA。
-            <br />
-            <br />
-            4.2
-            投選者有權隨時撤回其對個人資料的使用同意，但這可能影響其投票資格。
-            <br />
-            <br />
-            法規遵從 <br />
-            5.1本條款細則將嚴格遵守香港個人資料（私隱）條例，並確保其符合當地和國際的相關法規。
-            <br />
-            <br />
-            5.2
-            ICMA將與法律專業人士合作，以確保條款細則在法律框架內得到適當的解釋和遵守。
-            <br />
-            <br />
-            同意及確認 <br />
-            6.1
-            投選者在提交並確認投票時，即表示已經細閱並同意本條款細則的所有內容。
-            <br />
-            <br />
-            6.2
-            ICMA保留隨時修改本條款細則的權利，修改將通過官方網站公佈，並於生效前通知投選者。
-            <br />
-            <br />
-            6.3
-            如投選者未能遵守本條款或未符合參加資格之要求，ICMA有權即時取消其投票資格而不需另行通知。
-            <br />
-            <br />
-            6.4
-            投選者保證其參與本活動及所提供之資料並沒有(i)違反任何法律;(ii)侵犯任何第三方權利(包括但不限於著作權、專利權、商標權、商業機密或其他知識產權);及/或(iii)違反與任何第三方的協議或安排。
-            <br />
-            <br />
-            聯絡方式
-            <br /> 7.1
-            如有任何有關個人資料使用的疑問或疑慮，請聯繫ICMA的同事，聯絡方式如下：
-            <br />
-            <br />
-            聯絡人電話：（+852）55310262 (WhatsApp only)
-            <br />
-            以上條款細則由ICMA編製，目的是確保所有投選者的權益得到適當保護，同時符合相關的法規和標準。
-            <br></br>
-            <br></br>
-            <br></br>
-          </Typography>
-        </Box>
       </Dialog>
 
       <Container disableGutters={isSm === false}>

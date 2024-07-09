@@ -5,6 +5,11 @@
   src: url("assets/fonts/Hiragino_Sans/2.woff") format("woff");
 }
 
+@font-face {
+  font-family: "Hiragino Sans W8";
+  src: url("assets/fonts/HiraginoSansW8.woff") format("woff");
+}
+
 /* @font-face {
   font-family: "gensen-font-master";
   src: url("assets/fonts/gensen-font-master");
