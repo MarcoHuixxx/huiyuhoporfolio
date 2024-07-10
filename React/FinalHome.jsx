@@ -61,13 +61,44 @@ import RealtimeRankingLogo from "./assets/realtimeRankingLogo.png";
 axios.defaults.baseURL = serverUrl;
 
 function App() {
-  const eventId = "664b20f7cbd11e4bca2386c8";
+  const popEventId = "668deded51930e822903d37c";
+  const pkEventIds = [
+    "668decd851930e822903d375",
+    "668decef51930e822903d376",
+    "668decf551930e822903d377",
+    "668decfd51930e822903d378",
+    "668ded0351930e822903d379",
+    "668ded0e51930e822903d37a",
+  ];
+  const recEventId = "668deda751930e822903d37b";
   const roundNumber = 1;
   const [isAdmin, setIsAdmin] = useState(false);
   const [eventDeadlineDate, setEventDeadlineDate] = useState("Invalid Date");
+  const [pkEventDeadlineDate, setPkEventDeadlineDate] = useState([
+    "Invalid Date",
+    "Invalid Date",
+    "Invalid Date",
+    "Invalid Date",
+    "Invalid Date",
+    "Invalid Date",
+  ]);
+  const [selectedBattleNumber, setSelectedBattleNumber] = useState(0);
+  const [recEventDeadlineDate, setRecEventDeadlineDate] =
+    useState("Invalid Date");
+  const [pkTeams, setPkTeams] = useState([]);
+
   const [eventReloadTime, setEventReloadTime] = useState(10000);
   const [eventStartDate, setEventStartDate] = useState("Invalid Date");
-  const [isWithInEventTime, setIsWithInEventTime] = useState(false);
+  const [isPopWithInEventTime, setIsPopWithInEventTime] = useState(false);
+  const [isPkWithInEventTime, setIsPkWithInEventTime] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [isRecWithInEventTime, setIsRecWithInEventTime] = useState(false);
   const [showVoteMethod, setShowVoteMethod] = useState(true);
   const [rankingList, setRankingList] = useState([]);
   const [thirdRankingList, setThirdRankingList] = useState([]);
@@ -115,39 +146,41 @@ function App() {
 
           setIsAdmin(isAdminVar);
 
-          const getEventResult = await axios.get(`/event/${eventId}`);
-          if (getEventResult?.data?.timeEnd) {
-            setEventDeadlineDate(getEventResult.data.timeEnd);
+          const getPopEventResult = await axios.get(`/event/${popEventId}`);
+          if (getPopEventResult?.data?.timeEnd) {
+            setEventDeadlineDate(getPopEventResult.data.timeEnd);
           }
 
-          if (getEventResult?.data?.timeBegin) {
-            setEventStartDate(getEventResult.data.timeBegin);
+          if (getPopEventResult?.data?.timeBegin) {
+            setEventStartDate(getPopEventResult.data.timeBegin);
             // setEventStartDate("2024-6-4");
           }
 
-          if (getEventResult?.data?.timeReload) {
-            setEventReloadTime(parseInt(getEventResult.data.timeReload));
+          if (getPopEventResult?.data?.timeReload) {
+            setEventReloadTime(parseInt(getPopEventResult.data.timeReload));
           }
 
-          setIsWithInEventTime(
-            new Date(getEventResult?.data?.timeBegin) < new Date() &&
+          setIsPopWithInEventTime(
+            new Date(getPopEventResult?.data?.timeBegin) < new Date() &&
               // new Date("2024-6-4") < new Date() &&
-              new Date(getEventResult?.data?.timeEnd) > new Date()
+              new Date(getPopEventResult?.data?.timeEnd) > new Date()
           );
 
+          console.log("IsPopWithInEventTime:", isPopWithInEventTime);
+
           //if the event is not started, return
-          if (new Date(getEventResult.data.timeBegin) > new Date()) {
+          if (new Date(getPopEventResult.data.timeBegin) > new Date()) {
             // if (new Date("2024-6-4") > new Date()) {
             return;
           }
 
-          const participantListResult = await axios.get(
-            `/participant/${eventId}/${roundNumber}/100/${isAdminVar}?pw=${
+          const popParticipantListResult = await axios.get(
+            `/participant/${popEventId}/${roundNumber}/100/${isAdminVar}?pw=${
               windowLocation.split("?")?.[1]?.split("=")?.[1]
             }`
           );
 
-          const totalVotes = participantListResult.data.participants.reduce(
+          const totalVotes = popParticipantListResult.data.participants.reduce(
             (acc, item) => {
               return acc + item.votes;
             },
@@ -155,17 +188,81 @@ function App() {
           );
           setTotalVotes(totalVotes);
 
-          if (participantListResult?.data?.participants?.length > 0) {
-            const thirdList = participantListResult?.data.firstThree || [];
+          if (popParticipantListResult?.data?.participants?.length > 0) {
+            const thirdList = popParticipantListResult?.data.firstThree || [];
             setThirdRankingList(thirdList);
-            setRankingList(participantListResult?.data?.participants);
+            setRankingList(popParticipantListResult?.data?.participants);
             setFirstThreeVotes(
-              participantListResult?.data?.firstThreeRaningPercent
+              popParticipantListResult?.data?.firstThreeRaningPercent
             );
           }
+
+          const getPkEventResult = await axios.get(
+            `/event/${pkEventIds.map((id) => id).join(",")}`
+          );
+
+          if (getPkEventResult?.data?.length > 0) {
+            setPkTeams(getPkEventResult.data);
+          }
+
+          for (let i = 0; i < pkEventIds.length; i++) {
+            const pkEvent = getPkEventResult.data.find(
+              (item) => item._id === pkEventIds[i]
+            );
+
+            if (pkEvent?.timeBegin) {
+              pkEventDeadlineDate[i] = pkEvent.timeBegin;
+            }
+
+            if (pkEvent?.timeEnd) {
+              pkEventDeadlineDate[i] = pkEvent.timeEnd;
+            }
+
+            setIsPkWithInEventTime((prev) => {
+              return [
+                ...prev,
+                new Date(pkEvent.timeBegin) < new Date() &&
+                  new Date(pkEvent.timeEnd) > new Date(),
+              ];
+            });
+          }
+
+          const pkParticipantListResult = await axios.get(
+            `/participant/${pkEventIds
+              .map((id) => id)
+              .join(",")}/${roundNumber}/100/${isAdminVar}?pw=${
+              windowLocation.split("?")?.[1]?.split("=")?.[1]
+            }`
+          );
+
+          if (pkParticipantListResult?.data?.participants?.length > 0) {
+            setPkTeams(pkParticipantListResult?.data?.participants);
+          }
+
+          console.log(
+            "pkParticipantListResult?.data?.participants:",
+            pkParticipantListResult?.data?.participants
+          );
+
+          const getRecEventResult = await axios.get(`/event/${recEventId}`);
+          if (getRecEventResult?.data?.timeEnd) {
+            setRecEventDeadlineDate(getRecEventResult.data.timeEnd);
+          }
+          if (getRecEventResult?.data?.timeBegin) {
+            setRecEventDeadlineDate(getRecEventResult.data.timeBegin);
+          }
+
+          setIsRecWithInEventTime(
+            new Date(getRecEventResult?.data?.timeBegin) < new Date() &&
+              new Date(getRecEventResult?.data?.timeEnd) > new Date()
+          );
+
+          console.log("getRecEventResult:", getRecEventResult);
+
           setIsListLoaded(true);
         }
       } catch (error) {
+        console.log("error:", error);
         setIsListLoaded(false);
         setRankingList([]);
         setThirdRankingList([]);
@@ -279,7 +376,7 @@ function App() {
         new Date(eventStartDate) != "Invalid Date" &&
         new Date(eventDeadlineDate) != "Invalid Date"
       ) {
-        setIsWithInEventTime(
+        setIsPopWithInEventTime(
           new Date(eventStartDate) < new Date() &&
             new Date(eventDeadlineDate) > new Date()
         );
@@ -294,7 +391,7 @@ function App() {
           return;
         }
         const result = await axios.get(
-          `/vote-record/${eventId}/1/9999999999999/?pw=${
+          `/vote-record/${popEventId}/1/9999999999999/?pw=${
             window.location.href.split("?")?.[1]?.split("=")?.[1]
           }`
         );
@@ -329,7 +426,9 @@ function App() {
 
   const checkIsVotedToday = async () => {
     try {
-      const result = await axios.get(`/check-vote/${phoneNumber}/${eventId}`);
+      const result = await axios.get(
+        `/check-vote/${phoneNumber}/${popEventId}`
+      );
       //console.log("checkIsVotedToday result:", result);
       return result.data.isVoted;
     } catch (error) {
@@ -343,7 +442,7 @@ function App() {
       const result = await axios.get(
         `/check-wewa-club-id-used/${
           wewaClubId?.trim() !== "" ? wewaClubId : "ILOVEWEWACLUB"
-        }/${eventId}`
+        }/${popEventId}`
       );
       //console.log("checkIsWewaClubIdUsedToday result:", result);
       return result.data.isWewaClubIdUsed;
@@ -356,7 +455,7 @@ function App() {
   const checkIsPhoneVerified = async () => {
     try {
       const result = await axios.get(
-        `/check-phone-verified/${phoneNumber}/${eventId}`
+        `/check-phone-verified/${phoneNumber}/${popEventId}`
       );
       //console.log("checkIsPhoneVerified result:", result);
       return { success: result.data.isPhoneVerified };
@@ -410,7 +509,7 @@ function App() {
     try {
       const voteData = {
         roundNumber,
-        eventId,
+        popEventId,
         voterPhone: phoneNumber,
         voteCount: votes,
         wewaClubId: wewaClubId,
@@ -604,8 +703,14 @@ function App() {
     setVoteDialogIsOpen(true);
   };
 
+  const onBattleParticipantClick = (item, index) => {
+    setSelectedParticipant(item);
+    setSelectedBattleNumber(index);
+    setVoteDialogIsOpen(true);
+  };
+
   const PkView = () => {
-    return [0, 1, 2, 3, 4, 5].map((item, index) => {
+    return pkTeams.map((item, index) => {
       return (
         <Grid
           container
@@ -663,11 +768,11 @@ function App() {
                   justifyContent: "center",
                   flexDirection: "column",
                 }}
-                onClick={() => onParticipantClick(rankingList[index * 2])}
+                onClick={() => onBattleParticipantClick(item[0], index)}
               >
                 <Avatar
                   alt={selectedParticipant.name}
-                  src={`/event1/${rankingList[index * 2].chineseName}.jpg`}
+                  src={`/final/${item[0].chineseName}_final.jpg`}
                   // sx={{
                   //   width: {
                   //     xs: "95%",
@@ -697,7 +802,7 @@ function App() {
                     color: "#FFF",
                   }}
                 >
-                  {rankingList[index * 2].chineseName}
+                  {item[0].name}
                 </Typography>
               </Box>
               <Typography
@@ -719,11 +824,11 @@ function App() {
                   justifyContent: "center",
                   flexDirection: "column",
                 }}
-                onClick={() => onParticipantClick(rankingList[index * 2 + 1])}
+                onClick={() => onBattleParticipantClick(item[1], index)}
               >
                 <Avatar
-                  alt={selectedParticipant.name}
-                  src={`/event1/${rankingList[index * 2 + 1].chineseName}.jpg`}
+                  alt={item[1].name}
+                  src={`/final/${item[1].chineseName}_final.jpg`}
                   // sx={{
                   //   width: {
                   //     xs: "95%",
@@ -753,7 +858,7 @@ function App() {
                     color: "#FFF",
                   }}
                 >
-                  {rankingList[index * 2 + 1].chineseName}
+                  {item[1].name}
                 </Typography>
               </Box>
             </Stack>
@@ -773,7 +878,7 @@ function App() {
             paddingY: "20px",
             marginBottom: "2px",
             // borderBottom: "1px solid #FFF",
-            backgroundColor: "rgba(255,255,255,0.1)",
+            // backgroundColor: "rgba(255,255,255,0.1)",
             cursor: "pointer",
           }}
         >
@@ -797,16 +902,20 @@ function App() {
             >
               <Box
                 sx={{
+                  minWidth: {
+                    xs: "140px",
+                    md: "160px",
+                  },
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "start",
                   flexDirection: "row",
                 }}
                 onClick={() => onParticipantClick(item)}
               >
                 <Avatar
                   alt={selectedParticipant.name}
-                  src={`/event1/${item.chineseName}.jpg`}
+                  src={`/final/${item.chineseName}_final.jpg`}
                   // sx={{
                   //   width: {
                   //     xs: "95%",
@@ -836,7 +945,7 @@ function App() {
                     color: "#FFF",
                   }}
                 >
-                  {item.chineseName}
+                  {item.name}
                 </Typography>
               </Box>
             </Stack>
@@ -925,7 +1034,8 @@ function App() {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
+                    justifyContent: "start",
+                    paddingLeft: "60px",
                   }}
                 >
                   <Stack
@@ -950,9 +1060,9 @@ function App() {
                     >
                       <Avatar
                         alt={rankingList?.[index * 2].name}
-                        src={`/event1/${
+                        src={`/final/${
                           rankingList?.[index * 2].chineseName
-                        }.jpg`}
+                        }_final.jpg`}
                         // sx={{
                         //   width: {
                         //     xs: "95%",
@@ -982,7 +1092,7 @@ function App() {
                           color: "#FFF",
                         }}
                       >
-                        {rankingList?.[index * 2].chineseName}
+                        {rankingList?.[index * 2].name}
                       </Typography>
                     </Box>
                   </Stack>
@@ -1248,8 +1358,8 @@ function App() {
               }}
             >
               <Avatar
-                alt={selectedParticipant.name}
-                src={`/event1/${selectedParticipant.chineseName}.jpg`}
+                alt={selectedParticipant.chineseName}
+                src={`/final/${selectedParticipant.chineseName}_final.jpg`}
                 sx={{
                   width: { xs: "100px", sm: "120px" },
                   height: { xs: "100px", sm: "120px" },
@@ -1328,7 +1438,13 @@ function App() {
                 onClick={onConfirmOptInput}
                 className="confirmVoteButton"
                 loading={isConfirmOptLoading}
-                disabled={otp.length !== 6 || !isWithInEventTime}
+                disabled={
+                  eventType === "pop"
+                    ? !isPopWithInEventTime
+                    : eventType === "pk"
+                    ? !isPkWithInEventTime[selectedBattleNumber]
+                    : !isRecWithInEventTime
+                }
               >
                 <Typography
                   sx={{
@@ -1336,11 +1452,19 @@ function App() {
                     fontWeight: "bold",
                   }}
                 >
-                  {isWithInEventTime ? "投票" : "投票已結束"}
+                  {(
+                    eventType === "pop"
+                      ? !isPopWithInEventTime
+                      : eventType === "pk"
+                      ? !isPkWithInEventTime[selectedBattleNumber]
+                      : !isRecWithInEventTime
+                  )
+                    ? "投票通道關閉"
+                    : "投票"}
                 </Typography>
               </LoadingButton>
             </Box>
-            {isOptChecked && (!isOptValid || errorMessage !== "") && (
+            {errorMessage !== "" && (
               <Box
                 sx={{
                   paddingTop: "10px",
@@ -1348,9 +1472,7 @@ function App() {
                   justifyContent: "center",
                 }}
               >
-                <p className="inputErrorText text-center">
-                  {errorMessage ? errorMessage : "驗證碼錯誤"}
-                </p>
+                <p className="inputErrorText text-center">投票失敗</p>
               </Box>
             )}
           </Box>
@@ -1399,7 +1521,7 @@ function App() {
                       {index + 1}
                     </Typography>
                     <Avatar
-                      src={`/event1/${item.chineseName}.jpg`}
+                      src={`/final/${item.chineseName}_final.jpg`}
                       sx={{
                         width: { xs: 30, sm: 40 },
                         height: { xs: 30, sm: 40 },
@@ -1419,7 +1541,7 @@ function App() {
                         marginLeft: "3px",
                       }}
                     >
-                      {item.chineseName}
+                      {item.name}
                     </Typography>
                     <Typography
                       className="realtimeRankingText"
@@ -1434,7 +1556,7 @@ function App() {
                         marginLeft: "4px",
                       }}
                     >
-                      (300)
+                      ({item.votes})
                     </Typography>
                   </Box>
                 );
@@ -1533,7 +1655,7 @@ function App() {
               <Box
                 className="finalVoteSectionContainer finalVoteSectionResurrectionContainer"
                 onClick={() => {
-                  onEventClickHandler("res");
+                  onEventClickHandler("rec");
                 }}
               >
                 <Box>

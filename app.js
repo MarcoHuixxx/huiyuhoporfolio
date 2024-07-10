@@ -532,11 +532,20 @@ app.get('/event/:event_id', async (req, res) => {
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
-    const eventId = req.params.event_id;
-    const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
+    console.log("get event")
+    let eventResult;
+    const eventId = req.params.event_id.split(',');
+    console.log("eventId:", eventId)
+    if (eventId.length === 1) {
+      eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId[0]) });
+    } else {
+      eventResult = await event.find({ _id: { $in: eventId.map((id) => new mongodb.ObjectId(id)) } });
+    }
+    console.log("eventResult:", eventResult)
+
     res.send(eventResult);
   } catch (e) {
-    //console.log(e)
+    console.log(e)
   }
 })
 
@@ -549,42 +558,61 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
-    const eventId = req.params.event_id;
+    const eventId = req.params.event_id?.split(',');
+    if (!eventId || eventId.length === 0) {
+      return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
+    const showVoteCountEvents = ["668deded51930e822903d37c"];
     const limit = req.params.limit;
     const roundNumber = req.params.round_number;
     const isAdmin = req.params.isAdmin === 'true' && req.query.pw === process.env.ADMIN_PW;
-    if (!eventId || !limit || !roundNumber) {
+    if (!eventId[0] || !limit || !roundNumber) {
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
 
-    let participants = await getParticipants(eventId, roundNumber, limit, { 'event.round.participationNo': 1 }, true);
-    let firstThree = await getParticipants(eventId, roundNumber, 3, { 'event.round.voteCount': -1 }, true);
+    let participants;
 
-    const firstVoteCount = firstThree[0]?.votes || 1;
-    const secondVoteCountPercent = firstThree[1]?.votes / firstVoteCount || 1;
-    const thirdVoteCountPercent = firstThree[2]?.votes / firstVoteCount || 1;
-    const firstThreeRaningPercent = [1, secondVoteCountPercent, thirdVoteCountPercent];
+    if (eventId.length === 1) {
 
-    if (!isAdmin) {
-      participants = participants.map((participant) => {
-        return {
-          ...participant,
-          votes: undefined
+
+      participants = await getParticipants(eventId[0], roundNumber, limit, !showVoteCountEvents.includes(eventId[0]) ? { 'event.round.participationNo': 1 } : { 'event.round.voteCount': -1 }, true);
+      let firstThree = await getParticipants(eventId[0], roundNumber, 3, { 'event.round.voteCount': -1 }, true);
+
+      const firstVoteCount = firstThree[0]?.votes || 1;
+      const secondVoteCountPercent = firstThree[1]?.votes / firstVoteCount || 1;
+      const thirdVoteCountPercent = firstThree[2]?.votes / firstVoteCount || 1;
+      const firstThreeRaningPercent = [1, secondVoteCountPercent, thirdVoteCountPercent];
+
+      if (!isAdmin && !showVoteCountEvents.includes(eventId[0])) {
+        participants = participants.map((participant) => {
+          return {
+            ...participant,
+            votes: undefined
+          }
         }
-      }
-      )
+        )
 
-      firstThree = firstThree.map((participant) => {
-        return {
-          ...participant,
-          votes: undefined
+        firstThree = firstThree.map((participant) => {
+          return {
+            ...participant,
+            votes: undefined
+          }
         }
+        )
       }
-      )
+      return res.send({ participants, firstThreeRaningPercent, firstThree });
     }
 
+    participants = await Promise.all(eventId.map(async (id) => {
+      const participant = await getParticipants(id, roundNumber, limit, !showVoteCountEvents.includes(id) ? { 'event.round.participationNo': 1 } : { 'event.round.voteCount': -1 }, true);
+      return participant;
+    }
+    ));
 
-    res.send({ participants, firstThreeRaningPercent, firstThree });
+    console.log("participants:", participants)
+
+    return res.send({ participants });
+
   } catch (e) {
     //console.log(e)
   }
