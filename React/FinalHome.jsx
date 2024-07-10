@@ -74,6 +74,14 @@ function App() {
   const roundNumber = 1;
   const [isAdmin, setIsAdmin] = useState(false);
   const [eventDeadlineDate, setEventDeadlineDate] = useState("Invalid Date");
+  const [pkEventStartDate, setPkEventStartDate] = useState([
+    "Invalid Date",
+    "Invalid Date",
+    "Invalid Date",
+    "Invalid Date",
+    "Invalid Date",
+    "Invalid Date",
+  ]);
   const [pkEventDeadlineDate, setPkEventDeadlineDate] = useState([
     "Invalid Date",
     "Invalid Date",
@@ -166,8 +174,6 @@ function App() {
               new Date(getPopEventResult?.data?.timeEnd) > new Date()
           );
 
-          console.log("IsPopWithInEventTime:", isPopWithInEventTime);
-
           //if the event is not started, return
           if (new Date(getPopEventResult.data.timeBegin) > new Date()) {
             // if (new Date("2024-6-4") > new Date()) {
@@ -204,28 +210,33 @@ function App() {
           if (getPkEventResult?.data?.length > 0) {
             setPkTeams(getPkEventResult.data);
           }
-
+          const isThePkEventWithInEventTime = [];
+          const pkEventStartDateArray = [];
+          const pkEventDeadlineDateArray = [];
           for (let i = 0; i < pkEventIds.length; i++) {
             const pkEvent = getPkEventResult.data.find(
               (item) => item._id === pkEventIds[i]
             );
 
             if (pkEvent?.timeBegin) {
-              pkEventDeadlineDate[i] = pkEvent.timeBegin;
+              pkEventStartDateArray.push(pkEvent.timeBegin);
             }
 
             if (pkEvent?.timeEnd) {
-              pkEventDeadlineDate[i] = pkEvent.timeEnd;
+              pkEventDeadlineDateArray.push(pkEvent.timeEnd);
             }
 
-            setIsPkWithInEventTime((prev) => {
-              return [
-                ...prev,
-                new Date(pkEvent.timeBegin) < new Date() &&
-                  new Date(pkEvent.timeEnd) > new Date(),
-              ];
-            });
+            const isWithInEventTime =
+              new Date(pkEvent.timeBegin) < new Date() &&
+              new Date(pkEvent.timeEnd) > new Date();
+
+            isThePkEventWithInEventTime.push(isWithInEventTime);
           }
+
+          setIsPkWithInEventTime(isThePkEventWithInEventTime);
+          console.log("pkEventStartDateArray:", pkEventStartDateArray);
+          setPkEventStartDate(pkEventStartDateArray);
+          setPkEventDeadlineDate(pkEventDeadlineDateArray);
 
           const pkParticipantListResult = await axios.get(
             `/participant/${pkEventIds
@@ -239,11 +250,6 @@ function App() {
             setPkTeams(pkParticipantListResult?.data?.participants);
           }
 
-          console.log(
-            "pkParticipantListResult?.data?.participants:",
-            pkParticipantListResult?.data?.participants
-          );
-
           const getRecEventResult = await axios.get(`/event/${recEventId}`);
           if (getRecEventResult?.data?.timeEnd) {
             setRecEventDeadlineDate(getRecEventResult.data.timeEnd);
@@ -256,8 +262,6 @@ function App() {
             new Date(getRecEventResult?.data?.timeBegin) < new Date() &&
               new Date(getRecEventResult?.data?.timeEnd) > new Date()
           );
-
-          console.log("getRecEventResult:", getRecEventResult);
 
           setIsListLoaded(true);
         }
@@ -372,6 +376,7 @@ function App() {
 
   useEffect(() => {
     setInterval(() => {
+      console.log("hihihihihihih");
       if (
         new Date(eventStartDate) != "Invalid Date" &&
         new Date(eventDeadlineDate) != "Invalid Date"
@@ -381,8 +386,40 @@ function App() {
             new Date(eventDeadlineDate) > new Date()
         );
       }
+
+      let isPkWithInEventTimeVar = [];
+
+      console.log("pkEventStartDate:", pkEventStartDate);
+
+      for (let i = 0; i < pkEventStartDate.length; i++) {
+        if (
+          new Date(pkEventStartDate[i]) != "Invalid Date" &&
+          new Date(pkEventDeadlineDate[i]) != "Invalid Date"
+        ) {
+          isPkWithInEventTimeVar.push(
+            new Date(pkEventStartDate[i]) < new Date() &&
+              new Date(pkEventDeadlineDate[i]) > new Date()
+          );
+
+          // setIsPkWithInEventTime((pre) => [
+          //   ...pre,
+          //   new Date(pkEventStartDate[i]) < new Date() &&
+          //     new Date(pkEventDeadlineDate[i]) > new Date(),
+          // ]);
+        }
+      }
+      console.log("isPkWithInEventTimeVar:", isPkWithInEventTimeVar);
+      setIsPkWithInEventTime(isPkWithInEventTimeVar);
+      setTimeout(() => {
+        console.log("1:", isPkWithInEventTime);
+      }, 1000);
     }, eventReloadTime);
   }, [eventStartDate, eventDeadlineDate]);
+
+  useEffect(() => {
+    console.log("start::", pkEventStartDate);
+    console.log("end::", pkEventDeadlineDate);
+  }, [pkEventStartDate, pkEventDeadlineDate]);
 
   useEffect(() => {
     const downloadVoteRecord = async () => {
@@ -713,6 +750,7 @@ function App() {
     return pkTeams.map((item, index) => {
       return (
         <Grid
+          key={index + "pk"}
           container
           sx={{
             marginTop: index !== 0 ? "0px" : "40px",
@@ -872,6 +910,7 @@ function App() {
     return rankingList.map((item, index) => {
       return (
         <Grid
+          key={index + "pop"}
           container
           sx={{
             marginTop: index !== 0 ? "0px" : "40px",
@@ -999,6 +1038,7 @@ function App() {
             return (
               <Grid
                 container
+                key={index + "rec"}
                 sx={{
                   marginTop: index !== 0 ? "0px" : "40px",
                   paddingY: "20px",

@@ -13,8 +13,6 @@ import icmaVotePageIcon from "../assets/icmaWeb.svg";
 import "./styles/footer.css";
 
 const Footer = ({ type, isMd, isInheritBackground, isFinal }) => {
-  console.log("type:", type);
-  console.log("isFinal:", isFinal);
   const IconButtonStack = () => {
     return (
       <Stack
