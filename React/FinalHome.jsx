@@ -1332,7 +1332,7 @@ function App() {
                 }}
               >
                 {eventType === "pk"
-                  ? "Battle " + (selectBattle?.number || 1)
+                  ? "Battle " + (selectedBattleNumber + 1)
                   : eventType === "pop"
                   ? "WeWa最強人氣大獎"
                   : "復活投票"}
