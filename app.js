@@ -30,8 +30,7 @@ const corsOptions = {
 
 
 
-// app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 const { CronJob } = require('cron');
 // support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -193,7 +192,6 @@ app.set('view engine', 'ejs');
 // })
 
 const checkIsFromDomain = (req, res) => {
-  return true;
   //console.log("req.rawHeaders:", req.rawHeaders)
   const isAllow = ["https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
   if (process.env.NODE_ENV === "development") {
