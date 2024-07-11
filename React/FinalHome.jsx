@@ -1592,7 +1592,7 @@ function App() {
                     justifyContent: "center",
                   }}
                 >
-                  <p className="inputErrorText text-center">投票失敗</p>
+                  <p className="inputErrorText text-center">投票通道已關閉</p>
                 </Box>
               )}
             </Box>
