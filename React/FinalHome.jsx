@@ -1887,7 +1887,7 @@ function App() {
                     className="finalVoteSectionContainerText"
                     sx={{
                       fontSize: {
-                        xs: "28px",
+                        xs: "24px",
                         sm: "30px",
                         md: "36px",
                       },
