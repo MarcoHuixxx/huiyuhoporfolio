@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import icmaIcon from "../assets/icma.svg";
+import icmaIcon from "../assets/icma.png";
 import Input from "@mui/material/Input";
 import Select from "@mui/material/Select";
 import { Stack } from "@mui/material";
