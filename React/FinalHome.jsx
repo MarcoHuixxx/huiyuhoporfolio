@@ -33,7 +33,7 @@ import wewaIcon from "./assets/wewa.svg";
 import checkedIcon from "./assets/checked.svg";
 import sponsorIcon from "./assets/sponsor.png";
 import voteMethodImage from "./assets/voteMethod.png";
-import icmaIcon from "./assets/icma.png";
+import icmaIcon from "./assets/icma.svg";
 import Dialog from "./src/components/dialog";
 import YoutubeEmbed from "./src/components/youtubeEmbed";
 import MuiPhoneNumber from "mui-phone-number";
