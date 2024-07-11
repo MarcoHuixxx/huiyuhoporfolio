@@ -409,21 +409,27 @@ app.post('/vote', async (req, res) => {
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
+    console.log("body:", req.body)
+
+    const noNeedOptVerifyEventIds = ["664b20f7cbd11e4bca2386c8"];
+    const needUpDateParticipantEventIds = ["664b20f7cbd11e4bca2386c8", "668deded51930e822903d37c"];
 
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
     if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
 
-    const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
+    if (noNeedOptVerifyEventIds.includes(eventId)) {
+      const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
 
-    const voterVoteRecord = await voteRecord.find({
-      voterPhone: voterPhone,
-      eventId: eventId
-    });
+      const voterVoteRecord = await voteRecord.find({
+        voterPhone: voterPhone,
+        eventId: eventId
+      });
 
-    if (!(optVerifyRecord || voterVoteRecord.length > 0)) {
-      return res.status(400).send({ success: false, message: 'Phone not verified' });
+      if (!(optVerifyRecord || voterVoteRecord.length > 0)) {
+        return res.status(400).send({ success: false, message: 'Phone not verified' });
+      }
     }
 
     if (voteCount > 2) {
@@ -443,26 +449,34 @@ app.post('/vote', async (req, res) => {
       //console.log("The round is not open")
       return res.status(400).send({ success: false, message: 'The round is not open' });
     }
+    let updateParticipant;
+    if (needUpDateParticipantEventIds.includes(eventId)) {
+      updateParticipant = await participant.findOneAndUpdate(
+        { _id: participantId, },
+        {
+          $inc: { [`event.$[event].round.$[round].voteCount`]: voteCount },
+        },
+        {
+          arrayFilters: [{ 'event.eventId': eventId }, { 'round.roundNumber': parseInt(roundNumber) }],
+          new: true
+        }
+      );
+    } else {
+      updateParticipant = await participant.findOne(
+        { _id: participantId, },
+      );
+    }
 
-    const updateParticipant = await participant.findOneAndUpdate(
-      { _id: participantId, },
-      {
-        $inc: { [`event.$[event].round.$[round].voteCount`]: voteCount },
-      },
-      {
-        arrayFilters: [{ 'event.eventId': new mongodb.ObjectId(eventId) }, { 'round.roundNumber': parseInt(roundNumber) }],
-        new: true
-      }
-    );
+    const participantVoteCount = updateParticipant.event.find((event) => event.eventId.toString() === eventId).round.find((round) => round.roundNumber === parseInt(roundNumber)).voteCount;
 
-    //console.log("updateParticipant:", updateParticipant)
+    console.log("updateParticipant:", updateParticipant)
 
     if (updateParticipant) {
       const newVoteRecord = new voteRecord({
         roundNumber: roundNumber,
         voteCount: voteCount,
-        participantVoteBofore: updateParticipant.event[0].round[0].voteCount - voteCount,
-        participantVoteAfter: updateParticipant.event[0].round[0].voteCount,
+        participantVoteBofore: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount - voteCount : 0,
+        participantVoteAfter: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount : 0,
         voterPhone: voterPhone,
         votedAt: new Date(),
         eventId: eventId,
@@ -477,8 +491,9 @@ app.post('/vote', async (req, res) => {
     }
 
   } catch (e) {
-    errorLog.create({ error: error, time: new Date() });
-    //console.log(e)
+    console.log(e)
+    errorLog.create({ error: e, time: new Date() });
+
     res.send({ success: false });
 
   }
@@ -541,7 +556,16 @@ app.get('/event/:event_id', async (req, res) => {
     } else {
       eventResult = await event.find({ _id: { $in: eventId.map((id) => new mongodb.ObjectId(id)) } });
     }
-    console.log("eventResult:", eventResult)
+    if (Array.isArray(eventResult)) {
+      //check if the event is still open
+      eventResult = eventResult.map((event) => {
+        if (new Date(event.timeBegin) > new Date() || new Date(event.timeEnd) < new Date()) {
+          event.status = "closed";
+        }
+        return event;
+      }
+      )
+    }
 
     res.send(eventResult);
   } catch (e) {
@@ -563,6 +587,15 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
     const showVoteCountEvents = ["668deded51930e822903d37c"];
+    const countVoteByRecordEvent = [
+      "668decd851930e822903d375",
+      "668decef51930e822903d376",
+      "668decf551930e822903d377",
+      "668decfd51930e822903d378",
+      "668ded0351930e822903d379",
+      "668ded0e51930e822903d37a",
+      "668deda751930e822903d37b"
+    ]
     const limit = req.params.limit;
     const roundNumber = req.params.round_number;
     const isAdmin = req.params.isAdmin === 'true' && req.query.pw === process.env.ADMIN_PW;
@@ -599,7 +632,17 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
           }
         }
         )
+      } else if (isAdmin && countVoteByRecordEvent.includes(eventId[0])) {
+        participants = await Promise.all(participants.map(async (participant) => {
+          //get totole voteRecord for the participant for the event
+          const totalVoteRecord = await voteRecord.find({ participantId: participant.id, eventId: eventId[0] });
+          return {
+            ...participant,
+            votes: totalVoteRecord.length
+          }
+        }))
       }
+
       return res.send({ participants, firstThreeRaningPercent, firstThree });
     }
 
@@ -609,7 +652,21 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
     }
     ));
 
+    if (isAdmin && countVoteByRecordEvent.includes(eventId[0])) {
+      participants = await Promise.all(participants.map(async (participantGroup, index) => {
+        const participant = await Promise.all(participantGroup.map(async (participant) => {
+          const totalVoteRecord = await voteRecord.find({ participantId: participant.id, eventId: eventId[index] });
+          return {
+            ...participant,
+            votes: totalVoteRecord.length
+          }
+        }));
+        return participant;
+      }))
+    }
+
     console.log("participants:", participants)
+
 
     return res.send({ participants });
 
@@ -740,6 +797,104 @@ app.post('/admin/edit/:eventId/:roundNumber', async (req, res) => {
       res.send({ success: true });
     } else {
       res.send({ success: false });
+    }
+
+  } catch (e) {
+    errorLog.create({ error: e, time: new Date() });
+  }
+})
+
+app.post('/admin/voteChannel', async (req, res) => {
+  try {
+
+    const isFromDomain = checkIsFromDomain(req, res);
+    if (!isFromDomain) {
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
+    const { eventId, pw, action, roundNumber } = req.body;
+
+    if (!eventId || !pw || !action) {
+      return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
+
+    if (pw !== process.env.ADMIN_PW) {
+      return res.status(401).send({ success: false, message: 'Authorization Failed' });
+    }
+
+    const eventToUpdate = await event.findOneAndUpdate(
+      { _id: new mongodb.ObjectId(eventId) },
+      {
+        $set: { 'timeBegin': action === 'open' ? new Date() : new Date().setDate(new Date().getDate() + 30), 'timeEnd': action === 'open' ? new Date().setDate(new Date().getDate() + 30) : new Date().setDate(new Date().getDate() - 30) }
+      }
+    );
+
+    if (eventToUpdate) {
+
+      res.send({ success: true });
+    } else {
+      res.send({ success: false });
+    }
+
+  } catch (e) {
+    errorLog.create({ error: e, time: new Date() });
+  }
+})
+
+app.post('/admin/edit/event-participant', async (req, res) => {
+  try {
+
+    const isFromDomain = checkIsFromDomain(req, res);
+    if (!isFromDomain) {
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
+    const { eventId, pw, participantIds, roundNumber } = req.body;
+
+    if (!eventId || !pw || !participantIds) {
+      return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
+
+    if (pw !== process.env.ADMIN_PW) {
+      return res.status(401).send({ success: false, message: 'Authorization Failed' });
+    }
+
+    //get participants with this event id and delete the records
+    const participants = await participant.find({ 'event.eventId': eventId });
+
+    await Promise.all(participants.map(async (participant) => {
+      await participant.updateOne({ $pull: { event: { eventId: eventId } } });
+    }
+    ));
+
+    //insert event id to the selected participants
+    const result = await Promise.all(participantIds.map(async (participantId) => {
+      await
+        participant.findOneAndUpdate(
+          { _id: participantId },
+          {
+            $push: {
+              event: {
+                eventId: eventId,
+                round: [
+                  {
+                    roundNumber: roundNumber || 1,
+                    participationNo: 0,
+                    video: '',
+                    voteCount: 0,
+                    position: 0,
+                    image: ''
+                  }
+                ],
+              }
+            }
+          }
+        );
+    }
+    ));
+
+    if (result) {
+      return res.send({ success: true });
+    } else {
+      return res.send({ success: false });
     }
 
   } catch (e) {

@@ -30,7 +30,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
     "react-social-media-embed": "^2.5.13",
-    "uninstall": "^0.0.0"
+    "uninstall": "^0.0.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

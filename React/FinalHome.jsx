@@ -56,6 +56,8 @@ import FinalPkLogo from "./assets/finalPkLogo.png";
 import FinalPopularityLogo from "./assets/finalPopularityLogo.png";
 import FinalResurrectionLogo from "./assets/finalResurrection.png";
 import RealtimeRankingLogo from "./assets/realtimeRankingLogo.png";
+import { v4 as uuidv4 } from "uuid";
+import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
 
 //set axios default url
 axios.defaults.baseURL = serverUrl;
@@ -109,6 +111,14 @@ function App() {
   const [isRecWithInEventTime, setIsRecWithInEventTime] = useState(false);
   const [showVoteMethod, setShowVoteMethod] = useState(true);
   const [rankingList, setRankingList] = useState([]);
+  const [recRankingList, setRecRankingList] = useState([
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ]);
   const [thirdRankingList, setThirdRankingList] = useState([]);
   const [votePageIsOpen, setVotePageIsOpen] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState({});
@@ -175,10 +185,10 @@ function App() {
           );
 
           //if the event is not started, return
-          if (new Date(getPopEventResult.data.timeBegin) > new Date()) {
-            // if (new Date("2024-6-4") > new Date()) {
-            return;
-          }
+          // if (new Date(getPopEventResult.data.timeBegin) > new Date()) {
+          //   // if (new Date("2024-6-4") > new Date()) {
+          //   return;
+          // }
 
           const popParticipantListResult = await axios.get(
             `/participant/${popEventId}/${roundNumber}/100/${isAdminVar}?pw=${
@@ -234,7 +244,6 @@ function App() {
           }
 
           setIsPkWithInEventTime(isThePkEventWithInEventTime);
-          console.log("pkEventStartDateArray:", pkEventStartDateArray);
           setPkEventStartDate(pkEventStartDateArray);
           setPkEventDeadlineDate(pkEventDeadlineDateArray);
 
@@ -262,6 +271,27 @@ function App() {
             new Date(getRecEventResult?.data?.timeBegin) < new Date() &&
               new Date(getRecEventResult?.data?.timeEnd) > new Date()
           );
+
+          const recParticipantListResult = await axios.get(
+            `/participant/${recEventId}/${roundNumber}/100/${isAdminVar}?pw=${
+              windowLocation.split("?")?.[1]?.split("=")?.[1]
+            }`
+          );
+
+          if (recParticipantListResult?.data?.participants?.length > 0) {
+            const originalRecRankingList = recRankingList;
+            recParticipantListResult?.data?.participants?.forEach((item) => {
+              const battleIndexOfItem =
+                pkParticipantListResult?.data?.participants?.findIndex((team) =>
+                  team.some((participant) => participant._id === item._id)
+                );
+              if (battleIndexOfItem !== -1) {
+                originalRecRankingList[battleIndexOfItem] = item;
+              }
+            });
+            setRecRankingList(originalRecRankingList);
+            console.log("originalRecRankingList:", originalRecRankingList);
+          }
 
           setIsListLoaded(true);
         }
@@ -376,7 +406,6 @@ function App() {
 
   useEffect(() => {
     setInterval(() => {
-      console.log("hihihihihihih");
       if (
         new Date(eventStartDate) != "Invalid Date" &&
         new Date(eventDeadlineDate) != "Invalid Date"
@@ -389,8 +418,6 @@ function App() {
 
       let isPkWithInEventTimeVar = [];
 
-      console.log("pkEventStartDate:", pkEventStartDate);
-
       for (let i = 0; i < pkEventStartDate.length; i++) {
         if (
           new Date(pkEventStartDate[i]) != "Invalid Date" &&
@@ -400,25 +427,20 @@ function App() {
             new Date(pkEventStartDate[i]) < new Date() &&
               new Date(pkEventDeadlineDate[i]) > new Date()
           );
-
-          // setIsPkWithInEventTime((pre) => [
-          //   ...pre,
-          //   new Date(pkEventStartDate[i]) < new Date() &&
-          //     new Date(pkEventDeadlineDate[i]) > new Date(),
-          // ]);
+        } else {
+          isPkWithInEventTimeVar.push(false);
         }
       }
-      console.log("isPkWithInEventTimeVar:", isPkWithInEventTimeVar);
-      setIsPkWithInEventTime(isPkWithInEventTimeVar);
-      setTimeout(() => {
-        console.log("1:", isPkWithInEventTime);
-      }, 1000);
-    }, eventReloadTime);
-  }, [eventStartDate, eventDeadlineDate]);
 
-  useEffect(() => {
-    console.log("start::", pkEventStartDate);
-    console.log("end::", pkEventDeadlineDate);
+      if (
+        !(
+          pkEventStartDate.some((date) => date === "Invalid Date") ||
+          pkEventDeadlineDate.some((date) => date === "Invalid Date")
+        )
+      ) {
+        setIsPkWithInEventTime(isPkWithInEventTimeVar);
+      }
+    }, eventReloadTime);
   }, [pkEventStartDate, pkEventDeadlineDate]);
 
   useEffect(() => {
@@ -546,10 +568,15 @@ function App() {
     try {
       const voteData = {
         roundNumber,
-        popEventId,
-        voterPhone: phoneNumber,
-        voteCount: votes,
-        wewaClubId: wewaClubId,
+        eventId:
+          eventType === "pop"
+            ? popEventId
+            : eventType === "pk"
+            ? pkEventIds[selectedBattleNumber]
+            : recEventId,
+        voterPhone: uuidv4(),
+        voteCount: 1,
+        wewaClubId: "",
         participantId: selectedParticipant.id,
       };
       const voteResult = await axios.post("/vote", voteData);
@@ -592,31 +619,20 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const makeVoteHandler = async () => {
-      if (isPhoneVerified) {
-        const voteResult = await makeVote();
-
-        // const voteResult = { data: { success: true } };
-
-        //console.log("voteResult:", voteResult);
-
-        if (voteResult.success) {
-          // setVoteDialogIsOpen(false);
-          setIsVoteSuccess(true);
-        } else {
-          setErrorMessage("投票失敗, 請再試一次");
-          setTimeout(() => {
-            setErrorMessage("");
-          }, 3000);
-        }
-        setIsConfirmVoteLoading(false);
-        setIsConfirmOptLoading(false);
-      }
-    };
-
-    makeVoteHandler();
-  }, [isPhoneVerified]);
+  const makeVoteHandler = async () => {
+    setIsConfirmVoteLoading(true);
+    const voteResult = await makeVote();
+    if (voteResult.success) {
+      // setVoteDialogIsOpen(false);
+      setIsVoteSuccess(true);
+    } else {
+      setErrorMessage("投票失敗, 請再試一次");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    }
+    setIsConfirmVoteLoading(false);
+  };
 
   useEffect(() => {
     const handlePopstate = () => {
@@ -682,7 +698,7 @@ function App() {
     if (!votePageIsOpen || !voteDialogIsOpen) {
       //redirect to home page after vote success and close the dialog
       if (isVoteSuccess) {
-        setIsListLoaded(false);
+        // setIsListLoaded(false);
         setVoteDialogIsOpen(false);
       }
 
@@ -730,7 +746,7 @@ function App() {
   }, [isAgree]);
 
   const onEventClickHandler = (type) => {
-    window.history.pushState({}, "", `/final`);
+    if (!isAdmin) window.history.pushState({}, "", `/final`);
     setEventType(type);
     setVotePageIsOpenHandler(true);
   };
@@ -806,11 +822,11 @@ function App() {
                   justifyContent: "center",
                   flexDirection: "column",
                 }}
-                onClick={() => onBattleParticipantClick(item[0], index)}
+                onClick={() => onBattleParticipantClick(item?.[0], index)}
               >
                 <Avatar
                   alt={selectedParticipant.name}
-                  src={`/final/${item[0].chineseName}_final.jpg`}
+                  src={`/final/${item?.[0].chineseName}_final.jpg`}
                   // sx={{
                   //   width: {
                   //     xs: "95%",
@@ -840,8 +856,22 @@ function App() {
                     color: "#FFF",
                   }}
                 >
-                  {item[0].name}
+                  {item?.[0].name}
                 </Typography>
+                {isAdmin && (
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        xs: "12px",
+                        md: "14px",
+                      },
+                      fontWeight: "bold",
+                      color: "#FFF",
+                    }}
+                  >
+                    ({item?.[0].votes})
+                  </Typography>
+                )}
               </Box>
               <Typography
                 sx={{
@@ -898,6 +928,20 @@ function App() {
                 >
                   {item[1].name}
                 </Typography>
+                {isAdmin && (
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        xs: "12px",
+                        md: "14px",
+                      },
+                      fontWeight: "bold",
+                      color: "#FFF",
+                    }}
+                  >
+                    ({item?.[1].votes})
+                  </Typography>
+                )}
               </Box>
             </Stack>
           </Grid>
@@ -995,133 +1039,155 @@ function App() {
   };
 
   const RecView = () => {
-    if (rankingList.length != 0) {
-      return (
-        <Box
+    return (
+      <Box
+        sx={{
+          marginTop: "60px",
+        }}
+      >
+        <Typography
           sx={{
-            marginTop: "60px",
+            fontSize: {
+              xs: "20px",
+              md: "24px",
+            },
+            fontWeight: "bold",
+            color: "#FFF",
+            textAlign: "center",
+            fontFamily: "Noto Sans HK",
+            textShadow: "0px 0px 5px #000000",
           }}
         >
-          <Typography
-            sx={{
-              fontSize: {
-                xs: "20px",
-                md: "24px",
-              },
-              fontWeight: "bold",
-              color: "#FFF",
-              textAlign: "center",
-              fontFamily: "Noto Sans HK",
-              textShadow: "0px 0px 5px #000000",
-            }}
-          >
-            復活你心水的選手
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: {
-                xs: "34px",
-                md: "38px",
-              },
-              fontWeight: "bold",
-              color: "#FFF",
-              textAlign: "center",
-              fontFamily: "Noto Sans HK",
-              textShadow: "0px 0px 5px #000000",
-              marginLeft: "20px",
-            }}
-          >
-            進入下回合！
-          </Typography>
+          復活你心水的選手
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: {
+              xs: "34px",
+              md: "38px",
+            },
+            fontWeight: "bold",
+            color: "#FFF",
+            textAlign: "center",
+            fontFamily: "Noto Sans HK",
+            textShadow: "0px 0px 5px #000000",
+            marginLeft: "20px",
+          }}
+        >
+          進入下回合！
+        </Typography>
 
-          {[0, 1, 2, 3, 4, 5].map((item, index) => {
-            return (
+        {recRankingList.map((item, index) => {
+          return (
+            <Grid
+              container
+              key={index + "rec"}
+              sx={{
+                marginTop: index !== 0 ? "0px" : "40px",
+                paddingY: "20px",
+                // borderBottom: "1px solid #FFF",
+              }}
+            >
               <Grid
-                container
-                key={index + "rec"}
+                item
+                xs={4}
                 sx={{
-                  marginTop: index !== 0 ? "0px" : "40px",
-                  paddingY: "20px",
-                  // borderBottom: "1px solid #FFF",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <Grid
-                  item
-                  xs={4}
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "20px",
+                      md: "24px",
+                    },
+                    fontWeight: "bold",
+                    color: "#FFF",
+                    fontFamily: "Hiragino Sans W8",
+                  }}
+                >
+                  Battle {index + 1}
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={8}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  paddingLeft: "60px",
+                }}
+              >
+                <Stack
+                  direction="row"
+                  spacing={3}
                   sx={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: {
-                        xs: "20px",
-                        md: "24px",
-                      },
-                      fontWeight: "bold",
-                      color: "#FFF",
-                      fontFamily: "Hiragino Sans W8",
-                    }}
-                  >
-                    Battle {index + 1}
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={8}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "start",
-                    paddingLeft: "60px",
-                  }}
-                >
-                  <Stack
-                    direction="row"
-                    spacing={3}
+                  <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      flexDirection: "row",
                     }}
+                    onClick={() =>
+                      item.chineseName ? onParticipantClick(item) : null
+                    }
                   >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "row",
-                      }}
-                      onClick={() =>
-                        onParticipantClick(rankingList?.[index * 2])
+                    <Avatar
+                      alt={item.name}
+                      src={
+                        item.chineseName
+                          ? `/final/${item.chineseName}_final.jpg`
+                          : ""
                       }
+                      // sx={{
+                      //   width: {
+                      //     xs: "95%",
+                      //     sm: "95%",
+                      //   },
+                      //   height: {
+                      //     xs: "100%",
+                      //     sm: "100%",
+                      //   },
+                      //   boxShadow: "0px 0px 5px 0px #000000",
+                      // }}
+                      sx={{
+                        width: { xs: "60px", sm: "80px" },
+                        height: { xs: "60px", sm: "80px" },
+                        boxShadow: "0px 0px 5px 0px #000000",
+                        cursor: "pointer",
+                        marginRight: "8px",
+                        background: "#000",
+                      }}
                     >
-                      <Avatar
-                        alt={rankingList?.[index * 2].name}
-                        src={`/final/${
-                          rankingList?.[index * 2].chineseName
-                        }_final.jpg`}
-                        // sx={{
-                        //   width: {
-                        //     xs: "95%",
-                        //     sm: "95%",
-                        //   },
-                        //   height: {
-                        //     xs: "100%",
-                        //     sm: "100%",
-                        //   },
-                        //   boxShadow: "0px 0px 5px 0px #000000",
-                        // }}
+                      <PsychologyAltIcon
                         sx={{
-                          width: { xs: "60px", sm: "80px" },
-                          height: { xs: "60px", sm: "80px" },
-                          boxShadow: "0px 0px 5px 0px #000000",
-                          cursor: "pointer",
-                          marginRight: "8px",
+                          width: "100%",
+                          height: "100%",
                         }}
                       />
+                    </Avatar>
+                    <Typography
+                      sx={{
+                        fontSize: {
+                          xs: "12px",
+                          md: "14px",
+                        },
+                        fontWeight: "bold",
+                        color: "#FFF",
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                    {isAdmin && (
                       <Typography
                         sx={{
                           fontSize: {
@@ -1132,17 +1198,17 @@ function App() {
                           color: "#FFF",
                         }}
                       >
-                        {rankingList?.[index * 2].name}
+                        ({item?.votes})
                       </Typography>
-                    </Box>
-                  </Stack>
-                </Grid>
+                    )}
+                  </Box>
+                </Stack>
               </Grid>
-            );
-          })}
-        </Box>
-      );
-    }
+            </Grid>
+          );
+        })}
+      </Box>
+    );
   };
   return (
     <Box className="finalPageContainer finalVoteBackGround">
@@ -1212,7 +1278,7 @@ function App() {
                   >
                     {eventType === "pk"
                       ? "現場觀眾投票佔10%"
-                      : "100%由現場觀眾投票"}
+                      : "現場觀眾投票佔100%"}
                   </Typography>
                 </Box>
 
@@ -1341,181 +1407,196 @@ function App() {
           direction="up"
           closeIcon
         >
-          <Box
-            sx={{
-              paddingY: {
-                xs: "20px",
-                sm: "40px",
-              },
-              paddingX: {
-                xs: "15px",
-                sm: "40px",
-              },
-            }}
-          >
+          {isVoteSuccess ? (
+            //console.log("isVoteSuccessXXXXXX:", isVoteSuccess),
             <Box
               sx={{
+                padding: "40px",
                 display: "flex",
-                flexDirection: "column",
                 justifyContent: "center",
-                alignItems: "center",
-                marginTop: "-20px",
               }}
             >
-              <Typography
-                display={isMd ? "inline" : "block"}
-                sx={{
-                  fontSize: "16px",
-                  color: "#e04478",
-                  fontWeight: "700",
-                  fontFamily: "Hiragino Sans W8",
-                }}
-              >
-                {eventType === "pk"
-                  ? "Battle " + (selectedBattleNumber + 1)
-                  : eventType === "pop"
-                  ? "WeWa最強人氣大獎"
-                  : "復活投票"}
-              </Typography>
-              <Box
-                sx={{
-                  height: "1px",
-                  width: eventType === "pop" ? "220px" : "120px",
-                  background: "#e81b78",
-                  marginY: "4px",
-                }}
-              />
+              <Alert variant="outlined" severity="success">
+                投票成功
+              </Alert>
             </Box>
+          ) : (
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "20px",
-                paddingY: "10px",
-                paddingX: "50px",
+                paddingY: {
+                  xs: "20px",
+                  sm: "40px",
+                },
+                paddingX: {
+                  xs: "15px",
+                  sm: "40px",
+                },
               }}
             >
-              <Avatar
-                alt={selectedParticipant.chineseName}
-                src={`/final/${selectedParticipant.chineseName}_final.jpg`}
-                sx={{
-                  width: { xs: "100px", sm: "120px" },
-                  height: { xs: "100px", sm: "120px" },
-                  boxShadow: "0px 0px 5px 0px #000000",
-                  cursor: "pointer",
-                  marginBottom: "4px",
-                }}
-              />
               <Box
                 sx={{
                   display: "flex",
+                  flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  flexDirection: "column",
-                  marginTop: "-30px",
-                  zIndex: 9999999999,
+                  marginTop: "-20px",
                 }}
               >
                 <Typography
-                  sx={{
-                    fontSize: {
-                      xs: "20px",
-                      md: "24px",
-                    },
-                    fontWeight: "bold",
-                    color: "#FFF",
-                    textShadow: "0px 0px 5px #000000",
-                  }}
-                >
-                  {selectedParticipant.chineseName}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: {
-                      xs: "20px",
-                      md: "24px",
-                    },
-                    fontWeight: "bold",
-                    color: "#FFF",
-                    textShadow: "0px 0px 5px #000000",
-                    marginTop: "-10px",
-                  }}
-                >
-                  {selectedParticipant.name}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: "300",
-                    color: "#e81b78",
-                  }}
-                >
-                  {selectedParticipant.university}
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box
-              sx={{
-                marginY: "20px",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <LoadingButton
-                sx={{
-                  backgroundColor: "#e04478",
-                  color: "#ffffff",
-                  borderRadius: "75px",
-                  padding: "10px 30px",
-                  boxShadow: "0px 0px 2px 0px #000000",
-                  ":hover": {
-                    backgroundColor: "#e04478",
-                  },
-                }}
-                onClick={onConfirmOptInput}
-                className="confirmVoteButton"
-                loading={isConfirmOptLoading}
-                disabled={
-                  eventType === "pop"
-                    ? !isPopWithInEventTime
-                    : eventType === "pk"
-                    ? !isPkWithInEventTime[selectedBattleNumber]
-                    : !isRecWithInEventTime
-                }
-              >
-                <Typography
+                  display={isMd ? "inline" : "block"}
                   sx={{
                     fontSize: "16px",
-                    fontWeight: "bold",
+                    color: "#e04478",
+                    fontWeight: "700",
+                    fontFamily: "Hiragino Sans W8",
                   }}
                 >
-                  {(
+                  {eventType === "pk"
+                    ? "Battle " + (selectedBattleNumber + 1)
+                    : eventType === "pop"
+                    ? "WeWa最強人氣大獎"
+                    : "復活投票"}
+                </Typography>
+                <Box
+                  sx={{
+                    height: "1px",
+                    width: eventType === "pop" ? "220px" : "120px",
+                    background: "#e81b78",
+                    marginY: "4px",
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "20px",
+                  paddingY: "10px",
+                  paddingX: "50px",
+                }}
+              >
+                <Avatar
+                  alt={selectedParticipant.chineseName}
+                  src={`/final/${selectedParticipant.chineseName}_final.jpg`}
+                  sx={{
+                    width: { xs: "100px", sm: "120px" },
+                    height: { xs: "100px", sm: "120px" },
+                    boxShadow: "0px 0px 5px 0px #000000",
+                    cursor: "pointer",
+                    marginBottom: "4px",
+                  }}
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    marginTop: "-30px",
+                    zIndex: 9999999999,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        xs: "20px",
+                        md: "24px",
+                      },
+                      fontWeight: "bold",
+                      color: "#FFF",
+                      textShadow: "0px 0px 5px #000000",
+                    }}
+                  >
+                    {selectedParticipant.chineseName}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        xs: "20px",
+                        md: "24px",
+                      },
+                      fontWeight: "bold",
+                      color: "#FFF",
+                      textShadow: "0px 0px 5px #000000",
+                      marginTop: "-10px",
+                    }}
+                  >
+                    {selectedParticipant.name}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: "300",
+                      color: "#e81b78",
+                    }}
+                  >
+                    {selectedParticipant.university}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  marginY: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <LoadingButton
+                  sx={{
+                    backgroundColor: "#e04478",
+                    color: "#ffffff",
+                    borderRadius: "75px",
+                    padding: "10px 30px",
+                    boxShadow: "0px 0px 2px 0px #000000",
+                    ":hover": {
+                      backgroundColor: "#e04478",
+                    },
+                  }}
+                  onClick={makeVoteHandler}
+                  className="confirmVoteButton"
+                  loading={isConfirmVoteLoading}
+                  disabled={
                     eventType === "pop"
                       ? !isPopWithInEventTime
                       : eventType === "pk"
                       ? !isPkWithInEventTime[selectedBattleNumber]
                       : !isRecWithInEventTime
-                  )
-                    ? "投票通道關閉"
-                    : "投票"}
-                </Typography>
-              </LoadingButton>
-            </Box>
-            {errorMessage !== "" && (
-              <Box
-                sx={{
-                  paddingTop: "10px",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <p className="inputErrorText text-center">投票失敗</p>
+                  }
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {(
+                      eventType === "pop"
+                        ? !isPopWithInEventTime
+                        : eventType === "pk"
+                        ? !isPkWithInEventTime[selectedBattleNumber]
+                        : !isRecWithInEventTime
+                    )
+                      ? "投票通道關閉"
+                      : "投票"}
+                  </Typography>
+                </LoadingButton>
               </Box>
-            )}
-          </Box>
+              {errorMessage !== "" && (
+                <Box
+                  sx={{
+                    paddingTop: "10px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p className="inputErrorText text-center">投票失敗</p>
+                </Box>
+              )}
+            </Box>
+          )}
         </Dialog>
       </Dialog>
 
@@ -1672,20 +1753,46 @@ function App() {
                   onEventClickHandler("pk");
                 }}
               >
-                <Typography
-                  className="finalVoteSectionContainerText"
+                <Box
                   sx={{
-                    fontSize: {
-                      xs: "26px",
-                      sm: "30px",
-                      md: "36px",
-                    },
-                    fontWeight: "900",
-                    fontFamily: "Noto Sans HK",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "start",
                   }}
                 >
-                  12強PK賽
-                </Typography>
+                  <Box className="finalVoteSectionLiveContainer">
+                    <Typography
+                      className="finalVoteSectionLiveText"
+                      sx={{
+                        fontSize: {
+                          xs: "12px",
+                          sm: "14px",
+                          md: "16px",
+                        },
+                        fontWeight: "400",
+                        fontFamily: "Noto Sans HK",
+                        color: "#FFF",
+                      }}
+                    >
+                      現場觀眾投票佔10%
+                    </Typography>
+                  </Box>
+                  <Typography
+                    className="finalVoteSectionContainerText"
+                    sx={{
+                      fontSize: {
+                        xs: "28px",
+                        sm: "30px",
+                        md: "36px",
+                      },
+                      fontWeight: "900",
+                      fontFamily: "Noto Sans HK",
+                    }}
+                  >
+                    12強PK賽
+                  </Typography>
+                </Box>
                 <img
                   src={FinalPkLogo}
                   alt="FinalPkLogo"
@@ -1698,7 +1805,14 @@ function App() {
                   onEventClickHandler("rec");
                 }}
               >
-                <Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "start",
+                  }}
+                >
                   <Box className="finalVoteSectionLiveContainer">
                     <Typography
                       className="finalVoteSectionLiveText"
@@ -1743,20 +1857,48 @@ function App() {
                   onEventClickHandler("pop");
                 }}
               >
-                <Typography
-                  className="finalVoteSectionContainerText"
+                <Box
                   sx={{
-                    fontSize: {
-                      xs: "24px",
-                      sm: "30px",
-                      md: "36px",
-                    },
-                    fontWeight: "900",
-                    fontFamily: "Noto Sans HK",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "start",
                   }}
                 >
-                  Wewa最強人氣大獎
-                </Typography>
+                  <Box className="finalVoteSectionLiveContainer">
+                    <Typography
+                      display={"inline"}
+                      className="finalVoteSectionLiveText"
+                      sx={{
+                        fontSize: {
+                          xs: "12px",
+                          sm: "14px",
+                          md: "16px",
+                        },
+                        fontWeight: "400",
+                        fontFamily: "Noto Sans HK",
+                        color: "#FFF",
+                      }}
+                    >
+                      現場觀眾投票佔100%
+                    </Typography>
+                  </Box>
+                  <Typography
+                    className="finalVoteSectionContainerText"
+                    sx={{
+                      fontSize: {
+                        xs: "28px",
+                        sm: "30px",
+                        md: "36px",
+                      },
+                      fontWeight: "900",
+                      fontFamily: "Noto Sans HK",
+                    }}
+                  >
+                    Wewa最強人氣大獎
+                  </Typography>
+                </Box>
+
                 <img
                   src={FinalPopularityLogo}
                   alt="FinalVoteLogo"

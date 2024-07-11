@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import FinalPage from "./FinalHome.jsx";
 import AdminEditPage from "./pages/AdminEditPage.jsx";
+import AdminEditPageFinal from "./pages/AdminEditPageFinal.jsx";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-// import "./index.css";
 
 const theme = createTheme({
   typography: {
@@ -27,8 +27,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Routes>
           <Route path="/voting" element={<App />} />
           <Route path="/final" element={<FinalPage />} />
+          <Route
+            path="/final/664b20f7cbd11e4bca2386c8"
+            element={<FinalPage />}
+          />
           <Route path="/voting/664b20f7cbd11e4bca2386c8" element={<App />} />
           <Route path="/admin/edit" element={<AdminEditPage />} />
+          <Route path="/admin/edit/final" element={<AdminEditPageFinal />} />
         </Routes>
       </Router>
     </ThemeProvider>
