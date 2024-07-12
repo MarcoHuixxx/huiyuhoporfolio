@@ -399,12 +399,9 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
 })
 
 
-
-
-
-
 app.post('/vote', async (req, res) => {
   try {
+    return res.send({ success: true });
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
