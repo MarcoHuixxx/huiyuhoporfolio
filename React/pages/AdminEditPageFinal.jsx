@@ -97,7 +97,7 @@ const AdminEditPage = () => {
   const handleParticipantChange = (event) => {
     setSelectedParticipant(event.target.value);
   };
-
+  const wqd = () => {};
   const onSaveClick = async () => {
     const editResult = await axios.post(`/admin/edit/event-participant`, {
       eventId: recEventId,
