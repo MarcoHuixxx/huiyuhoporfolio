@@ -411,7 +411,7 @@ app.post('/vote', async (req, res) => {
     }
     console.log("body:", req.body)
 
-    const noNeedOptVerifyEventIds = ["664b20f7cbd11e4bca2386c8"];
+    const needOptVerifyEventIds = ["664b20f7cbd11e4bca2386c8"];
     const needUpDateParticipantEventIds = ["664b20f7cbd11e4bca2386c8", "668deded51930e822903d37c"];
 
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
@@ -419,7 +419,7 @@ app.post('/vote', async (req, res) => {
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
 
-    if (noNeedOptVerifyEventIds.includes(eventId)) {
+    if (needOptVerifyEventIds.includes(eventId)) {
       const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
 
       const voterVoteRecord = await voteRecord.find({
@@ -428,6 +428,11 @@ app.post('/vote', async (req, res) => {
       });
 
       if (!(optVerifyRecord || voterVoteRecord.length > 0)) {
+        return res.status(400).send({ success: false, message: 'Phone not verified' });
+      }
+    } else {
+      if (voterPhone.length !== 64) {
+        console.log("not 64!!!")
         return res.status(400).send({ success: false, message: 'Phone not verified' });
       }
     }

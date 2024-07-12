@@ -58,11 +58,19 @@ import FinalResurrectionLogo from "./assets/finalResurrection.png";
 import RealtimeRankingLogo from "./assets/realtimeRankingLogo.png";
 import { v4 as uuidv4 } from "uuid";
 import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
+import getBrowserFingerprint from "get-browser-fingerprint";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import CryptoJS from "crypto-js";
 
 //set axios default url
 axios.defaults.baseURL = serverUrl;
 
 function App() {
+  function generateChecksumFromObject(obj) {
+    const jsonString = JSON.stringify(obj);
+    const checksum = CryptoJS.SHA256(jsonString).toString(CryptoJS.enc.Hex);
+    return checksum;
+  }
   const popEventId = "668deded51930e822903d37c";
   const pkEventIds = [
     "668decd851930e822903d375",
@@ -72,6 +80,7 @@ function App() {
     "668ded0351930e822903d379",
     "668ded0e51930e822903d37a",
   ];
+  const [browserFingerprint, setBrowserFingerprint] = useState("");
   const recEventId = "668deda751930e822903d37b";
   const roundNumber = 1;
   const [isAdmin, setIsAdmin] = useState(false);
@@ -151,6 +160,39 @@ function App() {
   const [canSendAfterSeconds, setCanSendAfterSeconds] = useState(60);
   const [eventType, setEventType] = useState("");
   const [selectBattle, setSelectBattle] = useState({});
+
+  useEffect(() => {
+    const loadfingerPrint = async () => {
+      FingerprintJS.load().then((fp) => {
+        fp.get().then((result) => {
+          const components = result.components;
+          // console.log("components:", components);
+
+          const uniqueProps = {
+            audio: components.audio.value,
+            colorDepth: components.colorDepth.value,
+            colorGamut: components.colorGamut.value,
+            fonts: components.fonts.value,
+            hardwareConcurrency: components.hardwareConcurrency.value,
+            languages: components.languages.value,
+            osCpu: components.osCpu.value,
+            platform: components.platform.value,
+            plugins: components.plugins.value,
+            timezone: components.timezone.value,
+            webGlBasics: components.webGlBasics.value,
+            math: components.math.value,
+          };
+          const checkSum = generateChecksumFromObject(uniqueProps);
+          setBrowserFingerprint(checkSum);
+        });
+      });
+    };
+    loadfingerPrint();
+
+    // const fingerprint = getBrowserFingerprint({ hardwareOnly: true });
+    // alert(fingerprint);
+    // setBrowserFingerprint(fingerprint);
+  }, []);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -290,7 +332,6 @@ function App() {
               }
             });
             setRecRankingList(originalRecRankingList);
-            console.log("originalRecRankingList:", originalRecRankingList);
           }
 
           setIsListLoaded(true);
@@ -312,67 +353,18 @@ function App() {
     2: "第三名",
   };
 
-  const onVoteButonClick = (item) => {
-    //console.log("item", item);
-    setVoteDialogIsOpen(true);
-    setShowOptDialog(false);
-  };
-
   const onConfirmVote = async () => {
     try {
-      setIsConfirmVoteLoading(true);
-      //console.log("onConfirmVote");
-      setConfirmVoteIsClicked(true);
-      if (!isPhoneValid || votes === 0 || !isAgree) {
-        setIsConfirmVoteLoading(false);
-        return;
-      }
       //checking if the user is voted today
       const isVotedToday = await checkIsVotedToday();
       // const isVotedToday = false;
 
       if (isVotedToday) {
         setIsConfirmVoteLoading(false);
-        setErrorMessage("今天已參與投票，請明天再參與");
+        setErrorMessage("已參與此輪投票");
         return;
       }
-
-      const iswewaClubIdUsedToday = await checkIsWewaClubIdUsedToday();
-
-      if (iswewaClubIdUsedToday) {
-        setIsConfirmVoteLoading(false);
-        setWewaClubId("");
-        setErrorMessage("Wewa Club 會員編號今天已經使用過，請明天再使用");
-        return;
-      }
-
-      const isPhoneVerified = await checkIsPhoneVerified();
-      //console.log("isPhoneVerified:", isPhoneVerified);
-      if (isPhoneVerified.success) {
-        setIsPhoneVerified(true);
-        setErrorMessage("");
-
-        setTimeout(() => {
-          setIsConfirmVoteLoading(false);
-          setShowOptDialog(true);
-        }, 500);
-        return;
-      } else if (isPhoneVerified.error) {
-        setIsConfirmVoteLoading(false);
-        setErrorMessage("發送驗證碼失敗, 請重試一次");
-        return;
-      }
-      const senOptResult = await sendOtp();
-      // const senOptResult = { success: true };
-      //console.log("senOptResult:", senOptResult);
-
-      if (senOptResult.success) {
-        setErrorMessage("");
-        setShowOptDialog(true);
-      } else {
-        setErrorMessage("發送驗證碼失敗, 請重試一次");
-      }
-      setIsConfirmVoteLoading(false);
+      makeVoteHandler();
     } catch (error) {
       //console.log("error:", error);
       setIsConfirmVoteLoading(false);
@@ -486,7 +478,13 @@ function App() {
   const checkIsVotedToday = async () => {
     try {
       const result = await axios.get(
-        `/check-vote/${phoneNumber}/${popEventId}`
+        `/check-vote/${browserFingerprint}/${
+          eventType === "pop"
+            ? popEventId
+            : eventType === "pk"
+            ? pkEventIds[selectedBattleNumber]
+            : recEventId
+        }`
       );
       //console.log("checkIsVotedToday result:", result);
       return result.data.isVoted;
@@ -511,59 +509,6 @@ function App() {
     }
   };
 
-  const checkIsPhoneVerified = async () => {
-    try {
-      const result = await axios.get(
-        `/check-phone-verified/${phoneNumber}/${popEventId}`
-      );
-      //console.log("checkIsPhoneVerified result:", result);
-      return { success: result.data.isPhoneVerified };
-    } catch (error) {
-      //console.log("error:", error);
-      return { success: false, error: true };
-    }
-  };
-
-  const onConfirmOptInput = async () => {
-    setIsConfirmOptLoading(true);
-    try {
-      if (otp.length !== 6) {
-        setIsOptValid(false);
-        setIsOptChecked(true);
-        setIsConfirmOptLoading(false);
-        return;
-      }
-      const result = await axios.get(`/verify-otp/${phoneNumber}/${otp}`);
-      // const result = { data: { success: true } };
-      //console.log("verify result:", result);
-
-      if (result.data.success) {
-        setIsOptValid(true);
-        setIsPhoneVerified(true);
-      } else {
-        setIsOptValid(false);
-      }
-      setIsConfirmOptLoading(false);
-      setIsOptChecked(true);
-    } catch (error) {
-      setIsOptChecked(true);
-      if (error.response.status === 400) {
-        if (error.response.data.message === "The round is not open") {
-          setErrorMessage("活動已經結束，投票失敗");
-        } else if (
-          error.response.data.message === "The participant is not found"
-        ) {
-          setErrorMessage("參賽者不存在，投票失敗");
-        }
-      } else {
-        setIsOptValid(false);
-      }
-      setIsConfirmOptLoading(false);
-      //console.log("error:", error);
-    }
-  };
-  //hi
-
   const makeVote = async () => {
     try {
       const voteData = {
@@ -574,7 +519,7 @@ function App() {
             : eventType === "pk"
             ? pkEventIds[selectedBattleNumber]
             : recEventId,
-        voterPhone: uuidv4(),
+        voterPhone: browserFingerprint,
         voteCount: 1,
         wewaClubId: "",
         participantId: selectedParticipant.id,
@@ -764,6 +709,9 @@ function App() {
 
   const PkView = () => {
     return pkTeams.map((item, index) => {
+      if (!item[0] || !item[1]) {
+        return null;
+      }
       return (
         <Grid
           key={index + "pk"}
@@ -1555,7 +1503,7 @@ function App() {
                       backgroundColor: "#e04478",
                     },
                   }}
-                  onClick={makeVoteHandler}
+                  onClick={onConfirmVote}
                   className="confirmVoteButton"
                   loading={isConfirmVoteLoading}
                   disabled={
@@ -1592,7 +1540,17 @@ function App() {
                     justifyContent: "center",
                   }}
                 >
-                  <p className="inputErrorText text-center">投票通道已關閉</p>
+                  <p className="inputErrorText text-center">
+                    {(
+                      eventType === "pop"
+                        ? !isPopWithInEventTime
+                        : eventType === "pk"
+                        ? !isPkWithInEventTime[selectedBattleNumber]
+                        : !isRecWithInEventTime
+                    )
+                      ? "投票通道關閉"
+                      : errorMessage}
+                  </p>
                 </Box>
               )}
             </Box>
