@@ -356,7 +356,7 @@ function App() {
   const onConfirmVote = async () => {
     try {
       //checking if the user is voted today
-      const isVotedToday = await checkIsVotedToday();
+      const isVotedToday = false;
       // const isVotedToday = false;
 
       if (isVotedToday) {
