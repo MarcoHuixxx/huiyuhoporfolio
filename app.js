@@ -401,7 +401,7 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
 
 app.post('/vote', async (req, res) => {
   try {
-    return res.send({ success: true });
+
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
@@ -412,84 +412,89 @@ app.post('/vote', async (req, res) => {
     const needUpDateParticipantEventIds = ["664b20f7cbd11e4bca2386c8", "668deded51930e822903d37c"];
 
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
-    if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
-      return res.status(400).send({ success: false, message: 'Missing Parameters' });
-    }
-
-    if (needOptVerifyEventIds.includes(eventId)) {
-      const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
-
-      const voterVoteRecord = await voteRecord.find({
-        voterPhone: voterPhone,
-        eventId: eventId
-      });
-
-      if (!(optVerifyRecord || voterVoteRecord.length > 0)) {
-        return res.status(400).send({ success: false, message: 'Phone not verified' });
+    if (eventId === '668deded51930e822903d37c') {
+      if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
+        return res.status(400).send({ success: false, message: 'Missing Parameters' });
       }
-    } else {
-      if (voterPhone.length !== 64) {
-        console.log("not 64!!!")
-        return res.status(400).send({ success: false, message: 'Phone not verified' });
-      }
-    }
 
-    if (voteCount > 2) {
-      return res.status(400).send({ success: false, message: 'Vote Count Invalid' });
-    }
+      if (needOptVerifyEventIds.includes(eventId)) {
+        const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
 
-    //console.log({ participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId })
-    //check if the event is still open
-    const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
+        const voterVoteRecord = await voteRecord.find({
+          voterPhone: voterPhone,
+          eventId: eventId
+        });
 
-    if (!eventResult) {
-      //console.log("The round is not found")
-      return res.status(400).send({ success: false, message: 'The round is not found' });
-    }
-
-    if (new Date(eventResult.timeBegin) > new Date() || new Date(eventResult.timeEnd) < new Date()) {
-      //console.log("The round is not open")
-      return res.status(400).send({ success: false, message: 'The round is not open' });
-    }
-    let updateParticipant;
-    if (needUpDateParticipantEventIds.includes(eventId)) {
-      updateParticipant = await participant.findOneAndUpdate(
-        { _id: participantId, },
-        {
-          $inc: { [`event.$[event].round.$[round].voteCount`]: voteCount },
-        },
-        {
-          arrayFilters: [{ 'event.eventId': eventId }, { 'round.roundNumber': parseInt(roundNumber) }],
-          new: true
+        if (!(optVerifyRecord || voterVoteRecord.length > 0)) {
+          return res.status(400).send({ success: false, message: 'Phone not verified' });
         }
-      );
+      } else {
+        if (voterPhone.length !== 64) {
+          console.log("not 64!!!")
+          return res.status(400).send({ success: false, message: 'Phone not verified' });
+        }
+      }
+
+      if (voteCount > 2) {
+        return res.status(400).send({ success: false, message: 'Vote Count Invalid' });
+      }
+
+      //console.log({ participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId })
+      //check if the event is still open
+      const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
+
+      if (!eventResult) {
+        //console.log("The round is not found")
+        return res.status(400).send({ success: false, message: 'The round is not found' });
+      }
+
+      if (new Date(eventResult.timeBegin) > new Date() || new Date(eventResult.timeEnd) < new Date()) {
+        //console.log("The round is not open")
+        return res.status(400).send({ success: false, message: 'The round is not open' });
+      }
+      let updateParticipant;
+      if (needUpDateParticipantEventIds.includes(eventId)) {
+        updateParticipant = await participant.findOneAndUpdate(
+          { _id: participantId, },
+          {
+            $inc: { [`event.$[event].round.$[round].voteCount`]: voteCount },
+          },
+          {
+            arrayFilters: [{ 'event.eventId': eventId }, { 'round.roundNumber': parseInt(roundNumber) }],
+            new: true
+          }
+        );
+      } else {
+        updateParticipant = await participant.findOne(
+          { _id: participantId, },
+        );
+      }
+
+      const participantVoteCount = updateParticipant.event.find((event) => event.eventId.toString() === eventId).round.find((round) => round.roundNumber === parseInt(roundNumber)).voteCount;
+
+      console.log("updateParticipant:", updateParticipant)
+
+      if (updateParticipant) {
+        const newVoteRecord = new voteRecord({
+          roundNumber: roundNumber,
+          voteCount: voteCount,
+          participantVoteBofore: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount - voteCount : 0,
+          participantVoteAfter: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount : 0,
+          voterPhone: voterPhone,
+          votedAt: new Date(),
+          eventId: eventId,
+          userWWCCode: wewaClubId,
+          participantId: participantId
+        });
+        newVoteRecord.save();
+        res.send({ success: true });
+
+      } else {
+        //console.log("The participant is not found")
+        res.send({ success: false });
+      }
     } else {
-      updateParticipant = await participant.findOne(
-        { _id: participantId, },
-      );
-    }
-
-    const participantVoteCount = updateParticipant.event.find((event) => event.eventId.toString() === eventId).round.find((round) => round.roundNumber === parseInt(roundNumber)).voteCount;
-
-    console.log("updateParticipant:", updateParticipant)
-
-    if (updateParticipant) {
-      const newVoteRecord = new voteRecord({
-        roundNumber: roundNumber,
-        voteCount: voteCount,
-        participantVoteBofore: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount - voteCount : 0,
-        participantVoteAfter: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount : 0,
-        voterPhone: voterPhone,
-        votedAt: new Date(),
-        eventId: eventId,
-        userWWCCode: wewaClubId,
-        participantId: participantId
-      });
-      newVoteRecord.save();
-      res.send({ success: true });
-    } else {
-      //console.log("The participant is not found")
-      res.send({ success: false });
+      return res.send({ success: true });
     }
 
   } catch (e) {
