@@ -586,6 +586,7 @@ app.get('/event/:event_id', async (req, res) => {
 
 app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions), async (req, res) => {
   try {
+
     console.log("get list")
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
@@ -595,6 +596,7 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
     if (!eventId || eventId.length === 0) {
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
+
     const showVoteCountEvents = ["668deded51930e822903d37c"];
     const countVoteByRecordEvent = [
       "668decd851930e822903d375",
@@ -655,7 +657,7 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
       return res.send({ participants, firstThreeRaningPercent, firstThree });
     }
 
-    participants = await Promise.all(eventId.map(async (id) => {
+    participants = await Promise.all(eventId.filter(item => item === '668deded51930e822903d37c').map(async (id) => {
       const participant = await getParticipants(id, roundNumber, limit, !showVoteCountEvents.includes(id) ? { 'event.round.participationNo': 1 } : { 'event.round.voteCount': -1 }, true);
       return participant;
     }
