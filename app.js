@@ -194,7 +194,7 @@ app.set('view engine', 'ejs');
 
 const checkIsFromDomain = (req, res) => {
   //console.log("req.rawHeaders:", req.rawHeaders)
-  return true;
+
   const isAllow = ["https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
   if (process.env.NODE_ENV === "development") {
     isAllow.push("http://localhost:5173")
@@ -657,7 +657,7 @@ app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions
       return res.send({ participants, firstThreeRaningPercent, firstThree });
     }
 
-    participants = await Promise.all(eventId.filter(item => item === '668deded51930e822903d37c').map(async (id) => {
+    participants = await Promise.all(eventId.map(async (id) => {
       const participant = await getParticipants(id, roundNumber, limit, !showVoteCountEvents.includes(id) ? { 'event.round.participationNo': 1 } : { 'event.round.voteCount': -1 }, true);
       return participant;
     }
