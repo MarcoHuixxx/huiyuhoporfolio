@@ -1830,6 +1830,10 @@ body.loaded {
   max-width: 180px;
   width: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .skills-widget .skill-inner {
