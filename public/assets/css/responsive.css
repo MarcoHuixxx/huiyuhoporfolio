@@ -22,6 +22,14 @@
   .hero-title {
     font-size: 60px;
   }
+
+  .hero-title-2 {
+    font-size: 50px !important;
+  }
+
+  .hero-title-3 {
+    font-size: 42px !important;
+  }
   .hero-section .funfact-area {
     margin-top: 70px;
   }
@@ -70,6 +78,15 @@
   .hero-title {
     font-size: 50px;
   }
+
+  .hero-title-2 {
+    font-size: 40px !important;
+  }
+
+  .hero-title-3 {
+    font-size: 40px !important;
+  }
+
   .hero-section .funfact-area {
     margin-top: 60px;
   }
@@ -258,6 +275,14 @@
   }
   .hero-title {
     font-size: 38px;
+  }
+
+  .hero-title-2 {
+    font-size: 30px !important;
+  }
+
+  .hero-title-3 {
+    font-size: 24px !important;
   }
   .hero-content-box .button-box {
     margin-top: 30px;
@@ -583,6 +608,14 @@
   .hero-title {
     font-size: 35px;
     margin-bottom: 0;
+  }
+
+  .hero-title-2 {
+    font-size: 30px !important;
+  }
+
+  .hero-title-3 {
+    font-size: 25px !important;
   }
   .hero-image-box {
     margin: 30px 0;
