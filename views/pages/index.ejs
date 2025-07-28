@@ -170,10 +170,8 @@
                         <div class="hero-content-box">
                             <span class="hero-sub-title wow fadeInLeft" data-wow-delay="1.1s">Botanic hk</span>
                             <h1 class="hero-title wow fadeInLeft" data-wow-delay="1.2s">Colour Repaire Care </h1>
-                            <h1 class="hero-title hero-title-2 wow fadeInLeft" data-wow-delay="1.3s">髮.蓁 頭皮頭髮 護理
-                            </h1>
 
-                            <h1 class="hero-title hero-title-3 wow fadeInLeft" data-wow-delay="1.4s">植物 顏色修復護理
+                            <h1 class="hero-title hero-title wow fadeInLeft" data-wow-delay="1.4s">植物 顏色修復護理
                             </h1>
 
                             <div class="hero-image-box d-md-none text-center wow fadeInRight" data-wow-delay="1.3s">
@@ -1258,7 +1256,7 @@
                         <a href="#"><img src="assets/img/logo/logo.png" alt=""></a>
                     </div>
                     <div>
-
+                        <h2 class="slogan" >植物萃取</h2> 
                         <h2 class="slogan" >“植”得健康</h2> 
                         <h2 class="slogan">無懼化學物傷害</h2>
                        
@@ -1276,7 +1274,8 @@
                         </nav>
                     </div>
                     <div class="copy-text">
-                        <p>&copy; 2024 All rights reserved by Botanic<a href="#" target="_blank"></a></p>
+                        <p>&copy; 
+                            <span id="currentYear"></span> All rights reserved by Botanic<a href="#" target="_blank"></a></p>
                     </div>
                 </div>
             </div>
@@ -1304,6 +1303,10 @@
     <script src="./assets/js/main.js"></script>
 
     <script>
+        //current year 
+
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+        
         // Countdown to end of month
         function updateCountdown() {
             const now = new Date();

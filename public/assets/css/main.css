@@ -2927,7 +2927,7 @@ blockquote cite::before {
 }
 .slogan {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* Choose a clean font */
-  font-size: 24px; /* Increase size */
+  font-size: 20px; /* Increase size */
   color: #81726c; /* Example color, change as needed */
   margin: 10px 0; /* Vertical spacing */
   letter-spacing: 1px; /* Slight spacing for elegance */
