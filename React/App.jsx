@@ -1707,7 +1707,7 @@ function App() {
         <Box
           className="section"
           sx={{
-            width: { xs: "80%", md: "100%" },
+            width: { xs: "80%", md: "40%" },
             mx: "auto",
           }}
         >
@@ -1829,7 +1829,7 @@ function App() {
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Stack
-                  direction={{ xs: "column", md: "row" }}
+                  direction={{ md: "column" }}
                   spacing={2}
                   justifyContent="center"
                   alignItems="flex-start"
@@ -1976,7 +1976,7 @@ function App() {
               sx={{
                 backgroundColor: "#111",
                 borderRadius: "24px",
-                width: { xs: "80%", md: "80%" },
+                width: { xs: "80%", md: "60%" },
                 mx: "auto",
                 padding: { xs: 2, md: 4 },
                 mt: 4,
@@ -1989,10 +1989,7 @@ function App() {
                     className="titleBox"
                     sx={{
                       display: "flex",
-                      justifyContent: {
-                        xs: "center",
-                        md: "start",
-                      },
+                      justifyContent: "center",
                     }}
                   >
                     <Typography
@@ -2152,7 +2149,7 @@ function App() {
                 sx={{
                   backgroundColor: "#111",
                   borderRadius: "24px",
-                  width: { xs: "80%", md: "80%" },
+                  width: { xs: "80%", md: "60%" },
                   mx: "auto",
                   padding: { xs: 2, md: 4 },
                   mt: 4,
@@ -2164,70 +2161,40 @@ function App() {
                   sx={{
                     display: "flex",
                     justifyContent: {
-                      xs: "center",
-                      md: "start",
+                      md: "center",
                     },
+                    flexDirection: "column",
+                    alignItems: "center",
                   }}
                 >
                   <Typography
-                    className="sectionTitle"
-                    display="inline"
-                    sx={{
-                      fontSize: {
-                        xs: "28px",
-                        sm: "32px",
-                        md: "36px",
-                      },
-                      fontFamily: "Hiragino Sans",
-                      fontWeight: "100",
-                    }}
-                  >
-                    投選
-                  </Typography>
-                  <Typography
-                    display="inline"
                     className="sectionTitleBold"
                     sx={{
-                      fontSize: {
-                        xs: "28px",
-                        sm: "32px",
-                        md: "36px",
-                      },
-                      fontWeight: "bold",
-                      fontFamily: "Hiragino Sans",
+                      fontSize: { xs: "28px", md: "40px" },
+                      // fontWeight: 400,
+                      fontFamily: "Mantou Sans",
+                      color: "#32BF72",
+                      textShadow: "none",
+                      mb: 1.5,
+                      lineHeight: 1.1,
                     }}
                   >
-                    你
+                    投選你想復活的選手
                   </Typography>
+
                   <Typography
-                    display="inline"
-                    className="sectionTitle"
-                    sx={{
-                      fontSize: {
-                        xs: "28px",
-                        sm: "32px",
-                        md: "36px",
-                      },
-                      fontFamily: "Hiragino Sans",
-                      fontWeight: "100",
-                    }}
-                  >
-                    想
-                  </Typography>
-                  <Typography
-                    display="inline"
                     className="sectionTitleBold"
                     sx={{
-                      fontSize: {
-                        xs: "28px",
-                        sm: "32px",
-                        md: "36px",
-                      },
-                      fontWeight: "bold",
-                      fontFamily: "Hiragino Sans",
+                      fontSize: { xs: "14px", md: "18px" },
+                      // fontWeight: 400,
+                      fontFamily: "Mantou Sans",
+                      color: "#32BF72",
+                      textShadow: "none",
+                      mb: 1.5,
+                      lineHeight: 1.1,
                     }}
                   >
-                    復活的選手
+                    (點選參賽者相片)
                   </Typography>
                 </Box>
                 <Box
@@ -2310,78 +2277,6 @@ function App() {
                         }}
                         className="avatarGridBox"
                       >
-                        {/* <TextRing side={1.1}>{item.chineseName}</TextRing> */}
-                        <Box
-                          className="flexRow"
-                          sx={{
-                            cursor: "pointer",
-                            paddingBottom: "10px",
-                          }}
-                          onClick={() => {
-                            onParticipantClick(item);
-                          }}
-                        >
-                          <Typography
-                            display="inline"
-                            sx={{
-                              fontSize: {
-                                xs: "20px",
-                                sm: "22px",
-                                md: "24px",
-                              },
-                              color: "#e04478",
-                              fontWeight: "bold",
-                              marginRight: "6px",
-                              fontFamily: "gensen font master",
-                            }}
-                          >
-                            {item.participationNo}
-                          </Typography>
-                          <Typography
-                            display="inline"
-                            sx={{
-                              fontSize: {
-                                xs: "10px",
-                                sm: "12px",
-                                md: "14px",
-                              },
-                              color: "#e04478",
-                              marginRight: "2px",
-                              fontFamily: "gensen font master",
-                            }}
-                          >
-                            {item.chineseName}
-                          </Typography>
-                          <Typography
-                            display="inline"
-                            sx={{
-                              fontSize: {
-                                xs: "10px",
-                                sm: "12px",
-                                md: "14px",
-                              },
-                              color: "#e04478",
-                              fontFamily: "gensen font master",
-                            }}
-                          >
-                            {item.name}
-                          </Typography>
-
-                          {isAdmin && (
-                            <Typography
-                              className="rankingNameText"
-                              sx={{
-                                fontSize: 18 - (item.rank - 1) * 4 + "px",
-                                marginLeft: "10px",
-                              }}
-                            >
-                              {item.votes} 票 (
-                              {((item.votes / totalVotes) * 100).toFixed(2)}
-                              %)
-                            </Typography>
-                          )}
-                        </Box>
-
                         <Avatar
                           alt={item.name}
                           src={`/event1/${item.chineseName}.jpg`}
@@ -2395,6 +2290,65 @@ function App() {
                             onParticipantClick(item);
                           }}
                         />
+
+                        <Box
+                          sx={{
+                            cursor: "pointer",
+                            paddingTop: "10px",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            textAlign: "center",
+                          }}
+                          onClick={() => {
+                            onParticipantClick(item);
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: {
+                                xs: "18px",
+                                sm: "20px",
+                                md: "24px",
+                              },
+                              color: "#32BF72",
+                              fontWeight: "bold",
+                              fontFamily: "gensen font master",
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            {String(item.participationNo).padStart(2, "0")}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: {
+                                xs: "10px",
+                                sm: "12px",
+                                md: "14px",
+                              },
+                              color: "#32BF72",
+                              fontFamily: "gensen font master",
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            {item.chineseName} {item.name}
+                          </Typography>
+
+                          {isAdmin && (
+                            <Typography
+                              className="rankingNameText"
+                              sx={{
+                                fontSize: "12px",
+                                color: "#32BF72",
+                                marginTop: "5px",
+                              }}
+                            >
+                              {item.votes} 票 (
+                              {((item.votes / totalVotes) * 100).toFixed(2)}
+                              %)
+                            </Typography>
+                          )}
+                        </Box>
                       </Grid>
                     ))}
                   </Grid>
