@@ -1704,10 +1704,26 @@ function App() {
       </Dialog>
 
       <Container disableGutters={isSm === false}>
-        <Box className="section">
+        <Box
+          className="section"
+          sx={{
+            width: { xs: "80%", md: "100%" },
+            mx: "auto",
+          }}
+        >
           <Box className="columnBox">
             {/* Banner image */}
-            <img src={BannerImage} alt="Banner" className="BannerImage" />
+            <Box
+              component="img"
+              src={BannerImage}
+              alt="Banner"
+              className="BannerImage"
+              sx={{
+                width: "100%",
+                height: "auto",
+                display: "block",
+              }}
+            />
 
             {/* Voting date section (centered, white text) */}
             <Box sx={{ textAlign: "center", color: "#fff", mt: 1 }}>
