@@ -15,10 +15,89 @@
   src: url("assets/fonts/gensen-font-master");
 } */
 
+/* Mantou Sans — keep font-display: swap for performance */
+@font-face {
+  font-family: "Mantou Sans";
+  src:
+    url("./assets/fonts/MantouSans-Regular.woff2") format("woff2"),
+    url("./assets/fonts/MantouSans-Regular.woff") format("woff"),
+    url("./assets/fonts/MantouSans-Regular.ttf") format("truetype");
+  /* font-weight: 400; */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold if you have a bold file; otherwise the browser may synthesize bold */
+/* @font-face {
+  font-family: "Mantou Sans";
+  src:
+    url("./assets/fonts/MantouSans-Bold.woff2") format("woff2"),
+    url("./assets/fonts/MantouSans-Bold.woff") format("woff"),
+    url("./assets/fonts/MantouSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+} */
+
 @font-face {
   font-family: "gensen font master";
   src: url("assets/fonts/gensen-font-master/GenSenRounded-H.woff")
     format("woff");
+}
+
+/* Add Mantou Sans and MStiffHei HK font-face rules.
+   Please place the font files in `React/assets/fonts/` with the names below:
+   - MantouSans-Regular.woff2 (or .woff)
+   - MantouSans-Bold.woff2 (or .woff)
+   - MStiffHeiHK-Bold.woff2 (or .woff)
+
+   If you don't have these files, upload them and I'll finish wiring. */
+@font-face {
+  font-family: "Mantou Sans";
+  src:
+    url("./assets/fonts/MantouSans-Regular.woff2") format("woff2"),
+    url("./assets/fonts/MantouSans-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mantou Sans";
+  src:
+    url("./assets/fonts/MantouSans-Bold.woff2") format("woff2"),
+    url("./assets/fonts/MantouSans-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MStiffHei HK";
+  src:
+    url("./assets/fonts/MStiffHeiHKBold.woff2") format("woff2"),
+    url("./assets/fonts/MStiffHeiHK-Bold.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Caviar Dreams";
+  src:
+    url("./assets/fonts/CaviarDreams-webfont.woff2") format("woff2"),
+    url("./assets/fonts/CaviarDreams-webfont.woff2") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.mantou {
+  font-family: "Mantou Sans", "Noto Sans HK", sans-serif;
+}
+
+.mstiff {
+  font-family: "MStiffHei HK", "Noto Sans HK", sans-serif;
 }
 
 .notoSansHk {
@@ -76,11 +155,31 @@ span p label h1 h2 h3 h4 h5 h6 {
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* leave space for the fixed top bar so content (banner) is not obscured */
+  padding-top: 80px; /* mobile default matches top bar xs height */
+}
+/* Responsive background images for home page */
+.PageContainer {
+  /* default to desktop background */
+  background-image: url("./assets/Desktop-BG-HOME.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+@media screen and (min-width: 900px) {
+  /* on larger screens the top bar is 60px tall */
+  .PageContainer {
+    padding-top: 60px;
+  }
 }
 .BannerImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  display: block;
+  max-width: 100%; /* scale down on small screens */
+  width: auto; /* let image keep its intrinsic width up to max-width */
+  height: auto; /* preserve aspect ratio */
+  margin-left: auto;
+  margin-right: auto; /* center horizontally */
 }
 
 .navBar {
@@ -191,7 +290,6 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .rankingNumberInnerBox {
-  background-color: #e04478;
   padding: 0.2rem;
   display: flex;
   justify-content: center;
@@ -351,7 +449,7 @@ span p label h1 h2 h3 h4 h5 h6 {
 .mobileVotePageBox {
   background: linear-gradient(90deg, #e53972 30%, #f29921 100%);
   display: flex;
-  flexdirection: column;
+  flex-direction: column;
   height: 200%;
   margin-top: -20px;
 }
@@ -360,14 +458,14 @@ span p label h1 h2 h3 h4 h5 h6 {
   margin-top: 100px;
   background: linear-gradient(90deg, #e53972 30%, #f29921 100%);
   display: flex;
-  flexdirection: column;
+  flex-direction: column;
   height: 100%;
 }
 
 .finalMobileVotePageBox {
   background: radial-gradient(circle at center, #d43c6c 20%, #66438d 83%);
   display: flex;
-  flexdirection: column;
+  flex-direction: column;
   height: 2000%;
   margin-top: 180px;
 }
@@ -376,7 +474,7 @@ span p label h1 h2 h3 h4 h5 h6 {
   margin-top: 180px;
   background: radial-gradient(circle at center, #d43c6c 20%, #66438d 83%);
   display: flex;
-  flexdirection: column;
+  flex-direction: column;
   height: 100%;
 }
 

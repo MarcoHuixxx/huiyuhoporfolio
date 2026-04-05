@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Container from "@mui/material/Container";
-import BannerImage from "./assets/banner.jpg";
+import BannerImage from "./assets/ICMA復活賽投票.png";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -51,6 +51,8 @@ import Footer from "./components/footer";
 import TextField from "@mui/material/TextField";
 import { set } from "mongoose";
 import Checkbox from "@mui/material/Checkbox";
+import huashengIcon from "./assets/huansheng.svg";
+import sponsor2Icon from "./assets/sponsor2.svg";
 
 //set axios default url
 axios.defaults.baseURL = serverUrl;
@@ -103,7 +105,7 @@ function App() {
           const windowLocation = window.location.href;
 
           const isAdminVar = windowLocation.includes(
-            "664b20f7cbd11e4bca2386c8"
+            "664b20f7cbd11e4bca2386c8",
           );
 
           setIsAdmin(isAdminVar);
@@ -125,7 +127,7 @@ function App() {
           setIsWithInEventTime(
             new Date(getEventResult?.data?.timeBegin) < new Date() &&
               // new Date("2024-6-4") < new Date() &&
-              new Date(getEventResult?.data?.timeEnd) > new Date()
+              new Date(getEventResult?.data?.timeEnd) > new Date(),
           );
 
           //if the event is not started, return
@@ -137,14 +139,14 @@ function App() {
           const participantListResult = await axios.get(
             `/participant/${eventId}/${roundNumber}/100/${isAdminVar}?pw=${
               windowLocation.split("?")?.[1]?.split("=")?.[1]
-            }`
+            }`,
           );
 
           const totalVotes = participantListResult.data.participants.reduce(
             (acc, item) => {
               return acc + item.votes;
             },
-            0
+            0,
           );
           setTotalVotes(totalVotes);
 
@@ -153,7 +155,7 @@ function App() {
             setThirdRankingList(thirdList);
             setRankingList(participantListResult?.data?.participants);
             setFirstThreeVotes(
-              participantListResult?.data?.firstThreeRaningPercent
+              participantListResult?.data?.firstThreeRaningPercent,
             );
           }
           setIsListLoaded(true);
@@ -169,9 +171,9 @@ function App() {
   }, [isListLoaded]);
 
   const rankingTitleMapping = {
-    0: "第一名",
-    1: "第二名",
-    2: "第三名",
+    0: "#1",
+    1: "#2",
+    2: "#3",
   };
 
   const onParticipantClick = (item) => {
@@ -280,7 +282,7 @@ function App() {
       ) {
         setIsWithInEventTime(
           new Date(eventStartDate) < new Date() &&
-            new Date(eventDeadlineDate) > new Date()
+            new Date(eventDeadlineDate) > new Date(),
         );
       }
     }, eventReloadTime);
@@ -295,7 +297,7 @@ function App() {
         const result = await axios.get(
           `/vote-record/${eventId}/1/9999999999999/?pw=${
             window.location.href.split("?")?.[1]?.split("=")?.[1]
-          }`
+          }`,
         );
 
         let data = result.data;
@@ -342,7 +344,7 @@ function App() {
       const result = await axios.get(
         `/check-wewa-club-id-used/${
           wewaClubId?.trim() !== "" ? wewaClubId : "ILOVEWEWACLUB"
-        }/${eventId}`
+        }/${eventId}`,
       );
       //console.log("checkIsWewaClubIdUsedToday result:", result);
       return result.data.isWewaClubIdUsed;
@@ -355,7 +357,7 @@ function App() {
   const checkIsPhoneVerified = async () => {
     try {
       const result = await axios.get(
-        `/check-phone-verified/${phoneNumber}/${eventId}`
+        `/check-phone-verified/${phoneNumber}/${eventId}`,
       );
       //console.log("checkIsPhoneVerified result:", result);
       return { success: result.data.isPhoneVerified };
@@ -594,6 +596,124 @@ function App() {
 
   return (
     <Box className="PageContainer">
+      {/* Fixed Top Bar */}
+      {/* Fixed Top Bar */}
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: { xs: "80px", md: "60px" },
+          backgroundColor: "#fff",
+          boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
+          zIndex: 10000,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          lineHeight: 1,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: { xs: "space-between", md: "center" },
+            gap: { xs: "15px", sm: "30px", md: "40px" },
+            width: "100%",
+            px: { xs: "50px", md: 0 },
+            maxWidth: { md: "900px" },
+          }}
+        >
+          {/* Sponsor 1 */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <Typography
+              component="span"
+              sx={{
+                fontSize: { xs: "10px", sm: "12px", md: "14px" },
+                fontWeight: "500",
+                color: "#333",
+                whiteSpace: "nowrap",
+                display: "inline-flex",
+                alignItems: "center",
+                mb: { xs: "4px", md: 0 },
+              }}
+            >
+              全力贊助
+            </Typography>
+            <Box
+              component="img"
+              src={huashengIcon}
+              alt="huasheng"
+              sx={{
+                height: { xs: "16px", sm: "20px", md: "24px" },
+                width: "auto",
+                display: "block",
+              }}
+            />
+          </Box>
+
+          {/* Separator */}
+          <Box
+            component="span"
+            sx={{
+              display: { xs: "none", md: "flex" }, // hide on mobile so sponsors sit left/right
+              alignItems: "center",
+              justifyContent: "center",
+              height: "60px",
+              fontSize: { xs: "20px", sm: "24px", md: "28px" },
+              color: "#ccc",
+              fontWeight: 300,
+              lineHeight: 1,
+            }}
+          >
+            |
+          </Box>
+
+          {/* Sponsor 2 */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <Typography
+              component="span"
+              sx={{
+                fontSize: { xs: "10px", sm: "12px", md: "14px" },
+                fontWeight: "500",
+                color: "#333",
+                whiteSpace: "nowrap",
+                display: "inline-flex",
+                alignItems: "center",
+                mb: { xs: "4px", md: 0 },
+              }}
+            >
+              合作媒體
+            </Typography>
+            <Box
+              component="img"
+              src={sponsor2Icon}
+              alt="sponsor2"
+              sx={{
+                height: { xs: "24px", sm: "25px", md: "30px" },
+                width: "auto",
+                display: "block",
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
+
       <Dialog
         open={votePageIsOpen}
         setOpen={setVotePageIsOpenHandler}
@@ -710,7 +830,7 @@ function App() {
                           onClick={() => {
                             window.open(
                               `https://www.instagram.com/${selectedParticipant.instagram}/`,
-                              "_blank"
+                              "_blank",
                             );
                           }}
                           sx={{
@@ -836,8 +956,8 @@ function App() {
                       {new Date() < new Date(eventStartDate)
                         ? "投票即將開始"
                         : new Date() > new Date(eventDeadlineDate)
-                        ? "投票已結束"
-                        : "投票"}
+                          ? "投票已結束"
+                          : "投票"}
                     </span>
                   </Button>
                 </Box>
@@ -914,8 +1034,8 @@ function App() {
                       {new Date() < new Date(eventStartDate)
                         ? "投票即將開始"
                         : new Date() > new Date(eventDeadlineDate)
-                        ? "投票已結束"
-                        : "投票"}
+                          ? "投票已結束"
+                          : "投票"}
                     </span>
                   </Button>
                 </Box>
@@ -1011,7 +1131,7 @@ function App() {
                           onClick={() => {
                             window.open(
                               `https://www.instagram.com/${selectedParticipant.instagram}/`,
-                              "_blank"
+                              "_blank",
                             );
                           }}
                           sx={{
@@ -1319,8 +1439,8 @@ function App() {
                     {new Date() < new Date(eventStartDate)
                       ? "投票即將開始"
                       : new Date() > new Date(eventDeadlineDate)
-                      ? "活動已結束"
-                      : "投票"}
+                        ? "活動已結束"
+                        : "投票"}
                   </Typography>
                 </LoadingButton>
               </Box>
@@ -1586,395 +1706,443 @@ function App() {
       <Container disableGutters={isSm === false}>
         <Box className="section">
           <Box className="columnBox">
+            {/* Banner image */}
             <img src={BannerImage} alt="Banner" className="BannerImage" />
-            <Box className="navBar">
-              <Grid
-                container
+
+            {/* Voting date section (centered, white text) */}
+            <Box sx={{ textAlign: "center", color: "#fff", mt: 1 }}>
+              <Typography
                 sx={{
-                  display: "flex",
-                  flexDirection: isMd ? "row" : "column",
-                  // paddingX: isMd ? "10px" : "5px",
+                  fontSize: { xs: "28px", md: "40px" },
+                  // fontWeight: 400,
+                  fontFamily: "Mantou Sans",
+                  color: "#FFFFFF",
+                  textShadow: "0 2px 6px rgba(0,0,0,0.45)",
+                  mb: 1.5,
+                  lineHeight: 1.1,
                 }}
               >
-                <Grid item xs={isMd ? 8 : 12}>
-                  {/* <Box className="iconRowBox"> */}
-                  <img src={sponsorIcon} alt="wewa" className="sponsorIcon" />
-                  {/* </Box> */}
-                </Grid>
-                <Grid
-                  item
-                  xs={isMd ? 4 : 12}
-                  className="voteBox"
+                投票日期
+              </Typography>
+
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                <Box
                   sx={{
-                    marginBottom: {
-                      xs: "10px",
-                      md: "0px",
-                    },
+                    border: "1px solid rgba(255,255,255,0.9)",
+                    px: { xs: 2, md: 4 },
+                    py: { xs: 1, md: 2 },
                     display: "flex",
-                    justifyContent: {
-                      xs: "center",
-                      md: "flex-end",
-                    },
-                    marginLeft: {
-                      xs: "4%",
-                      md: "0px",
-                    },
+                    gap: { xs: 2, md: 6 },
+                    alignItems: "center",
+                    alignSelf: "center",
                   }}
                 >
-                  {isAdmin && (
-                    <CSVLink
-                      data={csvData}
-                      filename={`vote-records-${moment().format(
-                        "YYYY-MM-DD-hh:mm"
-                      )}.csv`}
-                    >
-                      {" "}
-                      <Button
-                        sx={{
-                          color: "blue",
-                          marginRight: "5px",
-                        }}
-                      >
-                        <Typography
-                          className="voteMethodTitleText"
-                          sx={{
-                            fontSize: {
-                              xs: "16px",
-                              md: "18px",
-                            },
-                            fontWeight: "bold",
-                            marginRight: "-5px",
-                            marginTop: "-6px",
-                          }}
-                        >
-                          下載投票紀錄
-                        </Typography>
-                      </Button>
-                    </CSVLink>
-                  )}
-
-                  <Button
-                    endIcon={
-                      showVoteMethod ? (
-                        <KeyboardArrowUpIcon />
-                      ) : (
-                        <KeyboardArrowDownIcon />
-                      )
-                    }
-                    sx={{
-                      color: "#e04478",
-                      marginRight: "-5px",
-                    }}
-                    onClick={() => setShowVoteMethod(!showVoteMethod)}
-                  >
+                  <Box sx={{ textAlign: "center" }}>
                     <Typography
-                      className="voteMethodTitleText"
                       sx={{
-                        fontSize: {
-                          xs: "16px",
-                          md: "18px",
-                        },
-                        fontWeight: "bold",
-                        marginRight: "-5px",
-                        marginTop: "-6px",
+                        fontSize: { xs: "14px", md: "18px" },
+                        fontWeight: 500,
+                        fontFamily: "Caviar Dreams",
                       }}
                     >
-                      投票方法
+                      04.10 (Sat)
                     </Typography>
-                  </Button>
-                </Grid>
-              </Grid>
-              <Grid
-                container
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "24px", md: "32px" },
+                        fontWeight: 400,
+                        fontFamily: "Caviar Dreams",
+                      }}
+                    >
+                      00:00
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: { xs: 26, md: 100 },
+                        borderBottom: "1px solid rgba(255,255,255,0.9)",
+                      }}
+                    />
+                  </Box>
+
+                  <Box sx={{ textAlign: "center" }}>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "14px", md: "18px" },
+                        fontWeight: 400,
+                        fontFamily: "Caviar Dreams",
+                      }}
+                    >
+                      04.10 (Sat)
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "24px", md: "32px" },
+                        fontWeight: 500,
+                        fontFamily: "Caviar Dreams",
+                      }}
+                    >
+                      23.59
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+            {/* concise 投票方法 under 投票日期 */}
+            <Box sx={{ textAlign: "center", color: "#fff", mt: 3, px: 2 }}>
+              <Typography
                 sx={{
-                  display: showVoteMethod ? "block" : "none",
-                  padding: "50px 0px",
+                  fontSize: { xs: "28px", md: "40px" },
+                  // fontWeight: 400,
+                  fontFamily: "Mantou Sans",
+                  color: "#FFFFFF",
+                  textShadow: "0 2px 6px rgba(0,0,0,0.45)",
+                  mb: 1.5,
+                  lineHeight: 1.1,
                 }}
               >
-                <Grid item xs={12}>
-                  <Container maxWidth="md">
+                投票方法
+              </Typography>
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Stack
+                  direction={{ xs: "column", md: "row" }}
+                  spacing={2}
+                  justifyContent="center"
+                  alignItems="flex-start"
+                  sx={{ width: "fit-content", maxWidth: "100%", mx: "auto" }}
+                >
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Box
+                      sx={{
+                        width: 32,
+                        minWidth: 32,
+                        height: 32,
+                        minHeight: 32,
+                        flexShrink: 0,
+                        aspectRatio: "1 / 1",
+                        borderRadius: "50%",
+                        border: "1px solid rgba(255,255,255,0.9)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: 700,
+                        fontFamily: "Caviar Dreams",
+                      }}
+                    >
+                      1
+                    </Box>
                     <Typography
-                      className="sectionTitleBold"
+                      className="mstiff"
                       sx={{
-                        fontSize: {
-                          xs: "28px",
-                          sm: "32px",
-                          md: "36px",
-                        },
-                        fontWeight: "900",
-                        fontFamily: "Hiragino Sans",
+                        color: "#fff",
+                        fontSize: { xs: "13px", md: "15px" },
+                        fontWeight: 400,
+                        fontFamily: "MStiffHei HK",
                       }}
                     >
-                      投票方法
+                      投票期間，每人每日皆可投選一次
                     </Typography>
-                    <Stack
-                      direction="column"
-                      spacing={isMd ? 3 : 2}
-                      sx={{
-                        fontFamily: "Noto Sans HK",
-                      }}
-                    >
-                      <Item className="flexRow">
-                        <img
-                          src={checkedIcon}
-                          alt="checked"
-                          className="checkedIcon"
-                        />
-                        <p className="voteMethodTextP">
-                          <span className="voteMethodText">投票期間，</span>
-                          <span className="voteMethodTextBold">
-                            每人每日皆可投選一次
-                          </span>
-                        </p>
-                      </Item>
-                      <Item
-                        className="flexRow"
+                  </Box>
+
+                  {/* item 2 + button grouped vertically so button sits under item 2 */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                      gap: 1,
+                    }}
+                  >
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
                         sx={{
-                          position: "relative",
+                          width: 32,
+                          minWidth: 32,
+                          height: 32,
+                          minHeight: 32,
+                          flexShrink: 0,
+                          aspectRatio: "1 / 1",
+                          borderRadius: "50%",
+                          border: "1px solid rgba(255,255,255,0.9)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: 700,
+                          fontFamily: "Caviar Dreams",
                         }}
                       >
-                        <img
-                          src={checkedIcon}
-                          alt="checked"
-                          className="checkedIcon"
-                        />
-                        <Typography
-                          sx={{
-                            marginLeft: "10px",
-                            minWidth: {
-                              xs: "25px",
-                              md: "0px",
-                            },
-                          }}
-                        >
-                          <span className="voteMethodText">成為</span>
-                        </Typography>
+                        2
+                      </Box>
+                      <Typography
+                        sx={{
+                          color: "#fff",
+                          fontSize: { xs: "13px", md: "15px" },
+                          fontFamily: "MStiffHei HK",
+                        }}
+                      >
+                        成為華盛證券會員每日可投選兩票 (只限同一名參賽者)
+                      </Typography>
+                    </Box>
 
-                        <Box
-                          sx={{
-                            display: "inline-block",
-                            // verticalAlign: "center",
-                            // alignItems: "center",
-                          }}
-                        >
-                          <img
-                            src={wewaClubIcon}
-                            alt="wewaClub"
-                            className="wewaClubIcon"
-                          />
-                        </Box>
-                        <p>
-                          <span className="voteMethodText">會員</span>
-                          <span className="voteMethodTextBold">
-                            每日可投選兩票
-                          </span>
-                          <span className="voteMethodTextDesc">
-                            (只限同一名參賽者)
-                          </span>
-                        </p>
-                        <Button
-                          variant="contained"
-                          sx={{
-                            zIndex: 9999999,
-                            backgroundColor: "#e04478",
-                            color: "#ffffff",
-                            borderRadius: "0px",
-                            padding: "5px 10px",
-                            marginLeft: "10px",
-                            boxShadow: "0px 0px 10px 0px #000000",
-                            position: "absolute",
-                            right: {
-                              xs: "10%",
-                              sm: "30%",
-                              md: "40%",
-                            },
-                            bottom: "-30px",
-                            ":hover": {
-                              backgroundColor: "#e04478",
-                            },
-                            textWrap: "nowrap",
-                            fontSize: {
-                              xs: "10px",
-                              sm: "14px",
-                              md: "16px",
-                            },
-                          }}
-                          onClick={() => {
-                            window.open(
-                              "https://ad.doubleclick.net/ddm/trackclk/N555206.4378894ICMA/B31525880.395468533;dc_trk_aid=587164945;dc_trk_cid=216262005;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1",
-                              "_blank"
-                            );
-                          }}
-                        >
-                          <span className="joinMemberText">立即登記會員</span>
-                        </Button>
-                      </Item>
-                      <Item className="flexRow">
-                        <img
-                          src={checkedIcon}
-                          alt="checked"
-                          className="checkedIcon"
-                        />
-                        <p className="voteMethodTextP">
-                          <span className="voteMethodText">得票最高的</span>
-                          <span className="voteMethodTextBold">前兩名</span>
-                          <span className="voteMethodText">
-                            將獲得復活資格，
-                          </span>
-                          <span className="voteMethodTextBold">
-                            並可參加決賽
-                          </span>
-                        </p>
-                      </Item>
-                    </Stack>
-                  </Container>
-                </Grid>
-              </Grid>
+                    <Box
+                      sx={{
+                        mt: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        width: "100%",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: "#fff",
+                          color: "#32BF72",
+                          borderRadius: "24px",
+                          textTransform: "none",
+                          px: 3,
+                          py: 1,
+                          fontWeight: 700,
+                          fontFamily: "MStiffHei HK Bold",
+                        }}
+                      >
+                        立即登記會員
+                      </Button>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Box
+                      sx={{
+                        width: 32,
+                        minWidth: 32,
+                        height: 32,
+                        minHeight: 32,
+                        flexShrink: 0,
+                        aspectRatio: "1 / 1",
+                        borderRadius: "50%",
+                        border: "1px solid rgba(255,255,255,0.9)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: 700,
+                        fontFamily: "Caviar Dreams",
+                      }}
+                    >
+                      3
+                    </Box>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        fontSize: { xs: "13px", md: "15px" },
+                        fontFamily: "MStiffHei HK",
+                      }}
+                    >
+                      得票最高的前兩名將獲得復活資格，並可參加決賽
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Box>
             </Box>
           </Box>
         </Box>
 
         {rankingList.length > 0 && new Date(eventStartDate) < new Date() ? (
           <>
-            <Box className="section">
-              <Box className="columnBox">
-                <Box
-                  className="titleBox"
-                  sx={{
-                    display: "flex",
-                    justifyContent: {
-                      xs: "center",
-                      md: "start",
-                    },
-                  }}
-                >
-                  <Typography
-                    className="sectionTitleBold"
+            <Box
+              sx={{
+                backgroundColor: "#111",
+                borderRadius: "24px",
+                width: { xs: "80%", md: "80%" },
+                mx: "auto",
+                padding: { xs: 2, md: 4 },
+                mt: 4,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+              }}
+            >
+              <Box className="section" sx={{ border: "none" }}>
+                <Box className="columnBox">
+                  <Box
+                    className="titleBox"
                     sx={{
-                      fontSize: {
-                        xs: "28px",
-                        sm: "32px",
-                        md: "36px",
+                      display: "flex",
+                      justifyContent: {
+                        xs: "center",
+                        md: "start",
                       },
-                      fontWeight: "bold",
-                      fontFamily: "Hiragino Sans",
                     }}
                   >
-                    投票走勢
-                  </Typography>
-                </Box>
-                <Container>
-                  <Grid container spacing={2}>
-                    {thirdRankingList.map((item, index) => (
-                      <Grid
-                        item
-                        xs={12}
-                        key={item.name + item.participationNo}
-                        sx={{ display: "flex", marginTop: "20px" }}
-                      >
-                        <Grid item className="rankingNumberBox" xs={4}>
-                          <Box
-                            className="rankingNumberInnerBox"
-                            sx={{
-                              width: 80 - index * 14 + "%",
-                              fontSize: 24 - (index - 1) * 6 + "px",
-                              fontFamily: "Noto Sans HK",
-                            }}
-                          >
-                            <Typography
-                              className="rankingNumberText"
+                    <Typography
+                      className="sectionTitleBold"
+                      sx={{
+                        fontSize: { xs: "28px", md: "40px" },
+                        // fontWeight: 400,
+                        fontFamily: "Mantou Sans",
+                        color: "#32BF72",
+                        textShadow: "none",
+                        mb: 1.5,
+                        lineHeight: 1.1,
+                      }}
+                    >
+                      投票走勢
+                    </Typography>
+                  </Box>
+                  <Container sx={{ px: { xs: 1, md: 2 } }}>
+                    <Grid container spacing={2}>
+                      {thirdRankingList.map((item, index) => (
+                        <Grid
+                          item
+                          xs={12}
+                          key={item.name + item.participationNo}
+                          sx={{ display: "flex", marginTop: "20px" }}
+                        >
+                          <Grid item className="rankingNumberBox" xs={4}>
+                            <Box
+                              className="rankingNumberInnerBox"
                               sx={{
-                                fontSize: {
-                                  xs: "12px",
-                                  sm: "20px",
-                                  md: "28px",
-                                },
-                                fontWeight: "bold",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flexDirection: "column",
                               }}
                             >
-                              {rankingTitleMapping[index]}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <Box className="rankingContentBox">
-                            <Box className="iconRankingBox">
-                              <Avatar
-                                alt={item.name}
-                                src={`/event1/${item.chineseName}.jpg`}
+                              <Typography
+                                className="rankingNumberText"
                                 sx={{
-                                  width: 50 - index * 5 + "px",
-                                  height: 50 - index * 5 + "px",
+                                  fontSize: {
+                                    xs: "28px",
+                                    sm: "32px",
+                                    md: "36px",
+                                  },
+                                  fontWeight: "800",
+                                  // fontFamily: "Mantou Sans",
+                                  color: "#32BF72",
                                 }}
-                              />
-                              <Box
-                                className="rankingVotesBox"
+                              >
+                                {rankingTitleMapping[index]}
+                              </Typography>
+                              <Typography
+                                className="rankingNumberText"
                                 sx={{
-                                  backgroundColor: "#dcdedd",
-                                  borderRadius: "2px",
-                                  height: "30px",
-                                  width:
-                                    firstThreeVotes[index].toFixed(2) * 70 +
-                                    "%",
-                                  marginLeft: "-10px",
+                                  fontSize: {
+                                    xs: "12px",
+                                    sm: "14px",
+                                    md: "18px",
+                                  },
+                                  fontWeight: "800",
+                                  // fontFamily: "Mantou Sans",
+                                  color: "#FFFFFF",
                                 }}
-                              />
+                              >
+                                參賽者
+                              </Typography>
                             </Box>
-                            <Box className="nameTextBox">
-                              <Stack direction="row" spacing={0.4}>
-                                <Typography
-                                  className="rankingNameText"
+                          </Grid>
+                          <Grid item xs={8}>
+                            <Box className="rankingContentBox">
+                              <Box className="iconRankingBox">
+                                <Avatar
+                                  alt={item.name}
+                                  src={`/event1/${item.chineseName}.jpg`}
                                   sx={{
-                                    fontSize: 18 - index * 4 + "px",
-                                    fontFamily: "gensen font master",
+                                    width: 50 - index * 5 + "px",
+                                    height: 50 - index * 5 + "px",
                                   }}
-                                >
-                                  {item.participationNo}
-                                </Typography>
-                                <Typography
-                                  className="rankingNameText"
+                                />
+                                <Box
+                                  className="rankingVotesBox"
                                   sx={{
-                                    fontSize: 18 - index * 4 + "px",
-                                    fontFamily: "gensen font master",
+                                    backgroundColor: "#32BF72",
+                                    borderRadius: "2px",
+                                    height: "30px",
+                                    width:
+                                      firstThreeVotes[index].toFixed(2) * 70 +
+                                      "%",
+                                    marginLeft: "-10px",
                                   }}
-                                >
-                                  {item.chineseName}
-                                </Typography>
-                                <Typography
-                                  className="rankingNameText"
-                                  sx={{
-                                    fontSize: 18 - index * 4 + "px",
-                                    fontFamily: "gensen font master",
-                                  }}
-                                >
-                                  {item.name}
-                                </Typography>
-                                {isAdmin && (
+                                />
+                              </Box>
+                              <Box className="nameTextBox">
+                                <Stack direction="row" spacing={0.4}>
                                   <Typography
                                     className="rankingNameText"
                                     sx={{
-                                      fontSize: 18 - (item.rank - 1) * 4 + "px",
+                                      fontSize: 18 - index * 4 + "px",
+                                      fontFamily: "gensen font master",
+                                      color: "#32BF72",
                                     }}
                                   >
-                                    {item.votes} 票 (
-                                    {((item.votes / totalVotes) * 100).toFixed(
-                                      2
-                                    )}
-                                    %)
+                                    {item.participationNo}
                                   </Typography>
-                                )}
-                              </Stack>
+                                  <Typography
+                                    className="rankingNameText"
+                                    sx={{
+                                      fontSize: 18 - index * 4 + "px",
+                                      fontFamily: "gensen font master",
+                                      color: "#32BF72",
+                                    }}
+                                  >
+                                    {item.chineseName}
+                                  </Typography>
+                                  <Typography
+                                    className="rankingNameText"
+                                    sx={{
+                                      fontSize: 18 - index * 4 + "px",
+                                      fontFamily: "gensen font master",
+                                      color: "#32BF72",
+                                    }}
+                                  >
+                                    {item.name}
+                                  </Typography>
+                                  {isAdmin && (
+                                    <Typography
+                                      className="rankingNameText"
+                                      sx={{
+                                        fontSize:
+                                          18 - (item.rank - 1) * 4 + "px",
+                                        color: "#32BF72",
+                                      }}
+                                    >
+                                      {item.votes} 票 (
+                                      {(
+                                        (item.votes / totalVotes) *
+                                        100
+                                      ).toFixed(2)}
+                                      %)
+                                    </Typography>
+                                  )}
+                                </Stack>
+                              </Box>
                             </Box>
-                          </Box>
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Container>
+                      ))}
+                    </Grid>
+                  </Container>
+                </Box>
               </Box>
             </Box>
+
             <Box className="section">
-              <Box className="columnBox">
+              <Box
+                className="columnBox"
+                sx={{
+                  backgroundColor: "#111",
+                  borderRadius: "24px",
+                  width: { xs: "80%", md: "80%" },
+                  mx: "auto",
+                  padding: { xs: 2, md: 4 },
+                  mt: 4,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                }}
+              >
                 <Box
                   className="titleBox"
                   sx={{
