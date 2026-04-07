@@ -720,25 +720,16 @@ function App() {
         // onClose={handleDialogClose}
         fullScreen
       >
-        <Container maxWidth="md">
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: {
-                xs: "start",
-                md: "center",
-              },
-              marginTop: {
-                xs: "30px",
-                md: "0px",
-              },
-            }}
-          >
-            <img src={icmaIcon} alt="icma" className="icmaIcon" />
-          </Box>
-        </Container>
         {!isMd && (
           <Box className="mobileVotePageBox">
+            {/* use home banner on vote page (mobile) */}
+            <Box
+              component="img"
+              src={BannerImage}
+              alt="Banner"
+              className="BannerImage"
+              sx={{ width: "100%", height: "auto", display: "block" }}
+            />
             <Container
               maxWidth="sm"
               sx={{
@@ -962,8 +953,8 @@ function App() {
                   </Button>
                 </Box>
               </Container>
-              <Footer type="votePage" isMd={isMd} />
             </Container>
+            <Footer type="home" isMd={isMd} isCompact={true} />
           </Box>
         )}
         <Container
@@ -976,6 +967,14 @@ function App() {
           }}
         >
           <Box className="webVotePageBox">
+            {/* use home banner on vote page (web) */}
+            <Box
+              component="img"
+              src={BannerImage}
+              alt="Banner"
+              className="BannerImage"
+              sx={{ width: "100%", height: "auto", display: "block" }}
+            />
             <Container
               maxWidth="sm"
               sx={{
@@ -1210,7 +1209,7 @@ function App() {
                   </Grid>
                 </Grid>
               </Container>
-              <Footer type="votePage" isMd={isMd} />
+              <Footer type="home" isMd={isMd} isCompact={true} />
             </Container>
           </Box>
         </Container>
@@ -1856,12 +1855,14 @@ function App() {
                       1
                     </Box>
                     <Typography
-                      className="mstiff"
                       sx={{
                         color: "#fff",
                         fontSize: { xs: "13px", md: "15px" },
-                        fontWeight: 400,
                         fontFamily: "MStiffHei HK",
+                        textAlign: "left",
+                        lineHeight: 1.4,
+                        flex: 1,
+                        minWidth: 0,
                       }}
                     >
                       投票期間，每人每日皆可投選一次
@@ -1902,6 +1903,10 @@ function App() {
                           color: "#fff",
                           fontSize: { xs: "13px", md: "15px" },
                           fontFamily: "MStiffHei HK",
+                          textAlign: "left",
+                          lineHeight: 1.4,
+                          flex: 1,
+                          minWidth: 0,
                         }}
                       >
                         成為華盛證券會員每日可投選兩票 (只限同一名參賽者)
@@ -1910,7 +1915,8 @@ function App() {
 
                     <Box
                       sx={{
-                        mt: 1,
+                        marginTop: 0,
+                        marginBottom: 1,
                         display: "flex",
                         justifyContent: "center",
                         width: "100%",
@@ -1954,15 +1960,27 @@ function App() {
                     >
                       3
                     </Box>
-                    <Typography
+                    <Box
                       sx={{
-                        color: "#fff",
-                        fontSize: { xs: "13px", md: "15px" },
-                        fontFamily: "MStiffHei HK",
+                        flex: 1,
+                        minWidth: 0,
+                        minHeight: 32,
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
-                      得票最高的前兩名將獲得復活資格，並可參加決賽
-                    </Typography>
+                      <Typography
+                        sx={{
+                          color: "#fff",
+                          fontSize: { xs: "13px", md: "15px" },
+                          fontFamily: "MStiffHei HK",
+                          textAlign: "left",
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        得票最高的前兩名將獲得復活資格，並可參加決賽
+                      </Typography>
+                    </Box>
                   </Box>
                 </Stack>
               </Box>
@@ -1973,17 +1991,19 @@ function App() {
         {rankingList.length > 0 && new Date(eventStartDate) < new Date() ? (
           <>
             <Box
+              className="columnBox"
               sx={{
-                backgroundColor: "#111",
+                backgroundColor: "#1a1a1a",
                 borderRadius: "24px",
                 width: { xs: "80%", md: "60%" },
                 mx: "auto",
                 padding: { xs: 2, md: 4 },
                 mt: 4,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                boxShadow:
+                  "0 0 30px rgba(51, 164, 102, 1), 0 10px 30px rgba(0, 0, 0, 0.3)",
               }}
             >
-              <Box className="section" sx={{ border: "none" }}>
+              <Box className="section" sx={{ border: "none", marginBottom: 2 }}>
                 <Box className="columnBox">
                   <Box
                     className="titleBox"
@@ -2008,15 +2028,15 @@ function App() {
                     </Typography>
                   </Box>
                   <Container sx={{ px: { xs: 1, md: 2 } }}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1}>
                       {thirdRankingList.map((item, index) => (
                         <Grid
                           item
                           xs={12}
                           key={item.name + item.participationNo}
-                          sx={{ display: "flex", marginTop: "20px" }}
+                          sx={{ display: "flex", marginTop: "6px" }}
                         >
-                          <Grid item className="rankingNumberBox" xs={4}>
+                          <Grid item className="rankingNumberBox" xs={3}>
                             <Box
                               className="rankingNumberInnerBox"
                               sx={{
@@ -2054,19 +2074,19 @@ function App() {
                                   color: "#FFFFFF",
                                 }}
                               >
-                                參賽者
+                                {item.chineseName}
                               </Typography>
                             </Box>
                           </Grid>
-                          <Grid item xs={8}>
+                          <Grid item xs={9}>
                             <Box className="rankingContentBox">
                               <Box className="iconRankingBox">
                                 <Avatar
                                   alt={item.name}
                                   src={`/event1/${item.chineseName}.jpg`}
                                   sx={{
-                                    width: 50 - index * 5 + "px",
-                                    height: 50 - index * 5 + "px",
+                                    width: "44px",
+                                    height: "44px",
                                   }}
                                 />
                                 <Box
@@ -2074,15 +2094,15 @@ function App() {
                                   sx={{
                                     backgroundColor: "#32BF72",
                                     borderRadius: "2px",
-                                    height: "30px",
+                                    height: "26px",
                                     width:
-                                      firstThreeVotes[index].toFixed(2) * 70 +
+                                      firstThreeVotes[index].toFixed(2) * 80 +
                                       "%",
                                     marginLeft: "-10px",
                                   }}
                                 />
                               </Box>
-                              <Box className="nameTextBox">
+                              {/* <Box className="nameTextBox">
                                 <Stack direction="row" spacing={0.4}>
                                   <Typography
                                     className="rankingNameText"
@@ -2132,7 +2152,7 @@ function App() {
                                     </Typography>
                                   )}
                                 </Stack>
-                              </Box>
+                              </Box> */}
                             </Box>
                           </Grid>
                         </Grid>
@@ -2147,13 +2167,14 @@ function App() {
               <Box
                 className="columnBox"
                 sx={{
-                  backgroundColor: "#111",
+                  backgroundColor: "#1a1a1a",
                   borderRadius: "24px",
                   width: { xs: "80%", md: "60%" },
                   mx: "auto",
                   padding: { xs: 2, md: 4 },
                   mt: 4,
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                  boxShadow:
+                    "0 0 30px rgba(51, 164, 102, 1), 0 10px 30px rgba(0, 0, 0, 0.3)",
                 }}
               >
                 <Box
@@ -2165,29 +2186,38 @@ function App() {
                     },
                     flexDirection: "column",
                     alignItems: "center",
+                    maxWidth: "100%",
                   }}
                 >
-                  <Typography
-                    className="sectionTitleBold"
+                  <Box
                     sx={{
-                      fontSize: { xs: "28px", md: "40px" },
-                      // fontWeight: 400,
-                      fontFamily: "Mantou Sans",
-                      color: "#32BF72",
-                      textShadow: "none",
-                      mb: 1.5,
-                      lineHeight: 1.1,
+                      maxWidth: "80%",
+                      justifyContent: "center",
                     }}
                   >
-                    投選你想復活的選手
-                  </Typography>
+                    <Typography
+                      className="sectionTitleBold"
+                      sx={{
+                        fontSize: { xs: "28px", md: "40px" },
+                        // fontWeight: 400,
+                        fontFamily: "Mantou Sans",
+                        color: "#32BF72",
+                        textShadow: "none",
+                        mb: 1.5,
+                        lineHeight: 1.1,
+                        textAlign: "center",
+                      }}
+                    >
+                      投選你想復活的選手
+                    </Typography>
+                  </Box>
 
                   <Typography
                     className="sectionTitleBold"
                     sx={{
                       fontSize: { xs: "14px", md: "18px" },
                       // fontWeight: 400,
-                      fontFamily: "Mantou Sans",
+                      fontFamily: "MStiffHei HK",
                       color: "#32BF72",
                       textShadow: "none",
                       mb: 1.5,
@@ -2198,18 +2228,21 @@ function App() {
                   </Typography>
                 </Box>
                 <Box
-                  className="rankingNumberInnerBox eventCountDownBox"
+                  className="rankingNumberInnerBox"
                   sx={{
                     marginTop: {
                       xs: "10px",
                       md: "5px",
                     },
                     display: "flex",
-                    flexDirection: "row",
-                    alignSelf: {
-                      xs: "center",
-                      md: "start",
-                    },
+                    flexDirection: "column",
+                    alignSelf: "center",
+                    alignItems: "center",
+                    border: "0.5px solid rgba(255,255,255,0.9)",
+                    px: { xs: 2, md: 4 },
+                    py: { xs: 1, md: 2 },
+
+                    // gap: { xs: 0, md: 1 },
                   }}
                 >
                   {new Date(eventDeadlineDate) > new Date() ? (
@@ -2219,14 +2252,19 @@ function App() {
                         sx={{
                           fontSize: {
                             xs: "16px",
-                            md: "12px",
+                            md: "16px",
                           },
                           fontWeight: "bold",
+                          fontFamily: "MStiffHei HK",
                         }}
                       >
                         距離投票截止還有
                       </Typography>
-                      <span className="eventCountDownDateText">
+                      <Box
+                        component="span"
+                        className="eventCountDownDateText"
+                        sx={{ display: "block", mt: 0.5 }}
+                      >
                         {
                           <Countdown
                             date={eventDeadlineDate}
@@ -2237,7 +2275,7 @@ function App() {
                             )}
                           />
                         }
-                      </span>
+                      </Box>
                     </>
                   ) : (
                     <Typography
@@ -2254,26 +2292,28 @@ function App() {
                     </Typography>
                   )}
                 </Box>
-                <Container>
+                <Container maxWidth={false} sx={{ px: 0 }}>
                   <Grid
                     container
+                    spacing={1.25}
                     sx={{
                       marginTop: "10px",
+                      justifyContent: "center",
                     }}
                   >
                     {rankingList.map((item, index) => (
                       <Grid
                         item
-                        xs={4}
-                        // sm={4}
-                        md={4}
+                        xs={3.6}
+                        sm={3}
+                        md={2.4}
                         key={item.name + item.participationNo + index}
                         sx={{
                           display: "flex",
                           justifyContent: "center",
                           flexDirection: "column",
                           alignItems: "center",
-                          // marginY: "0px",
+                          padding: "5px !important",
                         }}
                         className="avatarGridBox"
                       >
@@ -2281,8 +2321,10 @@ function App() {
                           alt={item.name}
                           src={`/event1/${item.chineseName}.jpg`}
                           sx={{
-                            width: { xs: 100, sm: 150, md: 200 },
-                            height: { xs: 100, sm: 150, md: 200 },
+                            width: "100%",
+                            height: "auto",
+                            aspectRatio: "1/1",
+                            maxWidth: { xs: 120, sm: 150, md: 170 },
                             boxShadow: "0px 0px 5px 0px #000000",
                             cursor: "pointer",
                           }}
@@ -2307,11 +2349,11 @@ function App() {
                           <Typography
                             sx={{
                               fontSize: {
-                                xs: "18px",
-                                sm: "20px",
-                                md: "24px",
+                                xs: "10px",
+                                sm: "12px",
+                                md: "12px",
                               },
-                              color: "#32BF72",
+                              color: "#FFFFFF",
                               fontWeight: "bold",
                               fontFamily: "gensen font master",
                               lineHeight: 1.2,
@@ -2324,9 +2366,9 @@ function App() {
                               fontSize: {
                                 xs: "10px",
                                 sm: "12px",
-                                md: "14px",
+                                md: "12px",
                               },
-                              color: "#32BF72",
+                              color: "#FFFFFF",
                               fontFamily: "gensen font master",
                               lineHeight: 1.2,
                             }}

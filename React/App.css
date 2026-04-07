@@ -151,6 +151,13 @@ span p label h1 h2 h3 h4 h5 h6 {
   flex-direction: column;
 }
 
+/* Stronger voting panel style to ensure visible background and colored shadow */
+.votingPanel {
+  background-color: #1a1a1a !important;
+  border-radius: 24px !important;
+  box-shadow: 0 4px 10px rgba(17, 17, 17, 0.18) !important;
+}
+
 .PageContainer {
   display: flex;
   flex-direction: column;
@@ -296,23 +303,20 @@ span p label h1 h2 h3 h4 h5 h6 {
   align-items: center;
 }
 
-.eventCountDownBox {
-  /* width: 48%; */
-  /* max-width: 250px; */
-  padding: 5px 12px;
-  box-shadow: 0px 0px 5px 0px #000000;
-}
-
 .rankingNumberText {
   font-weight: 700;
   color: #fff;
 }
 
 .rankingContentBox {
-  display: block-inline;
+  /* display: block-inline; */
   /* flex-direction: column;
   justify-content: center; */
-  align-items: start;
+  /* align-items: start; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
 .iconRankingBox {
@@ -334,9 +338,9 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .eventCountDownDateText {
-  font-family: "Noto Sans HK", sans-serif;
+  font-family: "MStiffHei HK";
   margin-left: 2px;
-  font-size: 12px;
+  font-size: 24px !important;
   font-weight: 100;
   color: #fff;
 }
@@ -447,7 +451,10 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .mobileVotePageBox {
-  background: linear-gradient(90deg, #e53972 30%, #f29921 100%);
+  /* use same background as home page */
+  background-image: url("./assets/Desktop-BG-HOME.jpg");
+  background-size: cover;
+  background-position: center center;
   display: flex;
   flex-direction: column;
   height: 200%;
@@ -456,7 +463,10 @@ span p label h1 h2 h3 h4 h5 h6 {
 
 .webVotePageBox {
   margin-top: 100px;
-  background: linear-gradient(90deg, #e53972 30%, #f29921 100%);
+  /* use same background as home page */
+  background-image: url("./assets/Desktop-BG-HOME.jpg");
+  background-size: cover;
+  background-position: center center;
   display: flex;
   flex-direction: column;
   height: 100%;

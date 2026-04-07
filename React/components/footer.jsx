@@ -2,72 +2,27 @@ import React from "react";
 import { Box } from "@mui/system";
 import { Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import icmaIcon from "../assets/icma.svg";
-import youtubeIcon from "../assets/youtube.svg";
-import facebookIcon from "../assets/fb.svg";
-import igIcon from "../assets/ig.svg";
-import icmaHomeMobileIcon from "../assets/icmaMobile.svg";
-import icmaHomeWebIcon from "../assets/icmaHome.svg";
-import icmaVotePageIcon from "../assets/icmaWeb.svg";
+// new footer center SVG
+import icma2026Footer from "../assets/ICMA2026-Footer.svg";
+import fbFooter from "../assets/FB-Footer.svg";
+import ytFooter from "../assets/YT-Footer.svg";
+import igFooter from "../assets/IG-Footer.svg";
 
 import "./styles/footer.css";
 
-const Footer = ({ type, isMd, isInheritBackground, isFinal }) => {
+const Footer = ({ type, isMd, isInheritBackground, isFinal, isCompact }) => {
+  // icon buttons removed per request; keep a placeholder component to avoid changing callers
   const IconButtonStack = () => {
-    return (
-      <Stack
-        direction="row"
-        spacing={isMd ? 10 : 5}
-        sx={{
-          height: "100px",
-          alignItems: "center",
-          ...(type === "home" ? { marginTop: isMd ? "0" : "-110px" } : {}),
-          //   width: "100%",
-        }}
-      >
-        <IconButton
-          size="small"
-          onClick={() =>
-            window.open("https://www.youtube.com/@icma.", "_blank")
-          }
-        >
-          <img
-            src={youtubeIcon}
-            alt="youtube"
-            className={isMd ? "socialIconWeb" : "socialIconMobile"}
-          />
-        </IconButton>
-        <IconButton
-          size="small"
-          onClick={() =>
-            window.open("https://www.instagram.com/icma.hk/", "_blank")
-          }
-        >
-          <img
-            src={igIcon}
-            alt="ig"
-            className={isMd ? "socialIconWeb" : "socialIconMobile"}
-          />
-        </IconButton>
-        <IconButton
-          size="small"
-          onClick={() =>
-            window.open("https://www.facebook.com/icma.hk", "_blank")
-          }
-        >
-          <img
-            src={facebookIcon}
-            alt="facebook"
-            className={isMd ? "socialIconWeb" : "socialIconMobile"}
-          />
-        </IconButton>
-      </Stack>
-    );
+    return null;
   };
   return type === "home" ? (
     <Box
       className={
-        isInheritBackground ? "webFooterWithParentBackground" : "webFooter"
+        isInheritBackground
+          ? "webFooterWithParentBackground"
+          : isCompact
+            ? "webFooter compactFooter"
+            : "webFooter"
       }
       sx={{
         display: "flex",
@@ -77,17 +32,36 @@ const Footer = ({ type, isMd, isInheritBackground, isFinal }) => {
         position: "relative",
       }}
     >
-      <img src={icmaIcon} alt="icma" className="icmaHomeFooterIcon" />
-      <IconButtonStack />
+      {/* center SVG */}
       <img
-        src={!isMd ? icmaHomeWebIcon : icmaHomeMobileIcon}
-        alt="icmaHome"
-        className={
-          isMd
-            ? "icmaHomeFooterIconBottomWeb"
-            : "icmaHomeFooterIconBottomMobile"
-        }
+        src={icma2026Footer}
+        alt="ICMA2026 Footer"
+        className="icma2026FooterCenter"
       />
+      <div className="footerSocials">
+        <a
+          href="https://www.facebook.com/icma.hk"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={fbFooter} alt="facebook" className="footerSocialIcon" />
+        </a>
+        <a
+          href="https://www.youtube.com/@icma"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={ytFooter} alt="youtube" className="footerSocialIcon" />
+        </a>
+        <a
+          href="https://www.instagram.com/icma.hk/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={igFooter} alt="instagram" className="footerSocialIcon" />
+        </a>
+      </div>
+      <IconButtonStack />
     </Box>
   ) : (
     <Box
@@ -117,14 +91,36 @@ const Footer = ({ type, isMd, isInheritBackground, isFinal }) => {
           width: "40%",
         }}
       />
-      <IconButtonStack />
+      {/* center SVG */}
       <img
-        src={icmaVotePageIcon}
-        alt="icmaVotePage"
-        className={
-          isMd ? "icmaVotePageBottomWebIcon" : "icmaVotePageBottomMobileIcon"
-        }
+        src={icma2026Footer}
+        alt="ICMA2026 Footer"
+        className="icma2026FooterCenter"
       />
+      <div className="footerSocials">
+        <a
+          href="https://www.facebook.com/icma.hk"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={fbFooter} alt="facebook" className="footerSocialIcon" />
+        </a>
+        <a
+          href="https://www.youtube.com/@icma"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={ytFooter} alt="youtube" className="footerSocialIcon" />
+        </a>
+        <a
+          href="https://www.instagram.com/icma.hk/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={igFooter} alt="instagram" className="footerSocialIcon" />
+        </a>
+      </div>
+      <IconButtonStack />
     </Box>
   );
 };

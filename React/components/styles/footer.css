@@ -1,12 +1,27 @@
 .webFooter {
   margin-top: 6rem;
-  height: 280px;
-  background: linear-gradient(90deg, #e53972 30%, #f29921 100%);
+  height: 200px;
+  background: #ffffff; /* changed to white background */
+  /* subtle shadow to lift footer from page */
+  box-shadow:
+    0 -12px 30px rgba(0, 0, 0, 0.08),
+    0 -4px 10px rgba(0, 0, 0, 0.04);
 }
 
 .webFooterWithParentBackground {
   margin-top: 6rem;
   height: 280px;
+  background: #ffffff; /* ensure parent-inherited variant is also white */
+  box-shadow:
+    0 -12px 30px rgba(0, 0, 0, 0.08),
+    0 -4px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* Compact variant removes large top margin and reduces height for pages that embed the footer */
+.compactFooter {
+  margin-top: 0 !important;
+  height: auto !important;
+  padding: 12px 0 !important;
 }
 
 .icmaHomeFooterIcon {
@@ -55,4 +70,37 @@
 .icmaVotePageBottomWebIcon {
   height: 200px;
   width: 200px;
+}
+
+/* Centered ICMA2026 footer SVG - flow-based layout for robust centering */
+.icma2026FooterCenter {
+  position: static;
+  width: 180px;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+  margin: 0 auto;
+  display: block;
+}
+
+.footerSocials {
+  position: static;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  align-items: center;
+  margin-top: 22px; /* small gap beneath ICMA icon */
+  z-index: 2;
+}
+
+.footerSocialIcon {
+  width: 36px;
+  height: auto;
+}
+
+/* Mobile: smaller social icons for tighter layout */
+@media screen and (max-width: 900px) {
+  .footerSocialIcon {
+    width: 28px;
+  }
 }
