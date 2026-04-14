@@ -31,7 +31,7 @@ const corsOptions = {
 
 
 // app.use(cors(corsOptions));
-app.use(cors(corsOptions));
+app.use(cors());
 const { CronJob } = require('cron');
 // support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -193,9 +193,9 @@ app.set('view engine', 'ejs');
 // })
 
 const checkIsFromDomain = (req, res) => {
-  //console.log("req.rawHeaders:", req.rawHeaders)
+  console.log("req.rawHeaders:", req.rawHeaders)
 
-  const isAllow = ["https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
+  const isAllow = ["icmahk.org","https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
   if (process.env.NODE_ENV === "development") {
     isAllow.push("http://localhost:5173")
     isAllow.push("http://localhost:5173/")
@@ -210,7 +210,7 @@ const checkIsFromDomain = (req, res) => {
 }
 
 
-app.get('/send-otp/:phone', async (req, res, next) => {
+app.get('/api/send-otp/:phone', async (req, res, next) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
@@ -550,7 +550,7 @@ app.get('/verify-otp/:phone/:otp', cors(corsOptions), async (req, res) => {
   }
 })
 
-app.get('/event/:event_id', async (req, res) => {
+app.get('/api/event/:event_id', async (req, res) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
@@ -584,12 +584,12 @@ app.get('/event/:event_id', async (req, res) => {
 
 
 
-app.get('/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions), async (req, res) => {
+app.get('/api/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions), async (req, res) => {
   try {
 
     console.log("get list")
     const isFromDomain = checkIsFromDomain(req, res);
-    if (!isFromDomain) {
+   if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
     const eventId = req.params.event_id?.split(',');
