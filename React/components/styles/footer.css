@@ -1,20 +1,42 @@
 .webFooter {
   margin-top: 6rem;
-  height: 200px;
   background: #ffffff; /* changed to white background */
   /* subtle shadow to lift footer from page */
   box-shadow:
     0 -12px 30px rgba(0, 0, 0, 0.08),
     0 -4px 10px rgba(0, 0, 0, 0.04);
+  /* default mobile size, overridden on larger screens */
+  height: 200px;
+  padding: 24px 0;
 }
 
 .webFooterWithParentBackground {
   margin-top: 6rem;
-  height: 280px;
   background: #ffffff; /* ensure parent-inherited variant is also white */
   box-shadow:
     0 -12px 30px rgba(0, 0, 0, 0.08),
     0 -4px 10px rgba(0, 0, 0, 0.04);
+  height: 280px;
+  padding: 24px 0;
+}
+
+/* When footer is rendered inside the dialog (vote page), remove the large top margin
+   so the footer height and position visually match the home page placement. */
+.dialogContainer .webFooter,
+.dialogContainer .webFooterWithParentBackground {
+  margin-top: 0 !important;
+}
+
+/* Force the same footer height and padding when rendered inside the dialog so it
+   visually matches the home page footer. The dialog can alter layout, so we
+   explicitly set height and inner spacing here. */
+.dialogContainer .webFooter {
+  height: 200px !important;
+  padding: 24px 0 !important;
+}
+.dialogContainer .webFooterWithParentBackground {
+  height: 280px !important;
+  padding: 24px 0 !important;
 }
 
 /* Compact variant removes large top margin and reduces height for pages that embed the footer */
@@ -81,6 +103,31 @@
   z-index: 1;
   margin: 0 auto;
   display: block;
+}
+
+/* Ensure consistent footer heights on desktop across contexts */
+@media screen and (min-width: 900px) {
+  /* Keep the regular web footer at 200px on desktop to match home and dialog
+     contexts. Only the "withParentBackground" variant stays taller (280px). */
+  .webFooter,
+  .dialogContainer .webFooter {
+    height: 200px !important;
+    padding: 24px 0 !important;
+  }
+
+  .webFooterWithParentBackground,
+  .dialogContainer .webFooterWithParentBackground {
+    height: 280px !important;
+    padding: 24px 0 !important;
+  }
+}
+
+/* Reduce the large top gap on desktop so the home footer aligns with the dialog/footer placement */
+@media screen and (min-width: 900px) {
+  .webFooter,
+  .webFooterWithParentBackground {
+    margin-top: 0 !important;
+  }
 }
 
 .footerSocials {

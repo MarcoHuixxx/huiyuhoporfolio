@@ -189,6 +189,31 @@ span p label h1 h2 h3 h4 h5 h6 {
   margin-right: auto; /* center horizontally */
 }
 
+/* Ensure banner inside the dialog starts below the fixed top bar so it is not visually overlapped */
+.dialogContainer .BannerImage {
+  margin-top: 0; /* default */
+  /* match home page banner width: 80% on mobile, 40% on desktop */
+  width: 90%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (max-width: 900px) {
+  /* mobile: top bar is 80px */
+  .dialogContainer .BannerImage {
+    margin-top: 80px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  /* desktop: top bar is 60px */
+  .dialogContainer .BannerImage {
+    margin-top: 60px;
+    width: 40%;
+  }
+}
+
 .navBar {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   /* margin: 0; */
@@ -432,10 +457,12 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .dialogContainer {
-  padding-top: 10px;
+  /* remove extra 10px padding so banner aligns flush with the top bar offset */
+  padding-top: 0;
   display: flex;
   flex-direction: column;
-  height: 200%;
+  /* avoid forcing a 200% height which pushes footer down; allow content to size naturally */
+  height: auto;
 }
 
 .backButton {
@@ -457,35 +484,39 @@ span p label h1 h2 h3 h4 h5 h6 {
   background-position: center center;
   display: flex;
   flex-direction: column;
-  height: 200%;
-  margin-top: -20px;
+  /* don't force a huge height here; let content determine height */
+  height: auto;
+  /* remove negative margin so banner sits below the fixed top bar */
+  margin-top: 0;
 }
 
 .webVotePageBox {
-  margin-top: 100px;
+  /* ensure web vote box starts at top of dialog content; dialog now provides top padding */
+  margin-top: 0;
   /* use same background as home page */
   background-image: url("./assets/Desktop-BG-HOME.jpg");
   background-size: cover;
   background-position: center center;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
 }
 
 .finalMobileVotePageBox {
   background: radial-gradient(circle at center, #d43c6c 20%, #66438d 83%);
   display: flex;
   flex-direction: column;
-  height: 2000%;
-  margin-top: 180px;
+  /* remove forced huge height and extreme top margin that push page length */
+  height: auto;
+  margin-top: 0;
 }
 
 .finalWebVotePageBox {
-  margin-top: 180px;
+  margin-top: 0;
   background: radial-gradient(circle at center, #d43c6c 20%, #66438d 83%);
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
 }
 
 .finalIcmaIcon {
@@ -672,3 +703,21 @@ span p label h1 h2 h3 h4 h5 h6 {
   align-items: center;
   padding: 0px 20px;
 }
+
+@media screen and (max-width: 899px) {
+  .participantInfoStack {
+    font-size: 3vw;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .participantInfoStack {
+    font-size: 1.6vw;
+  }
+}
+
+/* @media screen and (min-width: 902px) {
+  .participantInfoStack {
+    font-size: 1.6vw;
+  }
+} */

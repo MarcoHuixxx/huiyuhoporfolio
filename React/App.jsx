@@ -21,7 +21,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 const serverUrl = import.meta.env.VITE_API_BASE_URL;
 import Avatar from "@mui/material/Avatar";
 import wewaClubIcon from "./assets/wewaClub.svg";
-import InstagramIcon from "./assets/ig2.webp";
+import InstagramIcon from "./assets/IG-Subpage參賽者IG.svg";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import BigBIcon from "./assets/bigb.svg";
 import citywalkIcon from "./assets/citywalk.svg";
@@ -720,7 +720,7 @@ function App() {
         // onClose={handleDialogClose}
         fullScreen
       >
-        {!isMd && (
+        {true && (
           <Box className="mobileVotePageBox">
             {/* use home banner on vote page (mobile) */}
             <Box
@@ -731,488 +731,268 @@ function App() {
               sx={{ width: "100%", height: "auto", display: "block" }}
             />
             <Container
-              maxWidth="sm"
+              // maxWidth="sm"
               sx={{
                 paddingY: "20px",
-                display: {
-                  xs: "block",
-                  md: "none",
-                },
+                display: "block",
               }}
             >
-              <Container maxWidth="sm">
-                <Grid container>
-                  <Grid
-                    item
-                    xs={6}
+              <Container>
+                {/* Back to home button above the participant card */}
+                <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+                  <Button
                     sx={{
-                      maxHeight: "90px",
-                      borderLeft: "1px solid #FFF",
-                      paddingX: "10px",
-                      marginY: "50px",
+                      backgroundColor: "#fff",
+                      color: "#32BF72",
+                      borderRadius: "24px",
+                      textTransform: "none",
+                      px: 3,
+                      py: 1,
+                      fontWeight: 700,
+                      fontFamily: "MStiffHei HK Bold",
+                    }}
+                    onClick={() => {
+                      // redirect to home
+                      setVotePageIsOpen(false);
                     }}
                   >
-                    <Stack direction="column" spacing={1}>
-                      <Typography className="votePageInfoText">
-                        <Typography
-                          display={"inline"}
-                          sx={{
-                            fontSize: {
-                              xs: "20px",
-                              md: "24px",
-                            },
-                            marginRight: "5px",
-                            fontFamily: "gensen font master",
-                          }}
-                        >
-                          {selectedParticipant.chineseName}
-                        </Typography>
-                        <Typography
-                          display={"inline"}
-                          sx={{
-                            fontSize: {
-                              xs: "14px",
-                              md: "18px",
-                            },
-                            fontFamily: "gensen font master",
-                          }}
-                        >
-                          {selectedParticipant.name}
-                        </Typography>
-                      </Typography>
-                      <Box
-                        className="votePageInfoText"
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <Typography
-                          display={"inline"}
-                          sx={{
-                            fontSize: {
-                              xs: "14px",
-                              md: "18px",
-                            },
-                            fontFamily: "gensen font master",
-                          }}
-                        >
-                          Year {selectedParticipant.studyingYear}
-                        </Typography>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "end",
-                            paddingLeft: "2px",
-                            paddingRight: "0px",
-                          }}
-                        >
-                          <img
-                            src={InstagramIcon}
-                            alt="Instagram"
-                            className="igIcon"
-                          />
-                        </Box>
-                        <Typography
-                          className="votePageInfoText"
-                          display={"inline"}
-                          onClick={() => {
-                            window.open(
-                              `https://www.instagram.com/${selectedParticipant.instagram}/`,
-                              "_blank",
-                            );
-                          }}
-                          sx={{
-                            cursor: "pointer",
-                            fontSize: {
-                              xs: "12px",
-                              md: "14px",
-                            },
-                            fontWeight: "100",
-                            textDecoration: "underline",
-                            alignSelf: "center",
-                            maxWidth: "30px",
-                            lineHeight: "20px",
-                            textUnderlinePosition: "under",
-                          }}
-                        >
-                          @{selectedParticipant.instagram}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        className="votePageInfoText"
-                        sx={{
-                          fontSize: {
-                            xs: "14px",
-                            md: "18px",
-                          },
-                          fontFamily: "gensen font master",
-                        }}
-                      >
-                        {selectedParticipant.university}
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={6}
+                    回到首頁
+                  </Button>
+                </Box>
+                {/* Centered black card like home boxes */}
+                <Box
+                  sx={{
+                    backgroundColor: "#000",
+                    borderRadius: "24px",
+                    color: "#fff",
+                    boxShadow:
+                      "0 0 30px rgba(51, 164, 102, 1), 0 10px 30px rgba(0, 0, 0, 0.3)",
+                    width: { xs: "92%", md: "40%" },
+                    mx: "auto",
+                    // increase padding by 5px: theme spacing 2 -> 16px, 4 -> 32px; add 5px => 21px / 37px
+                    px: { xs: "21px", md: "37px" },
+                    py: { xs: "21px", md: "37px" },
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    gap: 1,
+                  }}
+                >
+                  {/* First line: participant no */}
+                  <Typography
                     sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      color: "#32BF72",
+                      fontWeight: 800,
+                      fontFamily: "MStiffHei HK",
+                      fontSize: { xs: "28px", md: "28px" },
                     }}
                   >
-                    <Box
+                    {String(selectedParticipant.participationNo).padStart(
+                      2,
+                      "0",
+                    )}
+                  </Typography>
+
+                  {/* Second line: 參賽者 */}
+                  <Typography
+                    sx={{
+                      color: "#32BF72",
+                      fontFamily: "Mantou Sans",
+                      fontSize: { xs: "28px", md: "28px" },
+                    }}
+                  >
+                    參賽者
+                  </Typography>
+
+                  {/* Third line: university | studying year | IG icon | IG handle */}
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    justifyContent="center"
+                    alignItems="center"
+                    className="participantInfoStack"
+                    sx={{
+                      mt: 1,
+                      width: "100%",
+                      // scale the font size with viewport but clamp to reasonable min/max
+                      // fontSize: {
+                      //   xs: "clamp(10px, 3.2vw, 10px)",
+                      //   sm: "clamp(14px, 3.2vw, 14px)",
+                      //   md: "clamp(12px, 3.2vw, 12px)",
+                      // },
+                      // fontSize: {
+                      //   xs: "2.8vw",
+                      // },
+                    }}
+                  >
+                    <Typography
                       sx={{
-                        maxWidth: "100%",
-                        maxHeight: "100%",
+                        color: "#fff",
+                        fontFamily: "MStiffHei HK",
+                        // inherit from Stack so sizing scales across breakpoints
+                        fontSize: "inherit",
+                        flex: "0 1 auto",
+                        textAlign: "center",
+                        px: 1,
+                        // keep university and year on the same line for screens wider than 360px
+                        whiteSpace: "normal",
+                        "@media (min-width:361px)": {
+                          whiteSpace: "nowrap",
+                        },
                       }}
                     >
-                      <Avatar
-                        alt={selectedParticipant.name}
-                        src={`/event1/${selectedParticipant.chineseName}.jpg`}
-                        // sx={{
-                        //   width: {
-                        //     xs: "95%",
-                        //     sm: "95%",
-                        //   },
-                        //   height: {
-                        //     xs: "100%",
-                        //     sm: "100%",
-                        //   },
-                        //   boxShadow: "0px 0px 5px 0px #000000",
-                        // }}
-                        sx={{
-                          width: { xs: 150, sm: 180 },
-                          height: { xs: 150, sm: 180 },
-                          boxShadow: "0px 0px 5px 0px #000000",
-                          cursor: "pointer",
-                        }}
-                      />
-                    </Box>
-                  </Grid>
-                </Grid>
-                <Grid container>
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      borderLeft: "1px solid #FFF",
-                      paddingX: "10px",
-                      marginY: "50px",
-                    }}
-                  >
+                      {selectedParticipant.university}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        fontFamily: "MStiffHei HK",
+                        fontSize: "inherit",
+                        flex: "0 1 auto",
+                        textAlign: "center",
+                        px: 1,
+                        whiteSpace: "normal",
+                        "@media (min-width:361px)": {
+                          whiteSpace: "nowrap",
+                        },
+                      }}
+                    >
+                      Year {selectedParticipant.studyingYear}
+                    </Typography>
                     <Box
                       sx={{
                         display: "flex",
-                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 0.4,
+                        // let the IG group size naturally with the surrounding font
+                        fontSize: "inherit",
+                        flex: "0 1 auto",
+                        justifyContent: "center",
+                        px: 1,
                       }}
                     >
-                      <Typography
-                        className="votePageInfoText"
-                        sx={{
-                          fontSize: "10px",
-                          fontWeight: "100",
-                          marginBottom: "5px",
-                        }}
-                      >
-                        複賽影片
-                      </Typography>
-                      {selectedParticipant.video && (
-                        <YoutubeEmbed embedId={selectedParticipant.video} />
-                      )}
-                    </Box>
-                  </Grid>
-                </Grid>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    sx={{
-                      backgroundColor: "#FFF",
-                      color: "#e04478",
-                      borderRadius: "75px",
-                      padding: "10px 30px",
-                      boxShadow: "0px 0px 2px 0px #000000",
-                    }}
-                    onClick={onVoteButonClick}
-                    disabled={!isWithInEventTime}
-                  >
-                    <span className="voteButtonText">
-                      {new Date() < new Date(eventStartDate)
-                        ? "投票即將開始"
-                        : new Date() > new Date(eventDeadlineDate)
-                          ? "投票已結束"
-                          : "投票"}
-                    </span>
-                  </Button>
-                </Box>
-              </Container>
-            </Container>
-            <Footer type="home" isMd={isMd} isCompact={true} />
-          </Box>
-        )}
-        <Container
-          maxWidth="sm"
-          sx={{
-            display: {
-              xs: "none",
-              md: "block",
-            },
-          }}
-        >
-          <Box className="webVotePageBox">
-            {/* use home banner on vote page (web) */}
-            <Box
-              component="img"
-              src={BannerImage}
-              alt="Banner"
-              className="BannerImage"
-              sx={{ width: "100%", height: "auto", display: "block" }}
-            />
-            <Container
-              maxWidth="sm"
-              sx={{
-                paddingY: "20px",
-                display: {
-                  xs: "none",
-                  md: "block",
-                  position: "relative",
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  maxWidth: "30%",
-                  maxHeight: "30%",
-                }}
-                className="webAvatarBox"
-              >
-                <Avatar
-                  alt={selectedParticipant.name}
-                  src={`/event1/${selectedParticipant.chineseName}.jpg`}
-                  sx={{
-                    width: 170,
-                    height: 170,
-                    boxShadow: "0px 0px 5px 0px #000000",
-                    cursor: "pointer",
-                  }}
-                />
-              </Box>
-
-              <Container
-                maxWidth="sm"
-                sx={{
-                  marginTop: "80px",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Button
-                    sx={{
-                      backgroundColor: "#FFF",
-                      color: "#e04478",
-                      borderRadius: "75px",
-                      padding: "10px 30px",
-                      boxShadow: "0px 0px 2px 0px #000000",
-                    }}
-                    onClick={onVoteButonClick}
-                    disabled={!isWithInEventTime}
-                  >
-                    <span className="voteButtonText">
-                      {" "}
-                      {new Date() < new Date(eventStartDate)
-                        ? "投票即將開始"
-                        : new Date() > new Date(eventDeadlineDate)
-                          ? "投票已結束"
-                          : "投票"}
-                    </span>
-                  </Button>
-                </Box>
-                <Grid container>
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      paddingX: "10px",
-                      marginTop: "50px",
-                    }}
-                  >
-                    <Stack direction="column" spacing={1}>
-                      <Typography
-                        className="votePageInfoText"
-                        sx={{
-                          fontWeight: "100",
-                        }}
-                      >
-                        參賽者
-                      </Typography>
-                      <Typography className="votePageInfoText">
-                        <Typography
-                          display={"inline"}
-                          sx={{
-                            fontFamily: "gensen font master",
-                            fontSize: {
-                              xs: "20px",
-                              md: "24px",
-                            },
-                            marginRight: "5px",
-                          }}
-                        >
-                          {selectedParticipant.chineseName}
-                        </Typography>
-                        <Typography
-                          display={"inline"}
-                          sx={{
-                            fontFamily: "gensen font master",
-                          }}
-                        >
-                          {selectedParticipant.name}
-                        </Typography>
-                      </Typography>
                       <Box
-                        className="votePageInfoText"
+                        component="img"
+                        src={InstagramIcon}
+                        alt="ig"
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <Typography
-                          display={"inline"}
-                          sx={{
-                            fontFamily: "gensen font master",
-                          }}
-                        >
-                          Year {selectedParticipant.studyingYear}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        className="votePageInfoText"
-                        sx={{
-                          fontFamily: "gensen font master",
-                        }}
-                      >
-                        {selectedParticipant.university}
-                      </Typography>
-                      <Box
-                        sx={{
-                          height: "20px",
-                          width: "100px",
-                          borderBottom: "1px solid #FFF",
+                          width: "1em",
+                          height: "1em",
+                          filter: "brightness(0) invert(1)",
+                          flexShrink: 0,
                         }}
                       />
                       <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "start",
-                        }}
-                        className="webIgBox"
+                        component="a"
+                        href={
+                          selectedParticipant.instagram
+                            ? `https://www.instagram.com/${selectedParticipant.instagram.replace(/^@/, "")}`
+                            : "#"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{ textDecoration: "none", color: "inherit" }}
                       >
-                        <img
-                          src={InstagramIcon}
-                          alt="Instagram"
-                          className="igIcon"
-                        />
                         <Typography
-                          className="votePageInfoText"
-                          display={"inline"}
-                          onClick={() => {
-                            window.open(
-                              `https://www.instagram.com/${selectedParticipant.instagram}/`,
-                              "_blank",
-                            );
-                          }}
+                          title={selectedParticipant.instagram}
                           sx={{
+                            color: "#fff",
+                            fontFamily: "MStiffHei HK",
+                            fontSize: "inherit",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: "100%",
                             cursor: "pointer",
-                            fontSize: "13px",
-                            fontWeight: "100",
-                            textDecoration: "underline",
-                            alignSelf: "center",
                           }}
                         >
-                          @{selectedParticipant.instagram}
+                          {selectedParticipant.instagram &&
+                          selectedParticipant.instagram.length > 10
+                            ? `${selectedParticipant.instagram.slice(0, 10)}...`
+                            : selectedParticipant.instagram}
                         </Typography>
                       </Box>
-                      <Box style={{ display: "flex", justifyContent: "start" }}>
-                        {selectedParticipant.instagram && (
-                          <InstagramEmbed
-                            url={
-                              "https://www.instagram.com/" +
-                              selectedParticipant.instagram +
-                              "/"
-                            }
-                            // width={"320px"}
-                            // height={"220px"}
-                          />
-                        )}
-                      </Box>
-                    </Stack>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={4}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  ></Grid>
-                </Grid>
+                    </Box>
+                  </Stack>
 
-                <Grid container>
-                  <Grid
-                    item
-                    xs={9}
-                    sx={{
-                      paddingX: "10px",
-                    }}
+                  {/* Participant avatar */}
+                  <Box
+                    sx={{ mt: 2, display: "flex", justifyContent: "center" }}
                   >
-                    <Box
+                    <Avatar
+                      alt={selectedParticipant.name}
+                      src={`/event1/${selectedParticipant.chineseName}.jpg`}
                       sx={{
-                        height: "20px",
-                        width: "100px",
-                        borderBottom: "1px solid #FFF",
+                        width: { xs: 150, sm: 180 },
+                        height: { xs: 150, sm: 180 },
+                        boxShadow: "0px 0px 5px 0px #000000",
                       }}
                     />
-                    <Box
+                  </Box>
+
+                  {/* Vote button centered (moved to just under avatar) */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "100%",
+                      mt: 2,
+                    }}
+                  >
+                    <Button
                       sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        marginTop: "10px",
+                        backgroundColor: "#32BF72",
+                        color: "#ffffff",
+                        borderRadius: "75px",
+                        padding: "6px 30px",
+                        boxShadow: "0px 0px 2px 0px #000000",
+                        fontFamily: "MStiffHei HK",
+                        ":hover": { backgroundColor: "#2fb960" },
                       }}
+                      onClick={onVoteButonClick}
+                      disabled={!isWithInEventTime}
                     >
                       <Typography
-                        className="votePageInfoText"
+                        component="span"
                         sx={{
-                          fontSize: "10px",
-                          fontWeight: "100",
-                          marginBottom: "5px",
+                          fontSize: "14px",
+                          fontWeight: 700,
+                          color: "inherit",
                         }}
                       >
-                        複賽影片
+                        {new Date() < new Date(eventStartDate)
+                          ? "投票即將開始"
+                          : new Date() > new Date(eventDeadlineDate)
+                            ? "投票已結束"
+                            : "投票"}
                       </Typography>
-                      {selectedParticipant.video && (
-                        <YoutubeEmbed embedId={selectedParticipant.video} />
-                      )}
-                    </Box>
-                  </Grid>
-                </Grid>
+                    </Button>
+                  </Box>
+
+                  {/* 複賽影片 left aligned then video */}
+                  <Box sx={{ width: "100%", mt: 2 }}>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        textAlign: { xs: "center", md: "left" },
+                        mb: 1,
+                        fontFamily: "MStiffHei HK",
+                      }}
+                    >
+                      複賽影片
+                    </Typography>
+                    {selectedParticipant.video && (
+                      <YoutubeEmbed embedId={selectedParticipant.video} />
+                    )}
+                  </Box>
+                </Box>
               </Container>
-              <Footer type="home" isMd={isMd} isCompact={true} />
             </Container>
+            <Footer type="home" isMd={isMd} />
           </Box>
-        </Container>
+        )}
+
         <Dialog
           open={voteDialogIsOpen}
           setOpen={setVoteDialogIsOpen}
@@ -1706,7 +1486,7 @@ function App() {
         <Box
           className="section"
           sx={{
-            width: { xs: "80%", md: "40%" },
+            width: { xs: "90%", md: "40%" },
             mx: "auto",
           }}
         >
@@ -1826,21 +1606,27 @@ function App() {
               >
                 投票方法
               </Typography>
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: { xs: "start", sm: "center" },
+                  ml: "10px",
+                }}
+              >
                 <Stack
                   direction={{ md: "column" }}
-                  spacing={2}
+                  spacing={{ xs: 2, md: 3 }}
                   justifyContent="center"
                   alignItems="flex-start"
-                  sx={{ width: "fit-content", maxWidth: "100%", mx: "auto" }}
+                  // sx={{ width: "fit-content", maxWidth: "100%", mx: "auto" }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Box
                       sx={{
-                        width: 32,
-                        minWidth: 32,
-                        height: 32,
-                        minHeight: 32,
+                        width: 20,
+                        minWidth: 20,
+                        height: 20,
+                        minHeight: 20,
                         flexShrink: 0,
                         aspectRatio: "1 / 1",
                         borderRadius: "50%",
@@ -1881,10 +1667,10 @@ function App() {
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <Box
                         sx={{
-                          width: 32,
-                          minWidth: 32,
-                          height: 32,
-                          minHeight: 32,
+                          width: 20,
+                          minWidth: 20,
+                          height: 20,
+                          minHeight: 20,
                           flexShrink: 0,
                           aspectRatio: "1 / 1",
                           borderRadius: "50%",
@@ -1943,10 +1729,10 @@ function App() {
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Box
                       sx={{
-                        width: 32,
-                        minWidth: 32,
-                        height: 32,
-                        minHeight: 32,
+                        width: 20,
+                        minWidth: 20,
+                        height: 20,
+                        minHeight: 20,
                         flexShrink: 0,
                         aspectRatio: "1 / 1",
                         borderRadius: "50%",
