@@ -14,6 +14,7 @@ const INFOBIP_URL = process.env.INFOBIP_URL || 'https://d884dr.api.infobip.com/s
 const INFOBIP_SENDER = process.env.INFOBIP_SENDER || 'ICMA';
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const { https } = require('follow-redirects');
 const cors = require("cors")
 const corsOptions = {
   origin: [
@@ -222,7 +223,7 @@ const buildOtpMessagePayload = (phone, otp) => {
         ],
         sender: INFOBIP_SENDER,
         content: {
-          text: `ICMA2024 Verification Code: ${otp}`
+          text: `ICMA2026 Verification Code: ${otp}`
         }
       }
     ]
@@ -256,29 +257,40 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
 
     const messagePayload = buildOtpMessagePayload(phone, random6Digits);
 
-    // send via InfoBip HTTP API
-    if (typeof fetch === 'undefined') {
-      throw new Error('fetch is not available in this Node runtime. Install node-fetch or upgrade Node.');
-    }
-
-    const myHeaders = {
-      'Authorization': INFOBIP_AUTH,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
-
-    const requestOptions = {
+    // send via InfoBip HTTP API using follow-redirects `https`
+    const postData = JSON.stringify(messagePayload);
+    const urlObj = new URL(INFOBIP_URL);
+    const httpsOptions = {
       method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify(messagePayload),
-      redirect: 'follow'
+      hostname: urlObj.hostname,
+      path: urlObj.pathname + (urlObj.search || ''),
+      headers: {
+        'Authorization': INFOBIP_AUTH,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      maxRedirects: 20
     };
 
-    const resp = await fetch(INFOBIP_URL, requestOptions);
-    const result = await resp.json();
-    if (!resp.ok) {
-      throw new Error(`InfoBip error: ${JSON.stringify(result)}`);
-    }
+    const result = await new Promise((resolve, reject) => {
+      const reqInfobip = https.request(httpsOptions, (resp) => {
+        const chunks = [];
+        resp.on('data', (chunk) => chunks.push(chunk));
+        resp.on('end', () => {
+          const body = Buffer.concat(chunks).toString();
+          let parsed;
+          try { parsed = JSON.parse(body); } catch (e) { parsed = body; }
+          if (resp.statusCode >= 200 && resp.statusCode < 300) {
+            resolve(parsed);
+          } else {
+            reject(new Error(`InfoBip error: ${resp.statusCode} ${JSON.stringify(parsed)}`));
+          }
+        });
+      });
+      reqInfobip.on('error', (err) => reject(err));
+      reqInfobip.write(postData);
+      reqInfobip.end();
+    });
 
     //find if the phone is already in the database, if yes, update the otp, if not, create a new record
 
