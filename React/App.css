@@ -165,21 +165,29 @@ span p label h1 h2 h3 h4 h5 h6 {
   /* leave space for the fixed top bar so content (banner) is not obscured */
   padding-top: 80px; /* mobile default matches top bar xs height */
 }
-/* Responsive background images for home page */
+/* Responsive background images for home page (mobile-first):
+   set mobile image as the default to avoid desktop-to-mobile flicker
+*/
 .PageContainer {
-  /* default to desktop background */
-  background-image: url("./assets/Desktop-BG-HOME.jpg");
+  /* default (mobile): use mobile-optimized background */
+  background-image: url("./assets/Mobile-BG-HOME.jpg");
   background-size: cover;
-  background-position: center center;
+  /* pin background to top to avoid vertical shift when layout changes */
+  background-position: center top !important;
   background-repeat: no-repeat;
-  /* keep background fixed to viewport so pages align the same */
-  background-attachment: fixed;
+  /* don't use fixed attachment on mobile (can cause paint/jump issues) */
+  background-attachment: scroll;
 }
 
 @media screen and (min-width: 900px) {
   /* on larger screens the top bar is 60px tall */
   .PageContainer {
     padding-top: 60px;
+  }
+  /* desktop: use the larger background and lock to viewport for alignment */
+  .PageContainer {
+    background-image: url("./assets/Desktop-BG-HOME.jpg");
+    background-attachment: fixed;
   }
 }
 .BannerImage {
@@ -480,13 +488,13 @@ span p label h1 h2 h3 h4 h5 h6 {
 }
 
 .mobileVotePageBox {
-  /* use same background as home page */
-  background-image: url("./assets/Desktop-BG-HOME.jpg");
+  /* mobile vote page: default to the mobile background to avoid flicker */
+  background-image: url("./assets/Mobile-BG-HOME.jpg");
   background-size: cover;
-  background-position: center center;
+  /* align to top to match home page position and prevent jump */
+  background-position: center top !important;
   background-repeat: no-repeat;
-  /* match PageContainer so the visible portion lines up with home */
-  background-attachment: fixed;
+  background-attachment: scroll;
   display: flex;
   flex-direction: column;
   /* don't force a huge height here; let content determine height */
@@ -499,14 +507,24 @@ span p label h1 h2 h3 h4 h5 h6 {
   /* ensure web vote box starts at top of dialog content; dialog now provides top padding */
   margin-top: 0;
   /* use same background as home page */
-  background-image: url("./assets/Desktop-BG-HOME.jpg");
+  background-image: url("./assets/Mobile-BG-HOME.jpg");
   background-size: cover;
-  background-position: center center;
+  background-position: center top !important;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-attachment: scroll;
   display: flex;
   flex-direction: column;
   height: auto;
+}
+
+@media screen and (min-width: 900px) {
+  .mobileVotePageBox,
+  .webVotePageBox {
+    background-image: url("./assets/Desktop-BG-HOME.jpg");
+    /* desktop: pin to top as well so the visible portion matches home */
+    background-position: center top !important;
+    background-attachment: fixed;
+  }
 }
 
 .finalMobileVotePageBox {
