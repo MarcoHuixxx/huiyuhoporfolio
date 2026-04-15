@@ -172,6 +172,8 @@ span p label h1 h2 h3 h4 h5 h6 {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  /* keep background fixed to viewport so pages align the same */
+  background-attachment: fixed;
 }
 
 @media screen and (min-width: 900px) {
@@ -482,6 +484,9 @@ span p label h1 h2 h3 h4 h5 h6 {
   background-image: url("./assets/Desktop-BG-HOME.jpg");
   background-size: cover;
   background-position: center center;
+  background-repeat: no-repeat;
+  /* match PageContainer so the visible portion lines up with home */
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   /* don't force a huge height here; let content determine height */
@@ -497,6 +502,8 @@ span p label h1 h2 h3 h4 h5 h6 {
   background-image: url("./assets/Desktop-BG-HOME.jpg");
   background-size: cover;
   background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   height: auto;
