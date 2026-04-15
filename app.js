@@ -242,7 +242,7 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
     //console.log("phone.length:", phone.length)
     //console.log("phone.startsWith(+852):", phone.startsWith("+852"))
 
-    if (phone.length !== 12 || !phone.startsWith("+852")) {
+    if (phone.length !== 14 || !phone.startsWith("+852")) {
       return res.status(400).send({ success: false, message: 'Invalid Phone Number' });
     }
 
@@ -265,9 +265,9 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
       hostname: urlObj.hostname,
       path: urlObj.pathname + (urlObj.search || ''),
       headers: {
-        'Authorization': INFOBIP_AUTH,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+      'Authorization': INFOBIP_AUTH,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
       },
       maxRedirects: 20
     };
@@ -284,7 +284,7 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
             resolve(parsed);
           } else {
             reject(new Error(`InfoBip error: ${resp.statusCode} ${JSON.stringify(parsed)}`));
-          }
+    }
         });
       });
       reqInfobip.on('error', (err) => reject(err));
@@ -454,7 +454,6 @@ app.get("/api/check-phone-verified/:phone/:eventId", async (req, res) => {
 
 app.post('/api/vote', async (req, res) => {
   try {
-
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
@@ -465,7 +464,6 @@ app.post('/api/vote', async (req, res) => {
     const needUpDateParticipantEventIds = ["664b20f7cbd11e4bca2386c8", "668deded51930e822903d37c"];
 
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
-    if (eventId === '668deded51930e822903d37c') {
       if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
         return res.status(400).send({ success: false, message: 'Missing Parameters' });
       }
@@ -473,12 +471,8 @@ app.post('/api/vote', async (req, res) => {
       if (needOptVerifyEventIds.includes(eventId)) {
         const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
 
-        const voterVoteRecord = await voteRecord.find({
-          voterPhone: voterPhone,
-          eventId: eventId
-        });
-
-        if (!(optVerifyRecord || voterVoteRecord.length > 0)) {
+ 
+        if (!optVerifyRecord ) {
           return res.status(400).send({ success: false, message: 'Phone not verified' });
         }
       } else {
@@ -541,13 +535,9 @@ app.post('/api/vote', async (req, res) => {
         });
         newVoteRecord.save();
         res.send({ success: true });
-
       } else {
         //console.log("The participant is not found")
         res.send({ success: false });
-      }
-    } else {
-      return res.send({ success: true });
     }
 
   } catch (e) {
@@ -635,9 +625,9 @@ app.get('/api/event/:event_id', async (req, res) => {
 
 
 
+
 app.get('/api/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOptions), async (req, res) => {
   try {
-
     console.log("get list")
     const isFromDomain = checkIsFromDomain(req, res);
    if (!isFromDomain) {
@@ -647,7 +637,6 @@ app.get('/api/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOpt
     if (!eventId || eventId.length === 0) {
       return res.status(400).send({ success: false, message: 'Missing Parameters' });
     }
-
     const showVoteCountEvents = ["668deded51930e822903d37c"];
     const countVoteByRecordEvent = [
       "668decd851930e822903d375",
@@ -736,7 +725,6 @@ app.get('/api/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOpt
     //console.log(e)
   }
 })
-
 const getParticipants = async (eventId, roundNumber, limit, sortBy, needPhoto) => {
   const participants = await participant.aggregate(
     [
