@@ -10,6 +10,8 @@ var geoip = require('geoip-lite');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
+const twilioMessagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
+const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require("cors")
@@ -209,6 +211,25 @@ const checkIsFromDomain = (req, res) => {
   );
 }
 
+const buildOtpMessagePayload = (phone, otp) => {
+  const payload = {
+    body: 'ICMA2024 Verification Code: ' + otp,
+    to: phone,
+  };
+
+  if (twilioMessagingServiceSid) {
+    payload.messagingServiceSid = twilioMessagingServiceSid;
+    return payload;
+  }
+
+  if (twilioPhoneNumber) {
+    payload.from = twilioPhoneNumber;
+    return payload;
+  }
+
+  throw new Error('Missing Twilio sender configuration. Set TWILIO_MESSAGING_SERVICE_SID or TWILIO_PHONE_NUMBER.');
+};
+
 
 app.get('/api/send-otp/:phone', async (req, res, next) => {
   try {
@@ -234,12 +255,10 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
     const random6Digits = Math.floor(100000 + Math.random() * 900000);
     console.log("random6Digits:", random6Digits)
 
+    const messagePayload = buildOtpMessagePayload(phone, random6Digits);
+
     const result = await client.messages
-      .create({
-        body: 'ICMA2024 Verification Code: ' + random6Digits,
-        from: '+12073092281',
-        to: phone
-      });
+      .create(messagePayload);
 
     //find if the phone is already in the database, if yes, update the otp, if not, create a new record
 
@@ -273,11 +292,26 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
   } catch (error) {
     errorLog.create({ error: error || "Error sending OTP", time: new Date() });
     console.error('Error sending OTP:', error);
+
+    if (error.code === 21612) {
+      return res.status(502).send({
+        success: false,
+        message: 'Twilio cannot send SMS with the current sender configuration for this destination. Configure TWILIO_MESSAGING_SERVICE_SID or a sender that supports Hong Kong SMS.',
+      });
+    }
+
+    if (error.message && error.message.includes('Missing Twilio sender configuration')) {
+      return res.status(500).send({
+        success: false,
+        message: error.message,
+      });
+    }
+
     res.status(500).send({ success: false });
   }
 });
 
-app.get("/check-vote/:phone/:eventId", async (req, res) => {
+app.get("/api/check-vote/:phone/:eventId", async (req, res) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
@@ -322,7 +356,7 @@ app.get("/check-vote/:phone/:eventId", async (req, res) => {
   }
 })
 
-app.get("/check-wewa-club-id-used/:wewaId/:eventId", async (req, res) => {
+app.get("/api/check-wewa-club-id-used/:wewaId/:eventId", async (req, res) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
@@ -371,7 +405,7 @@ app.get("/check-wewa-club-id-used/:wewaId/:eventId", async (req, res) => {
   }
 })
 
-app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
+app.get("/api/check-phone-verified/:phone/:eventId", async (req, res) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
@@ -401,7 +435,7 @@ app.get("/check-phone-verified/:phone/:eventId", async (req, res) => {
 })
 
 
-app.post('/vote', async (req, res) => {
+app.post('/api/vote', async (req, res) => {
   try {
 
     const isFromDomain = checkIsFromDomain(req, res);
@@ -508,7 +542,7 @@ app.post('/vote', async (req, res) => {
   }
 })
 
-app.get('/verify-otp/:phone/:otp', cors(corsOptions), async (req, res) => {
+app.get('/api/verify-otp/:phone/:otp', cors(corsOptions), async (req, res) => {
   try {
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
@@ -738,7 +772,7 @@ const getParticipants = async (eventId, roundNumber, limit, sortBy, needPhoto) =
   return participants;
 }
 
-app.get('/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async (req, res) => {
+app.get('/api/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async (req, res) => {
   try {
     if (req.query.pw !== process.env.ADMIN_PW) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
@@ -765,7 +799,7 @@ app.get('/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async
 }
 )
 
-app.post('/admin/edit/:eventId/:roundNumber', async (req, res) => {
+app.post('/api/admin/edit/:eventId/:roundNumber', async (req, res) => {
   try {
     if (req.query.pw !== process.env.ADMIN_PW) {
       return res.status(401).send({ success: false, message: 'Authorization Failed' });
@@ -815,7 +849,7 @@ app.post('/admin/edit/:eventId/:roundNumber', async (req, res) => {
   }
 })
 
-app.post('/admin/voteChannel', async (req, res) => {
+app.post('/api/admin/voteChannel', async (req, res) => {
   try {
 
     const isFromDomain = checkIsFromDomain(req, res);
@@ -851,7 +885,7 @@ app.post('/admin/voteChannel', async (req, res) => {
   }
 })
 
-app.post('/admin/edit/event-participant', async (req, res) => {
+app.post('/api/admin/edit/event-participant', async (req, res) => {
   try {
 
     const isFromDomain = checkIsFromDomain(req, res);
@@ -990,3 +1024,5 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
   console.log(`Example app is running on ${process.env.NODE_ENV} mode`)
 })
+
+

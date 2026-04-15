@@ -25,15 +25,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="/voting" element={<App />} />
-          <Route path="/final" element={<FinalPage />} />
+          <Route path="/voting-2026" element={<App />} />
+          <Route path="/final-2026" element={<FinalPage />} />
           <Route
-            path="/final/664b20f7cbd11e4bca2386c8"
+            path="/final-2026/664b20f7cbd11e4bca2386c8"
             element={<FinalPage />}
           />
-          <Route path="/voting/664b20f7cbd11e4bca2386c8" element={<App />} />
-          <Route path="/admin/edit" element={<AdminEditPage />} />
-          <Route path="/admin/edit/final" element={<AdminEditPageFinal />} />
+          <Route path="/voting-2026/664b20f7cbd11e4bca2386c8" element={<App />} />
+          <Route path="/admin-2026/edit" element={<AdminEditPage />} />
+          <Route path="/admin-2026/edit/final" element={<AdminEditPageFinal />} />
         </Routes>
       </Router>
     </ThemeProvider>
