@@ -7,11 +7,11 @@ const expressLayouts = require('express-ejs-layouts');
 const mongoose = require("mongoose");
 require("dotenv").config();
 var geoip = require('geoip-lite');
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
-const twilioMessagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
-const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+// InfoBip configuration (used instead of Twilio)
+const INFOBIP_AUTH = process.env.INFOBIP_AUTH || 'App 95e9ac22f773b087482afb7b154f3c33-a39f2b76-9295-4e11-bd5b-f94c62e8909f';
+const INFOBIP_URL = process.env.INFOBIP_URL || 'https://d884dr.api.infobip.com/sms/3/messages';
+// Optional: set a sender name/number via env `INFOBIP_SENDER`
+const INFOBIP_SENDER = process.env.INFOBIP_SENDER || 'ICMA';
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require("cors")
@@ -195,7 +195,7 @@ app.set('view engine', 'ejs');
 // })
 
 const checkIsFromDomain = (req, res) => {
-  console.log("req.rawHeaders:", req.rawHeaders)
+  //console.log("req.rawHeaders:", req.rawHeaders)
 
   const isAllow = ["icmahk.org","https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
   if (process.env.NODE_ENV === "development") {
@@ -212,22 +212,21 @@ const checkIsFromDomain = (req, res) => {
 }
 
 const buildOtpMessagePayload = (phone, otp) => {
-  const payload = {
-    body: 'ICMA2024 Verification Code: ' + otp,
-    to: phone,
+  // InfoBip expects numbers without a leading '+' — normalize the phone
+  const to = phone && phone.startsWith('+') ? phone.slice(1) : phone;
+  return {
+    messages: [
+      {
+        destinations: [
+          { to }
+        ],
+        sender: INFOBIP_SENDER,
+        content: {
+          text: `ICMA2024 Verification Code: ${otp}`
+        }
+      }
+    ]
   };
-
-  if (twilioMessagingServiceSid) {
-    payload.messagingServiceSid = twilioMessagingServiceSid;
-    return payload;
-  }
-
-  if (twilioPhoneNumber) {
-    payload.from = twilioPhoneNumber;
-    return payload;
-  }
-
-  throw new Error('Missing Twilio sender configuration. Set TWILIO_MESSAGING_SERVICE_SID or TWILIO_PHONE_NUMBER.');
 };
 
 
@@ -242,7 +241,7 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
     //console.log("phone.length:", phone.length)
     //console.log("phone.startsWith(+852):", phone.startsWith("+852"))
 
-    if (phone.length !== 14 || !phone.startsWith("+852")) {
+    if (phone.length !== 12 || !phone.startsWith("+852")) {
       return res.status(400).send({ success: false, message: 'Invalid Phone Number' });
     }
 
@@ -257,8 +256,29 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
 
     const messagePayload = buildOtpMessagePayload(phone, random6Digits);
 
-    const result = await client.messages
-      .create(messagePayload);
+    // send via InfoBip HTTP API
+    if (typeof fetch === 'undefined') {
+      throw new Error('fetch is not available in this Node runtime. Install node-fetch or upgrade Node.');
+    }
+
+    const myHeaders = {
+      'Authorization': INFOBIP_AUTH,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify(messagePayload),
+      redirect: 'follow'
+    };
+
+    const resp = await fetch(INFOBIP_URL, requestOptions);
+    const result = await resp.json();
+    if (!resp.ok) {
+      throw new Error(`InfoBip error: ${JSON.stringify(result)}`);
+    }
 
     //find if the phone is already in the database, if yes, update the otp, if not, create a new record
 
@@ -290,24 +310,9 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
 
     res.send({ success: true });
   } catch (error) {
-    errorLog.create({ error: error || "Error sending OTP", time: new Date() });
+    errorLog.create({ error: error?.toString() || "Error sending OTP", time: new Date() });
     console.error('Error sending OTP:', error);
-
-    if (error.code === 21612) {
-      return res.status(502).send({
-        success: false,
-        message: 'Twilio cannot send SMS with the current sender configuration for this destination. Configure TWILIO_MESSAGING_SERVICE_SID or a sender that supports Hong Kong SMS.',
-      });
-    }
-
-    if (error.message && error.message.includes('Missing Twilio sender configuration')) {
-      return res.status(500).send({
-        success: false,
-        message: error.message,
-      });
-    }
-
-    res.status(500).send({ success: false });
+    res.status(500).send({ success: false, message: error?.message || 'Error sending OTP' });
   }
 });
 
