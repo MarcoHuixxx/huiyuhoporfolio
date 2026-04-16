@@ -554,6 +554,8 @@ span p label h1 h2 h3 h4 h5 h6 {
   padding-bottom: 56.25%;
   position: relative;
   height: 0;
+  /* add spacing above the embedded video on vote pages */
+  margin-top: 10px;
 }
 
 .video-responsive iframe {

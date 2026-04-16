@@ -177,7 +177,7 @@ function App() {
   };
 
   const onParticipantClick = (item) => {
-    window.history.pushState({}, "", `/voting`);
+    window.history.pushState({}, "", `/voting-2026`);
     setSelectedParticipant(item);
     setVotePageIsOpen(true);
   };
