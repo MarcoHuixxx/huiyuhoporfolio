@@ -743,6 +743,12 @@ span p label h1 h2 h3 h4 h5 h6 {
   }
 }
 
+@media screen and (min-width: 1500px) {
+  .participantInfoStack {
+    font-size: 1.6vw;
+  }
+}
+
 /* @media screen and (min-width: 902px) {
   .participantInfoStack {
     font-size: 1.6vw;
