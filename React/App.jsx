@@ -212,7 +212,7 @@ function App() {
       if (iswewaClubIdUsedToday) {
         setIsConfirmVoteLoading(false);
         setWewaClubId("");
-        setErrorMessage("Wewa Club 會員編號今天已經使用過，請明天再使用");
+        setErrorMessage("華盛證券會員編號今天已經使用過，請明天再使用");
         return;
       }
 
@@ -309,7 +309,7 @@ function App() {
             參賽者投票後票數: item.participantVoteAfter,
             投票時間: moment(item.votedAt).format("YYYY-MM-DD HH:mm:ss"),
             投票者電話: item.voterPhone,
-            "投票者 WeWa Club ID":
+            "投票者 華盛證券會員編號":
               item.userWWCCode?.includes("WWC") &&
               item.userWWCCode?.length === 11
                 ? item.userWWCCode.toUpperCase()
@@ -1056,7 +1056,7 @@ function App() {
                   marginTop: "20px",
                 }}
               >
-                Wewa Club 會員編號 (如有)
+                華盛證券會員編號 (如有)
               </Typography>
               <Input
                 id="my-input"
@@ -1069,9 +1069,9 @@ function App() {
               />
               {wewaClubId !== "" ? (
                 !iswewaClubIdValid ? (
-                  <p className="inputErrorText">Wewa Club 會員編號無效</p>
+                  <p className="inputErrorText">華盛證券會員編號無效</p>
                 ) : (
-                  <p className="inputSuccessText">Wewa Club 會員編號有效</p>
+                  <p className="inputSuccessText">華盛證券會員編號有效</p>
                 )
               ) : (
                 ""
@@ -1106,7 +1106,7 @@ function App() {
                 <MenuItem value={0}>-請選擇-</MenuItem>
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2} disabled={!iswewaClubIdValid}>
-                  2 (Wewa Club會員)
+                  2 (華盛證券會員)
                 </MenuItem>
               </Select>
               <p className="inputErrorText">
@@ -1406,8 +1406,7 @@ function App() {
             }}
           >
             個人資料收集及用途 <br />
-            1.1投選者在參與復活賽投票時需提供的個人資料包括但不限於電話號碼、WeWa
-            Club會員編號等。這些資料將用於管理和組織投票活動，確保活動順利進行。
+            1.1投選者在參與復活賽投票時需提供的個人資料包括但不限於電話號碼、華盛證券會員編號等。這些資料將用於管理和組織投票活動，確保活動順利進行。
             <br />
             <br />
             1.2 投選者明白並同意其提供的個人資料可能會用於以下用途：

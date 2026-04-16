@@ -201,7 +201,7 @@ function App() {
           const windowLocation = window.location.href;
 
           const isAdminVar = windowLocation.includes(
-            "664b20f7cbd11e4bca2386c8"
+            "664b20f7cbd11e4bca2386c8",
           );
 
           setIsAdmin(isAdminVar);
@@ -223,7 +223,7 @@ function App() {
           setIsPopWithInEventTime(
             new Date(getPopEventResult?.data?.timeBegin) < new Date() &&
               // new Date("2024-6-4") < new Date() &&
-              new Date(getPopEventResult?.data?.timeEnd) > new Date()
+              new Date(getPopEventResult?.data?.timeEnd) > new Date(),
           );
 
           //if the event is not started, return
@@ -235,14 +235,14 @@ function App() {
           const popParticipantListResult = await axios.get(
             `/participant/${popEventId}/${roundNumber}/100/${isAdminVar}?pw=${
               windowLocation.split("?")?.[1]?.split("=")?.[1]
-            }`
+            }`,
           );
 
           const totalVotes = popParticipantListResult.data.participants.reduce(
             (acc, item) => {
               return acc + item.votes;
             },
-            0
+            0,
           );
           setTotalVotes(totalVotes);
 
@@ -251,12 +251,12 @@ function App() {
             setThirdRankingList(thirdList);
             setRankingList(popParticipantListResult?.data?.participants);
             setFirstThreeVotes(
-              popParticipantListResult?.data?.firstThreeRaningPercent
+              popParticipantListResult?.data?.firstThreeRaningPercent,
             );
           }
 
           const getPkEventResult = await axios.get(
-            `/event/${pkEventIds.map((id) => id).join(",")}`
+            `/event/${pkEventIds.map((id) => id).join(",")}`,
           );
 
           if (getPkEventResult?.data?.length > 0) {
@@ -267,7 +267,7 @@ function App() {
           const pkEventDeadlineDateArray = [];
           for (let i = 0; i < pkEventIds.length; i++) {
             const pkEvent = getPkEventResult.data.find(
-              (item) => item._id === pkEventIds[i]
+              (item) => item._id === pkEventIds[i],
             );
 
             if (pkEvent?.timeBegin) {
@@ -294,7 +294,7 @@ function App() {
               .map((id) => id)
               .join(",")}/${roundNumber}/100/${isAdminVar}?pw=${
               windowLocation.split("?")?.[1]?.split("=")?.[1]
-            }`
+            }`,
           );
 
           if (pkParticipantListResult?.data?.participants?.length > 0) {
@@ -311,13 +311,13 @@ function App() {
 
           setIsRecWithInEventTime(
             new Date(getRecEventResult?.data?.timeBegin) < new Date() &&
-              new Date(getRecEventResult?.data?.timeEnd) > new Date()
+              new Date(getRecEventResult?.data?.timeEnd) > new Date(),
           );
 
           const recParticipantListResult = await axios.get(
             `/participant/${recEventId}/${roundNumber}/100/${isAdminVar}?pw=${
               windowLocation.split("?")?.[1]?.split("=")?.[1]
-            }`
+            }`,
           );
 
           if (recParticipantListResult?.data?.participants?.length > 0) {
@@ -325,7 +325,7 @@ function App() {
             recParticipantListResult?.data?.participants?.forEach((item) => {
               const battleIndexOfItem =
                 pkParticipantListResult?.data?.participants?.findIndex((team) =>
-                  team.some((participant) => participant._id === item._id)
+                  team.some((participant) => participant._id === item._id),
                 );
               if (battleIndexOfItem !== -1) {
                 originalRecRankingList[battleIndexOfItem] = item;
@@ -404,7 +404,7 @@ function App() {
       ) {
         setIsPopWithInEventTime(
           new Date(eventStartDate) < new Date() &&
-            new Date(eventDeadlineDate) > new Date()
+            new Date(eventDeadlineDate) > new Date(),
         );
       }
 
@@ -417,7 +417,7 @@ function App() {
         ) {
           isPkWithInEventTimeVar.push(
             new Date(pkEventStartDate[i]) < new Date() &&
-              new Date(pkEventDeadlineDate[i]) > new Date()
+              new Date(pkEventDeadlineDate[i]) > new Date(),
           );
         } else {
           isPkWithInEventTimeVar.push(false);
@@ -444,7 +444,7 @@ function App() {
         const result = await axios.get(
           `/vote-record/${popEventId}/1/9999999999999/?pw=${
             window.location.href.split("?")?.[1]?.split("=")?.[1]
-          }`
+          }`,
         );
 
         let data = result.data;
@@ -456,7 +456,7 @@ function App() {
             參賽者投票後票數: item.participantVoteAfter,
             投票時間: moment(item.votedAt).format("YYYY-MM-DD HH:mm:ss"),
             投票者電話: item.voterPhone,
-            "投票者 WeWa Club ID":
+            "投票者 華盛證券會員編號":
               item.userWWCCode?.includes("WWC") &&
               item.userWWCCode?.length === 11
                 ? item.userWWCCode.toUpperCase()
@@ -482,9 +482,9 @@ function App() {
           eventType === "pop"
             ? popEventId
             : eventType === "pk"
-            ? pkEventIds[selectedBattleNumber]
-            : recEventId
-        }`
+              ? pkEventIds[selectedBattleNumber]
+              : recEventId
+        }`,
       );
       //console.log("checkIsVotedToday result:", result);
       return result.data.isVoted;
@@ -499,7 +499,7 @@ function App() {
       const result = await axios.get(
         `/check-wewa-club-id-used/${
           wewaClubId?.trim() !== "" ? wewaClubId : "ILOVEWEWACLUB"
-        }/${popEventId}`
+        }/${popEventId}`,
       );
       //console.log("checkIsWewaClubIdUsedToday result:", result);
       return result.data.isWewaClubIdUsed;
@@ -517,8 +517,8 @@ function App() {
           eventType === "pop"
             ? popEventId
             : eventType === "pk"
-            ? pkEventIds[selectedBattleNumber]
-            : recEventId,
+              ? pkEventIds[selectedBattleNumber]
+              : recEventId,
         voterPhone: browserFingerprint,
         voteCount: 1,
         wewaClubId: "",
@@ -1194,8 +1194,8 @@ function App() {
                   {eventType === "pk"
                     ? "12強PK賽"
                     : eventType === "pop"
-                    ? "WeWa最強人氣大獎"
-                    : "復活投票"}
+                      ? "WeWa最強人氣大獎"
+                      : "復活投票"}
                 </Typography>
                 <Box
                   sx={{
@@ -1283,8 +1283,8 @@ function App() {
                   {eventType === "pk"
                     ? "12強PK賽"
                     : eventType === "pop"
-                    ? "WeWa最強人氣大獎"
-                    : "復活投票"}
+                      ? "WeWa最強人氣大獎"
+                      : "復活投票"}
                 </Typography>
                 <Box
                   sx={{
@@ -1402,8 +1402,8 @@ function App() {
                   {eventType === "pk"
                     ? "Battle " + (selectedBattleNumber + 1)
                     : eventType === "pop"
-                    ? "WeWa最強人氣大獎"
-                    : "復活投票"}
+                      ? "WeWa最強人氣大獎"
+                      : "復活投票"}
                 </Typography>
                 <Box
                   sx={{
@@ -1510,8 +1510,8 @@ function App() {
                     eventType === "pop"
                       ? !isPopWithInEventTime
                       : eventType === "pk"
-                      ? !isPkWithInEventTime[selectedBattleNumber]
-                      : !isRecWithInEventTime
+                        ? !isPkWithInEventTime[selectedBattleNumber]
+                        : !isRecWithInEventTime
                   }
                 >
                   <Typography
@@ -1524,8 +1524,8 @@ function App() {
                       eventType === "pop"
                         ? !isPopWithInEventTime
                         : eventType === "pk"
-                        ? !isPkWithInEventTime[selectedBattleNumber]
-                        : !isRecWithInEventTime
+                          ? !isPkWithInEventTime[selectedBattleNumber]
+                          : !isRecWithInEventTime
                     )
                       ? "投票通道關閉"
                       : "投票"}
@@ -1545,8 +1545,8 @@ function App() {
                       eventType === "pop"
                         ? !isPopWithInEventTime
                         : eventType === "pk"
-                        ? !isPkWithInEventTime[selectedBattleNumber]
-                        : !isRecWithInEventTime
+                          ? !isPkWithInEventTime[selectedBattleNumber]
+                          : !isRecWithInEventTime
                     )
                       ? "投票通道關閉"
                       : errorMessage}
