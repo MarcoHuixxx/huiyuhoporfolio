@@ -8,8 +8,8 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 var geoip = require('geoip-lite');
 // InfoBip configuration (used instead of Twilio)
-const INFOBIP_AUTH = process.env.INFOBIP_AUTH || 'App 95e9ac22f773b087482afb7b154f3c33-a39f2b76-9295-4e11-bd5b-f94c62e8909f';
-const INFOBIP_URL = process.env.INFOBIP_URL || 'https://d884dr.api.infobip.com/sms/3/messages';
+const INFOBIP_AUTH = process.env.INFOBIP_AUTH || '1App 95e9ac22f773b087482afb7b154f3c33-a39f2b76-9295-4e11-bd5b-f94c62e8909f';
+const INFOBIP_URL = process.env.XINFOBIP_URL || 'https://d884dr.api.infobip.com/sms/3/messages';
 // Optional: set a sender name/number via env `INFOBIP_SENDER`
 const INFOBIP_SENDER = process.env.INFOBIP_SENDER || 'ICMA';
 const bodyParser = require('body-parser');

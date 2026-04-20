@@ -594,6 +594,25 @@ function App() {
     );
   }, [isAgree]);
 
+  // format start/end dates from server for display
+  const startDateObj = eventStartDate ? new Date(eventStartDate) : null;
+  const endDateObj = eventDeadlineDate ? new Date(eventDeadlineDate) : null;
+
+  const formatDateLabel = (d) => {
+    if (!d || isNaN(d)) return "--.-- (---)";
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const weekday = d.toLocaleDateString(undefined, { weekday: "short" });
+    return `${month}.${day} (${weekday})`;
+  };
+
+  const formatTime = (d) => {
+    if (!d || isNaN(d)) return "--:--";
+    const hh = String(d.getHours()).padStart(2, "0");
+    const mm = String(d.getMinutes()).padStart(2, "0");
+    return `${hh}:${mm}`;
+  };
+
   return (
     <Box className="PageContainer">
       {/* Fixed Top Bar */}
@@ -831,7 +850,10 @@ function App() {
                         color: "#fff",
                         fontFamily: "MStiffHei HK",
                         // inherit from Stack so sizing scales across breakpoints
-                        fontSize: "inherit",
+                         fontSize: "inherit",
+                            "@media (min-width:1400px)": {
+                              fontSize: "20px",
+                            },
                         flex: "0 1 auto",
                         textAlign: "center",
                         px: 1,
@@ -848,7 +870,11 @@ function App() {
                       sx={{
                         color: "#fff",
                         fontFamily: "MStiffHei HK",
+
                         fontSize: "inherit",
+                            "@media (min-width:1400px)": {
+                              fontSize: "20px",
+                            },
                         flex: "0 1 auto",
                         textAlign: "center",
                         px: 1,
@@ -900,6 +926,9 @@ function App() {
                             color: "#fff",
                             fontFamily: "MStiffHei HK",
                             fontSize: "inherit",
+                            "@media (min-width:1400px)": {
+                              fontSize: "20px",
+                            },
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
@@ -1534,21 +1563,27 @@ function App() {
                   <Box sx={{ textAlign: "center" }}>
                     <Typography
                       sx={{
-                        fontSize: { xs: "14px", md: "18px" },
+                        fontSize: { xs: "14px", md: "16px" },
                         fontWeight: 500,
                         fontFamily: "Caviar Dreams",
+                        whiteSpace: { xs: "normal", md: "nowrap" },
+                        display: { xs: "block", md: "inline-flex" },
+                        alignItems: "center",
                       }}
                     >
-                      04.10 (Sat)
+                      {formatDateLabel(startDateObj)}
                     </Typography>
                     <Typography
                       sx={{
-                        fontSize: { xs: "24px", md: "32px" },
+                        fontSize: { xs: "24px", md: "28px" },
                         fontWeight: 400,
                         fontFamily: "Caviar Dreams",
+                        whiteSpace: { xs: "normal", md: "nowrap" },
+                        display: { xs: "block", md: "inline-flex" },
+                        alignItems: "center",
                       }}
                     >
-                      00:00
+                      {formatTime(startDateObj)}
                     </Typography>
                   </Box>
 
@@ -1570,21 +1605,27 @@ function App() {
                   <Box sx={{ textAlign: "center" }}>
                     <Typography
                       sx={{
-                        fontSize: { xs: "14px", md: "18px" },
+                        fontSize: { xs: "14px", md: "16px" },
                         fontWeight: 400,
                         fontFamily: "Caviar Dreams",
+                        whiteSpace: { xs: "normal", md: "nowrap" },
+                        display: { xs: "block", md: "inline-flex" },
+                        alignItems: "center",
                       }}
                     >
-                      04.10 (Sat)
+                      {formatDateLabel(endDateObj)}
                     </Typography>
                     <Typography
                       sx={{
-                        fontSize: { xs: "24px", md: "32px" },
+                        fontSize: { xs: "24px", md: "28px" },
                         fontWeight: 500,
                         fontFamily: "Caviar Dreams",
+                        whiteSpace: { xs: "normal", md: "nowrap" },
+                        display: { xs: "block", md: "inline-flex" },
+                        alignItems: "center",
                       }}
                     >
-                      23.59
+                      {formatTime(endDateObj)}
                     </Typography>
                   </Box>
                 </Box>
