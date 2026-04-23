@@ -776,10 +776,12 @@ const getParticipants = async (eventId, roundNumber, limit, sortBy, needPhoto) =
 app.get('/api/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async (req, res) => {
   try {
     if (req.query.pw !== process.env.ADMIN_PW) {
+      console.log("Unauthorized access to vote records")
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
+      console.log("Unauthorized access to vote records from invalid domain")
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
     const eventId = req.params.event_id;
