@@ -467,7 +467,7 @@ function App() {
         //console.log("voteResult:", voteResult);
 
         if (voteResult.success) {
-          // setVoteDialogIsOpen(false);
+          setVoteDialogIsOpen(false);
           setIsVoteSuccess(true);
         } else {
           setErrorMessage("投票失敗, 請再試一次");
@@ -545,12 +545,6 @@ function App() {
   useEffect(() => {
     //console.log("votePageIsOpen:", votePageIsOpen);
     if (!votePageIsOpen || !voteDialogIsOpen) {
-      //redirect to home page after vote success and close the dialog
-      if (isVoteSuccess) {
-        setIsListLoaded(false);
-        setVoteDialogIsOpen(false);
-      }
-
       //console.log("voteDialogIsOpen:", voteDialogIsOpen);
       setIsAgree(false);
       setIsPhoneVerified(false);
@@ -558,7 +552,10 @@ function App() {
       setIsOptChecked(false);
       setIsOptValid(false);
       setIsPhoneValid(false);
-      setIsVoteSuccess(false);
+      // only reset vote success when the whole vote page closes, not just the dialog
+      if (!votePageIsOpen) {
+        setIsVoteSuccess(false);
+      }
       setPhoneNumber("");
       setWewaClubId("");
       setVotes(0);
@@ -586,7 +583,7 @@ function App() {
         checked={isAgree}
         onChange={() => setIsAgree(!isAgree)}
         sx={{
-          color: "#e04478",
+          color: "#32BF72",
           padding: "0px",
           paddingRight: "5px",
         }}
@@ -602,7 +599,8 @@ function App() {
     if (!d || isNaN(d)) return "--.-- (---)";
     const month = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
-    const weekday = d.toLocaleDateString(undefined, { weekday: "short" });
+    // force English short weekday abbreviations (Sun, Mon, ...)
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
     return `${month}.${day} (${weekday})`;
   };
 
@@ -663,6 +661,7 @@ function App() {
                 display: "inline-flex",
                 alignItems: "center",
                 mb: { xs: "4px", md: 0 },
+                fontFamily: "MStiffHei HK",
               }}
             >
               全力贊助
@@ -715,6 +714,7 @@ function App() {
                 display: "inline-flex",
                 alignItems: "center",
                 mb: { xs: "4px", md: 0 },
+                fontFamily: "MStiffHei HK",
               }}
             >
               合作媒體
@@ -768,7 +768,7 @@ function App() {
                       px: 3,
                       py: 1,
                       fontWeight: 700,
-                      fontFamily: "MStiffHei HK Bold",
+                      fontFamily: "MStiffHei HK",
                     }}
                     onClick={() => {
                       // redirect to home
@@ -798,12 +798,37 @@ function App() {
                     gap: 1,
                   }}
                 >
+                  {/* Vote success banner */}
+                  {isVoteSuccess && (
+                    <Box
+                      sx={{
+                        border: "1px solid rgba(255,255,255,0.9)",
+                        px: { xs: 3, md: 5 },
+                        py: { xs: 1, md: 1.5 },
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        mb: 1,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: "#fff",
+                          fontFamily: "Mantou Sans",
+                          fontSize: { xs: "24px", md: "28px" },
+                        }}
+                      >
+                        投票成功
+                      </Typography>
+                    </Box>
+                  )}
+
                   {/* First line: participant no */}
                   <Typography
                     sx={{
                       color: "#32BF72",
-                      fontWeight: 800,
-                      fontFamily: "MStiffHei HK",
+
+                      fontFamily: "Mantou Sans",
                       fontSize: { xs: "28px", md: "28px" },
                     }}
                   >
@@ -826,77 +851,49 @@ function App() {
 
                   {/* Third line: university | studying year | IG icon | IG handle */}
                   <Stack
-                    direction="row"
-                    spacing={1}
-                    justifyContent="center"
+                    direction="column"
+                    spacing={0.5}
                     alignItems="center"
                     className="participantInfoStack"
-                    sx={{
-                      mt: 1,
-                      width: "100%",
-                      // scale the font size with viewport but clamp to reasonable min/max
-                      // fontSize: {
-                      //   xs: "clamp(10px, 3.2vw, 10px)",
-                      //   sm: "clamp(14px, 3.2vw, 14px)",
-                      //   md: "clamp(12px, 3.2vw, 12px)",
-                      // },
-                      // fontSize: {
-                      //   xs: "2.8vw",
-                      // },
-                    }}
+                    sx={{ mt: 1, width: "100%" }}
                   >
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        fontFamily: "MStiffHei HK",
-                        // inherit from Stack so sizing scales across breakpoints
-                         fontSize: "inherit",
-                            "@media (min-width:1400px)": {
-                              fontSize: "20px",
-                            },
-                        flex: "0 1 auto",
-                        textAlign: "center",
-                        px: 1,
-                        // keep university and year on the same line for screens wider than 360px
-                        whiteSpace: "normal",
-                        "@media (min-width:361px)": {
-                          whiteSpace: "nowrap",
-                        },
-                      }}
+                    {/* Row 1: University + Study Year */}
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      justifyContent="center"
+                      alignItems="center"
                     >
-                      {selectedParticipant.university}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        fontFamily: "MStiffHei HK",
+                      <Typography
+                        sx={{
+                          color: "#fff",
+                          fontFamily: "MStiffHei HK",
+                          fontSize: "inherit",
+                          "@media (min-width:1400px)": { fontSize: "20px" },
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {selectedParticipant.university}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#fff",
+                          fontFamily: "Caviar Dreams Bold",
+                          fontSize: "inherit",
+                          "@media (min-width:1400px)": { fontSize: "20px" },
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        Year {selectedParticipant.studyingYear}
+                      </Typography>
+                    </Stack>
 
-                        fontSize: "inherit",
-                            "@media (min-width:1400px)": {
-                              fontSize: "20px",
-                            },
-                        flex: "0 1 auto",
-                        textAlign: "center",
-                        px: 1,
-                        whiteSpace: "normal",
-                        "@media (min-width:361px)": {
-                          whiteSpace: "nowrap",
-                        },
-                      }}
-                    >
-                      Year {selectedParticipant.studyingYear}
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 0.4,
-                        // let the IG group size naturally with the surrounding font
-                        fontSize: "inherit",
-                        flex: "0 1 auto",
-                        justifyContent: "center",
-                        px: 1,
-                      }}
+                    {/* Row 2: IG icon + IG handle */}
+                    <Stack
+                      direction="row"
+                      spacing={0.5}
+                      justifyContent="center"
+                      alignItems="center"
                     >
                       <Box
                         component="img"
@@ -924,11 +921,9 @@ function App() {
                           title={selectedParticipant.instagram}
                           sx={{
                             color: "#fff",
-                            fontFamily: "MStiffHei HK",
+                            fontFamily: "Caviar Dreams Bold",
                             fontSize: "inherit",
-                            "@media (min-width:1400px)": {
-                              fontSize: "20px",
-                            },
+                            "@media (min-width:1400px)": { fontSize: "20px" },
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
@@ -936,13 +931,10 @@ function App() {
                             cursor: "pointer",
                           }}
                         >
-                          {selectedParticipant.instagram &&
-                          selectedParticipant.instagram.length > 10
-                            ? `${selectedParticipant.instagram.slice(0, 10)}...`
-                            : selectedParticipant.instagram}
+                          {selectedParticipant.instagram}
                         </Typography>
                       </Box>
-                    </Box>
+                    </Stack>
                   </Stack>
 
                   {/* Participant avatar */}
@@ -986,8 +978,9 @@ function App() {
                         component="span"
                         sx={{
                           fontSize: "14px",
-                          fontWeight: 700,
+
                           color: "inherit",
+                          fontFamily: "MStiffHei HK",
                         }}
                       >
                         {new Date() < new Date(eventStartDate)
@@ -1040,7 +1033,7 @@ function App() {
               <Typography
                 sx={{
                   fontSize: "16px",
-                  color: "#e04478",
+                  color: "#32BF72",
                   fontWeight: "500",
                 }}
               >
@@ -1080,7 +1073,7 @@ function App() {
               <Typography
                 sx={{
                   fontSize: "16px",
-                  color: "#e04478",
+                  color: "#32BF72",
                   fontWeight: "500",
                   marginTop: "20px",
                 }}
@@ -1109,7 +1102,7 @@ function App() {
               <Typography
                 sx={{
                   fontSize: "16px",
-                  color: "#e04478",
+                  color: "#32BF72",
                   fontWeight: "500",
                   marginTop: "20px",
                   marginBottom: "10px",
@@ -1126,7 +1119,7 @@ function App() {
                   width: "100%",
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderColor:
-                      votes === 0 && confirmVoteIsClicked ? "red" : "#e04478",
+                      votes === 0 && confirmVoteIsClicked ? "red" : "#32BF72",
                     borderWidth: votes === 0 && confirmVoteIsClicked ? 2 : 1,
                   },
                 }}
@@ -1159,7 +1152,7 @@ function App() {
                   Checked={isAgree}
                   onChange={() => setIsAgree(!isAgree)}
                   sx={{
-                    color: "#e04478",
+                    color: "#32BF72",
                     padding: "0px",
                     paddingRight: "5px",
                   }}
@@ -1173,7 +1166,7 @@ function App() {
                       xs: "10px",
                       sm: "16px",
                     },
-                    color: "#e04478",
+                    color: "#32BF72",
                     fontWeight: "500",
                     cursor: "pointer",
                   }}
@@ -1190,7 +1183,7 @@ function App() {
                       xs: "10px",
                       sm: "16px",
                     },
-                    color: "#e04478",
+                    color: "#32BF72",
                     fontWeight: "800",
                     cursor: "pointer",
                     textDecoration: "underline",
@@ -1203,7 +1196,7 @@ function App() {
                 </Typography>
                 <Typography
                   sx={{
-                    color: "#e04478",
+                    color: "#32BF72",
                   }}
                 >
                   *
@@ -1224,13 +1217,13 @@ function App() {
               >
                 <LoadingButton
                   sx={{
-                    backgroundColor: "#e04478",
+                    backgroundColor: "#32BF72",
                     color: "#ffffff",
                     borderRadius: "75px",
                     padding: "10px 30px",
                     boxShadow: "0px 0px 2px 0px #000000",
                     ":hover": {
-                      backgroundColor: "#e04478",
+                      backgroundColor: "#32BF72",
                     },
                   }}
                   loading={isConfirmVoteLoading && isPhoneValid && votes !== 0}
@@ -1266,20 +1259,7 @@ function App() {
               <MuiOtpInput value={"otp"} onChange={handleOtpChange} /> */}
               {/* </FormControl> */}
             </Box>
-          ) : isVoteSuccess ? (
-            //console.log("isVoteSuccessXXXXXX:", isVoteSuccess),
-            <Box
-              sx={{
-                padding: "40px",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <Alert variant="outlined" severity="success">
-                投票成功
-              </Alert>
-            </Box>
-          ) : (
+          ) : isVoteSuccess ? null : (
             <Box
               sx={{
                 paddingY: {
@@ -1302,7 +1282,7 @@ function App() {
                   display={isMd ? "inline" : "block"}
                   sx={{
                     fontSize: "16px",
-                    color: "#e04478",
+                    color: "#32BF72",
                     fontWeight: "500",
                   }}
                 >
@@ -1321,7 +1301,7 @@ function App() {
                     display={"inline"}
                     sx={{
                       fontSize: "10px",
-                      color: "#e04478",
+                      color: "#32BF72",
                       fontWeight: "300",
                     }}
                   >
@@ -1365,13 +1345,13 @@ function App() {
               >
                 <LoadingButton
                   sx={{
-                    backgroundColor: "#e04478",
+                    backgroundColor: "#32BF72",
                     color: "#ffffff",
                     borderRadius: "75px",
                     padding: "10px 30px",
                     boxShadow: "0px 0px 2px 0px #000000",
                     ":hover": {
-                      backgroundColor: "#e04478",
+                      backgroundColor: "#32BF72",
                     },
                   }}
                   onClick={onConfirmOptInput}
@@ -1426,7 +1406,7 @@ function App() {
           <Typography
             sx={{
               fontSize: "16px",
-              color: "#e04478",
+              color: "#32BF72",
               fontWeight: "500",
               marginBottom: {
                 xs: "100px",
@@ -1757,11 +1737,17 @@ function App() {
                           textTransform: "none",
                           px: 3,
                           py: 1,
-                          fontWeight: 700,
-                          fontFamily: "MStiffHei HK Bold",
                         }}
                       >
-                        立即登記會員
+                        <Typography
+                          sx={{
+                            fontSize: { xs: "14px", md: "16px" },
+                            color: "inherit",
+                            fontFamily: "MStiffHei HK",
+                          }}
+                        >
+                          立即登記會員
+                        </Typography>
                       </Button>
                     </Box>
                   </Box>
@@ -1880,8 +1866,8 @@ function App() {
                                     sm: "32px",
                                     md: "36px",
                                   },
-                                  fontWeight: "800",
-                                  // fontFamily: "Mantou Sans",
+                                  // fontWeight: "800",
+                                  fontFamily: "Mantou Sans",
                                   color: "#32BF72",
                                 }}
                               >
@@ -1895,8 +1881,8 @@ function App() {
                                     sm: "14px",
                                     md: "18px",
                                   },
-                                  fontWeight: "800",
-                                  // fontFamily: "Mantou Sans",
+                                  // fontWeight: "800",
+                                  fontFamily: "MStiffHei HK",
                                   color: "#FFFFFF",
                                 }}
                               >
@@ -2064,7 +2050,7 @@ function App() {
                     flexDirection: "column",
                     alignSelf: "center",
                     alignItems: "center",
-                    border: "0.5px solid rgba(255,255,255,0.9)",
+                    border: "1.5px solid rgba(255,255,255,0.9)",
                     px: { xs: 2, md: 4 },
                     py: { xs: 1, md: 2 },
 
@@ -2086,22 +2072,38 @@ function App() {
                       >
                         距離投票截止還有
                       </Typography>
-                      <Box
-                        component="span"
-                        className="eventCountDownDateText"
-                        sx={{ display: "block", mt: 0.5 }}
-                      >
-                        {
-                          <Countdown
-                            date={eventDeadlineDate}
-                            renderer={({ days, hours, minutes }) => (
-                              <span>
-                                {days} 天 {hours} 時 {minutes} 分
-                              </span>
-                            )}
-                          />
-                        }
-                      </Box>
+
+                      <Countdown
+                        date={eventDeadlineDate}
+                        renderer={({ days, hours, minutes }) => (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: 0.5,
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Typography className="eventCountDownText2">
+                              {days}
+                            </Typography>
+                            <Typography className="eventCountDownText3">
+                              天
+                            </Typography>
+                            <Typography className="eventCountDownText2">
+                              {hours}
+                            </Typography>
+                            <Typography className="eventCountDownText3">
+                              時
+                            </Typography>
+                            <Typography className="eventCountDownText2">
+                              {minutes}
+                            </Typography>
+                            <Typography className="eventCountDownText3">
+                              分
+                            </Typography>
+                          </Box>
+                        )}
+                      />
                     </>
                   ) : (
                     <Typography
@@ -2118,109 +2120,108 @@ function App() {
                     </Typography>
                   )}
                 </Box>
-                <Container maxWidth={false} sx={{ px: 0 }}>
-                  <Grid
-                    container
-                    spacing={1.25}
-                    sx={{
-                      marginTop: "10px",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {rankingList.map((item, index) => (
-                      <Grid
-                        item
-                        xs={3.6}
-                        sm={3}
-                        md={2.4}
-                        key={item.name + item.participationNo + index}
+
+                <Grid
+                  container
+                  sx={{
+                    marginTop: "10px",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  {rankingList.map((item, index) => (
+                    <Grid
+                      item
+                      xs={3.6}
+                      sm={3.2}
+                      md={2.4}
+                      key={item.name + item.participationNo + index}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        padding: "5px !important",
+                      }}
+                      className="avatarGridBox"
+                    >
+                      <Avatar
+                        alt={item.name}
+                        src={`/event1/${item.chineseName}.jpg`}
                         sx={{
+                          width: "100%",
+                          height: "auto",
+                          aspectRatio: "1/1",
+                          maxWidth: { xs: 120, sm: 120, md: 100 },
+                          boxShadow: "0px 0px 5px 0px #000000",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          onParticipantClick(item);
+                        }}
+                      />
+
+                      <Box
+                        sx={{
+                          cursor: "pointer",
+                          paddingTop: "10px",
                           display: "flex",
-                          justifyContent: "center",
                           flexDirection: "column",
                           alignItems: "center",
-                          padding: "5px !important",
+                          textAlign: "center",
                         }}
-                        className="avatarGridBox"
+                        onClick={() => {
+                          onParticipantClick(item);
+                        }}
                       >
-                        <Avatar
-                          alt={item.name}
-                          src={`/event1/${item.chineseName}.jpg`}
+                        <Typography
                           sx={{
-                            width: "100%",
-                            height: "auto",
-                            aspectRatio: "1/1",
-                            maxWidth: { xs: 120, sm: 150, md: 170 },
-                            boxShadow: "0px 0px 5px 0px #000000",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            onParticipantClick(item);
-                          }}
-                        />
+                            fontSize: {
+                              xs: "10px",
+                              sm: "12px",
+                              md: "12px",
+                            },
+                            color: "#FFFFFF",
 
-                        <Box
-                          sx={{
-                            cursor: "pointer",
-                            paddingTop: "10px",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            textAlign: "center",
-                          }}
-                          onClick={() => {
-                            onParticipantClick(item);
+                            fontFamily: "Caviar Dreams Bold",
+                            lineHeight: 1.2,
                           }}
                         >
-                          <Typography
-                            sx={{
-                              fontSize: {
-                                xs: "10px",
-                                sm: "12px",
-                                md: "12px",
-                              },
-                              color: "#FFFFFF",
-                              fontWeight: "bold",
-                              fontFamily: "gensen font master",
-                              lineHeight: 1.2,
-                            }}
-                          >
-                            {String(item.participationNo).padStart(2, "0")}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              fontSize: {
-                                xs: "10px",
-                                sm: "12px",
-                                md: "12px",
-                              },
-                              color: "#FFFFFF",
-                              fontFamily: "gensen font master",
-                              lineHeight: 1.2,
-                            }}
-                          >
-                            {item.chineseName} {item.name}
-                          </Typography>
+                          {String(item.participationNo).padStart(2, "0")}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            fontSize: {
+                              xs: "10px",
+                              sm: "12px",
+                              md: "12px",
+                            },
+                            color: "#FFFFFF",
+                            fontFamily: "MStiffHei HK",
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          {item.chineseName}
+                        </Typography>
 
-                          {isAdmin && (
-                            <Typography
-                              className="rankingNameText"
-                              sx={{
-                                fontSize: "12px",
-                                color: "#32BF72",
-                                marginTop: "5px",
-                              }}
-                            >
-                              {item.votes} 票 (
-                              {((item.votes / totalVotes) * 100).toFixed(2)}
-                              %)
-                            </Typography>
-                          )}
-                        </Box>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Container>
+                        {isAdmin && (
+                          <Typography
+                            className="rankingNameText"
+                            sx={{
+                              fontSize: "12px",
+                              color: "#32BF72",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {item.votes} 票 (
+                            {((item.votes / totalVotes) * 100).toFixed(2)}
+                            %)
+                          </Typography>
+                        )}
+                      </Box>
+                    </Grid>
+                  ))}
+                </Grid>
               </Box>
             </Box>
           </>
@@ -2248,7 +2249,7 @@ function App() {
                   xs: "16px",
                   md: "20px",
                 },
-                color: "#e04478",
+                color: "#32BF72",
                 fontWeight: "bold",
               }}
             >
@@ -2281,11 +2282,34 @@ function App() {
               <span className="eventCountDownDateText">
                 {
                   <Countdown
-                    date={eventStartDate}
+                    date={eventDeadlineDate}
                     renderer={({ days, hours, minutes }) => (
-                      <span>
-                        {days} 天 {hours} 時 {minutes} 分
-                      </span>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 0.5,
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Typography className="eventCountDownText2">
+                          {days}
+                        </Typography>
+                        <Typography className="eventCountDownText3">
+                          天
+                        </Typography>
+                        <Typography className="eventCountDownText2">
+                          {hours}
+                        </Typography>
+                        <Typography className="eventCountDownText3">
+                          時
+                        </Typography>
+                        <Typography className="eventCountDownText2">
+                          {minutes}
+                        </Typography>
+                        <Typography className="eventCountDownText3">
+                          分
+                        </Typography>
+                      </Box>
                     )}
                   />
                 }

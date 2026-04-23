@@ -87,7 +87,13 @@
   src:
     url("./assets/fonts/CaviarDreams-webfont.woff2") format("woff2"),
     url("./assets/fonts/CaviarDreams-webfont.woff2") format("woff");
-  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Caviar Dreams Bold";
+  src: url("./assets/fonts/CaviarDreams_Bold.woff2") format("woff2");
   font-style: normal;
   font-display: swap;
 }
@@ -303,7 +309,7 @@ span p label h1 h2 h3 h4 h5 h6 {
 
 .sectionTitleBold {
   font-size: 36px;
-  color: #e04478;
+  color: #32bf72;
 }
 
 .finalSectionTitleBold {
@@ -321,7 +327,7 @@ span p label h1 h2 h3 h4 h5 h6 {
 .sectionTitle {
   font-size: 36px;
   /* font-weight: 100; */
-  color: #e04478;
+  color: #32bf72;
 }
 
 .rankingNumberBox {
@@ -363,13 +369,24 @@ span p label h1 h2 h3 h4 h5 h6 {
 
 .rankingNameText {
   font-weight: 700;
-  color: #e04478;
+  color: #32bf72;
 }
 
 .eventCountDownText {
   font-size: 12px;
   font-weight: 700;
   color: #fff;
+}
+.eventCountDownText2 {
+  font-size: 24px !important;
+  font-family: "Caviar Dreams Bold" !important;
+  color: #fff;
+}
+
+.eventCountDownText3 {
+  font-size: 24px !important;
+  color: #fff;
+  font-family: "MStiffHei HK" !important;
 }
 
 .eventCountDownDateText {

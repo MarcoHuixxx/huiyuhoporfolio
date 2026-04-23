@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 // new footer center SVG
-import icma2026Footer from "../assets/ICMA2026-Footer.svg";
+import icma2026Footer from "../assets/ICMA2026-Footer.png";
 import fbFooter from "../assets/FB-Footer.svg";
 import ytFooter from "../assets/YT-Footer.svg";
 import igFooter from "../assets/IG-Footer.svg";
