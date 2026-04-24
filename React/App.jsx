@@ -2282,7 +2282,7 @@ function App() {
               <span className="eventCountDownDateText">
                 {
                   <Countdown
-                    date={eventDeadlineDate}
+                    date={eventStartDate}
                     renderer={({ days, hours, minutes }) => (
                       <Box
                         sx={{
