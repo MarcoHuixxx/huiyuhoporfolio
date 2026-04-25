@@ -1,0 +1,24 @@
+{
+  "name": "hs-open-api-client",
+  "version": "1.0.0",
+  "description": "华盛开放平台 API Node.js 客户端",
+  "main": "HsOpenApiClient.js",
+  "type": "module",
+  "scripts": {
+    "start": "node HsOpenApiClient.js",
+    "test": "node test.js",
+    "check-mobile": "node examples/checkMobileExample.js"
+  },
+  "keywords": [
+    "api",
+    "client",
+    "3des",
+    "encryption"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.20.0"
+  },
+  "dependencies": {}
+}
