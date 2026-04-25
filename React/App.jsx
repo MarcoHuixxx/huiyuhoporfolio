@@ -2254,6 +2254,7 @@ function App() {
               justifyContent: "center",
               alignItems: "center",
               height: "10vh",
+              marginBottom: "100px",
             }}
           >
             <Typography
@@ -2262,7 +2263,7 @@ function App() {
                   xs: "16px",
                   md: "20px",
                 },
-                color: "#32BF72",
+                color: "#FFFF ",
                 fontWeight: "bold",
               }}
             >
