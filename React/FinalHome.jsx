@@ -33,7 +33,7 @@ import wewaIcon from "./assets/wewa.svg";
 import checkedIcon from "./assets/checked.svg";
 import sponsorIcon from "./assets/sponsor.png";
 import voteMethodImage from "./assets/voteMethod.png";
-import icmaIcon from "./assets/icma.svg";
+import icmaIcon from "./assets/ICMA2026-Footer.png";
 import Dialog from "./src/components/dialog";
 import YoutubeEmbed from "./src/components/youtubeEmbed";
 import MuiPhoneNumber from "mui-phone-number";
@@ -456,7 +456,7 @@ function App() {
             參賽者投票後票數: item.participantVoteAfter,
             投票時間: moment(item.votedAt).format("YYYY-MM-DD HH:mm:ss"),
             投票者電話: item.voterPhone,
-            "投票者 華盛證券會員編號":
+            "投票者 華盛証券會員編號":
               item.userWWCCode?.includes("WWC") &&
               item.userWWCCode?.length === 11
                 ? item.userWWCCode.toUpperCase()

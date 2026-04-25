@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import icmaIcon from "../assets/icma.svg";
+import icmaIcon from "../assets/ICMA2026-Footer.png";
 import Input from "@mui/material/Input";
 import Select from "@mui/material/Select";
 import { Stack } from "@mui/material";
@@ -54,7 +54,7 @@ const AdminEditPage = () => {
     } = event;
     const list = value === "string" ? value.split(",") : value;
     const recList = recParticipantList.filter((participant) =>
-      list.includes(participant.name)
+      list.includes(participant.name),
     );
     console.log({ value });
     setExistRecParticipantList(recList);
@@ -66,17 +66,17 @@ const AdminEditPage = () => {
       const participantListResult = await axios.get(
         `/participant/${eventId}/${roundNumber}/100/true?pw=${
           windowLocation.split("?")?.[1]?.split("=")?.[1]
-        }`
+        }`,
       );
       setRecParticipantList(participantListResult?.data?.participants);
 
       const existRecParticipantListResult = await axios.get(
         `/participant/${recEventId}/${roundNumber}/100/true?pw=${
           windowLocation.split("?")?.[1]?.split("=")?.[1]
-        }`
+        }`,
       );
       setExistRecParticipantList(
-        existRecParticipantListResult?.data?.participants
+        existRecParticipantListResult?.data?.participants,
       );
     };
 
@@ -84,7 +84,7 @@ const AdminEditPage = () => {
       const eventListResult = await axios.get(
         `/event/${eventIds.join(",")}?pw=${
           window.location.href.split("?")?.[1]?.split("=")?.[1]
-        }`
+        }`,
       );
       setEventList(eventListResult?.data);
       console.log(eventListResult);
@@ -103,7 +103,7 @@ const AdminEditPage = () => {
       eventId: recEventId,
       pw: window.location.href.split("?")?.[1]?.split("=")?.[1],
       participantIds: existRecParticipantList.map(
-        (participant) => participant._id
+        (participant) => participant._id,
       ),
     });
 
@@ -137,11 +137,11 @@ const AdminEditPage = () => {
 
     if (result?.data?.success) {
       setResultMessage(
-        `Vote channel ${action} (event: ${selectedEvent.name}) successfully`
+        `Vote channel ${action} (event: ${selectedEvent.name}) successfully`,
       );
     } else {
       setResultMessage(
-        `Vote channel ${action} (event: ${selectedEvent.name}) failed`
+        `Vote channel ${action} (event: ${selectedEvent.name}) failed`,
       );
     }
     setSelectedEvent(null);
@@ -228,7 +228,7 @@ const AdminEditPage = () => {
               id="demo-multiple-chip"
               multiple
               value={existRecParticipantList.map(
-                (participant) => `${participant.name}`
+                (participant) => `${participant.name}`,
               )}
               onChange={handleChange}
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}

@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const port = 1343
 const path = require('path')
+const axios = require('axios')
+const crypto = require('crypto')
 const { pageText } = require('./src/constants/pageText.js');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require("mongoose");
@@ -12,6 +14,42 @@ const INFOBIP_AUTH = process.env.INFOBIP_AUTH || 'App 95e9ac22f773b087482afb7b15
 const INFOBIP_URL = process.env.INFOBIP_URL || 'https://d884dr.api.infobip.com/sms/3/messages';
 // Optional: set a sender name/number via env `INFOBIP_SENDER`
 const INFOBIP_SENDER = process.env.INFOBIP_SENDER || 'ICMA';
+const HSTONG_SANDBOX_URL = process.env.HSTONG_SANDBOX_URL || 'http://mp-open.hstong.com';
+const HSTONG_APP_ID = process.env.HSTONG_APP_ID || '50000';
+const HSTONG_APP_SECRET = process.env.HSTONG_APP_SECRET || 'zf7HxnNBg2o8fnCf611';
+
+// Initialise the client SDK once (ESM via dynamic import).
+// Node 16 has no built-in fetch, so we patch the client's post() to use axios.
+const hsClientPromise = import('./React/src/nodejs-client/HsOpenApiClient.js').then(
+  ({ HsOpenApiClient }) => {
+    const client = new HsOpenApiClient({
+      baseUrl: HSTONG_SANDBOX_URL,
+      clientKey: HSTONG_APP_ID,
+      appSecret: HSTONG_APP_SECRET,
+    });
+
+    // Patch post() to use axios (fetch not available in Node 16)
+    client.post = async function (uri, params) {
+      const fullParams = this.buildParams(params);
+      const url = `${this.baseUrl}${uri}`;
+      console.log(`\n========== HS Request ==========`);
+      console.log(`URL: ${url}`);
+      console.log(`Params:`, JSON.stringify(fullParams, null, 2));
+      console.log(`================================\n`);
+      const response = await axios.post(url, new URLSearchParams(fullParams).toString(), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        timeout: this.timeout,
+      });
+      console.log(`\n========== HS Response =========`);
+      console.log(`Status: ${response.status}`);
+      console.log(`Body:`, JSON.stringify(response.data));
+      console.log(`================================\n`);
+      return response.data;
+    };
+
+    return client;
+  }
+);
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const { https } = require('follow-redirects');
@@ -198,7 +236,7 @@ app.set('view engine', 'ejs');
 const checkIsFromDomain = (req, res) => {
   //console.log("req.rawHeaders:", req.rawHeaders)
 
-  const isAllow = ["icmahk.org","https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
+  const isAllow = ["icmahk.org", "https://icmahk.org", "https://icmahk.org/", "https://www.icmahk.org", "https://www.icmahk.org/"]
   if (process.env.NODE_ENV === "development") {
     isAllow.push("http://localhost:5173")
     isAllow.push("http://localhost:5173/")
@@ -229,6 +267,8 @@ const buildOtpMessagePayload = (phone, otp) => {
     ]
   };
 };
+
+
 
 
 app.get('/api/send-otp/:phone', async (req, res, next) => {
@@ -265,9 +305,9 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
       hostname: urlObj.hostname,
       path: urlObj.pathname + (urlObj.search || ''),
       headers: {
-      'Authorization': INFOBIP_AUTH,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+        'Authorization': INFOBIP_AUTH,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       maxRedirects: 20
     };
@@ -284,7 +324,7 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
             resolve(parsed);
           } else {
             reject(new Error(`InfoBip error: ${resp.statusCode} ${JSON.stringify(parsed)}`));
-    }
+          }
         });
       });
       reqInfobip.on('error', (err) => reject(err));
@@ -325,6 +365,43 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
     errorLog.create({ error: error?.toString() || "Error sending OTP", time: new Date() });
     console.error('Error sending OTP:', error);
     res.status(500).send({ success: false, message: error?.message || 'Error sending OTP' });
+  }
+});
+
+app.post('/api/check-member-number', async (req, res) => {
+  try {
+    const isFromDomain = checkIsFromDomain(req, res);
+    if (!isFromDomain) {
+      return res.status(400).send({ success: false, message: 'Invalid Request' });
+    }
+
+    const phone = req.body?.phone || req.body?.mobile || req.query?.phone || req.query?.mobile;
+    if (!phone) {
+      return res.status(400).send({ success: false, message: 'Phone number is required' });
+    }
+
+    if (phone.length !== 14 || !phone.startsWith("+852")) {
+      return res.status(400).send({ success: false, message: 'Invalid Phone Number' });
+    }
+
+    //replace +852 with "" and trim the phone
+    const formattedPhone = phone.replace("+852", "").replace(/\s/g, '');
+    //why 9595 9502.trim() fdoes not work
+
+
+    console.log("Checking member status via SDK for phoneXX:", formattedPhone);
+
+    const hsClient = await hsClientPromise;
+    const sdkResult = await hsClient.checkMobileExists(formattedPhone);
+    console.log("sdkResult:", sdkResult)
+    res.send({
+      success: sdkResult.success === true,
+      phone,
+      code: sdkResult.raw?.code,
+    });
+  } catch (error) {
+    errorLog.create({ error: error?.stack || error?.toString() || 'Member check failed', time: new Date() });
+    res.status(500).send({ success: false, message: error?.message || 'Member check failed' });
   }
 });
 
@@ -434,8 +511,13 @@ app.get("/api/check-phone-verified/:phone/:eventId", async (req, res) => {
       return res.status(400).send({ isPhoneVerified: false });
     }
 
-    const optVerifyRecord = await optVerify.findOne({ phone: phone, status: "verified" });
-    if (optVerifyRecord) {
+
+    const voteRecords = await optVerify.findOne
+      ({
+        phone: phone, status: "verified"
+      });
+
+    if (voteRecords) {
       res.send({ isPhoneVerified: true });
       return;
     }
@@ -460,80 +542,92 @@ app.post('/api/vote', async (req, res) => {
     const needUpDateParticipantEventIds = ["664b20f7cbd11e4bca2386c8", "668deded51930e822903d37c"];
 
     const { participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId } = req.body;
-      if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
-        return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    if (!participantId || !roundNumber || !eventId || !voterPhone || !voteCount) {
+      return res.status(400).send({ success: false, message: 'Missing Parameters' });
+    }
+
+    if (needOptVerifyEventIds.includes(eventId)) {
+      const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
+
+
+      if (!optVerifyRecord) {
+        return res.status(400).send({ success: false, message: 'Phone not verified' });
       }
+    } else {
+      if (voterPhone.length !== 64) {
+        console.log("not 64!!!")
+        return res.status(400).send({ success: false, message: 'Phone not verified' });
+      }
+    }
 
-      if (needOptVerifyEventIds.includes(eventId)) {
-        const optVerifyRecord = await optVerify.findOne({ phone: voterPhone, status: "verified" });
+    if (voteCount > 2) {
+      return res.status(400).send({ success: false, message: 'Vote Count Invalid' });
+    }
 
- 
-        if (!optVerifyRecord ) {
-          return res.status(400).send({ success: false, message: 'Phone not verified' });
+    console.log("voteCount:", voteCount);
+    // If claiming 2 votes, verify the phone is actually a member via the SDK
+    if (Number(voteCount) === 2) {
+      console.log("Checking member status via SDK for phone:", voterPhone);
+      const hsClient = await hsClientPromise;
+      const trimmedPhone = voterPhone.replace("+852", "").replace(/\s/g, '');
+      const memberCheck = await hsClient.checkMobileExists(trimmedPhone);
+      if (!memberCheck.success) {
+        return res.status(400).send({ success: false, message: 'Not a member, only 1 vote allowed' });
+      }
+    }
+
+    //console.log({ participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId })
+    //check if the event is still open
+    const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
+
+    if (!eventResult) {
+      //console.log("The round is not found")
+      return res.status(400).send({ success: false, message: 'The round is not found' });
+    }
+
+    if (new Date(eventResult.timeBegin) > new Date() || new Date(eventResult.timeEnd) < new Date()) {
+      //console.log("The round is not open")
+      return res.status(400).send({ success: false, message: 'The round is not open' });
+    }
+    let updateParticipant;
+    if (needUpDateParticipantEventIds.includes(eventId)) {
+      updateParticipant = await participant.findOneAndUpdate(
+        { _id: participantId, },
+        {
+          $inc: { [`event.$[event].round.$[round].voteCount`]: voteCount },
+        },
+        {
+          arrayFilters: [{ 'event.eventId': eventId }, { 'round.roundNumber': parseInt(roundNumber) }],
+          new: true
         }
-      } else {
-        if (voterPhone.length !== 64) {
-          console.log("not 64!!!")
-          return res.status(400).send({ success: false, message: 'Phone not verified' });
-        }
-      }
+      );
+    } else {
+      updateParticipant = await participant.findOne(
+        { _id: participantId, },
+      );
+    }
 
-      if (voteCount > 2) {
-        return res.status(400).send({ success: false, message: 'Vote Count Invalid' });
-      }
+    const participantVoteCount = updateParticipant.event.find((event) => event.eventId.toString() === eventId).round.find((round) => round.roundNumber === parseInt(roundNumber)).voteCount;
 
-      //console.log({ participantId, roundNumber, eventId, voterPhone, voteCount, wewaClubId })
-      //check if the event is still open
-      const eventResult = await event.findOne({ _id: new mongodb.ObjectId(eventId) });
+    console.log("updateParticipant:", updateParticipant)
 
-      if (!eventResult) {
-        //console.log("The round is not found")
-        return res.status(400).send({ success: false, message: 'The round is not found' });
-      }
-
-      if (new Date(eventResult.timeBegin) > new Date() || new Date(eventResult.timeEnd) < new Date()) {
-        //console.log("The round is not open")
-        return res.status(400).send({ success: false, message: 'The round is not open' });
-      }
-      let updateParticipant;
-      if (needUpDateParticipantEventIds.includes(eventId)) {
-        updateParticipant = await participant.findOneAndUpdate(
-          { _id: participantId, },
-          {
-            $inc: { [`event.$[event].round.$[round].voteCount`]: voteCount },
-          },
-          {
-            arrayFilters: [{ 'event.eventId': eventId }, { 'round.roundNumber': parseInt(roundNumber) }],
-            new: true
-          }
-        );
-      } else {
-        updateParticipant = await participant.findOne(
-          { _id: participantId, },
-        );
-      }
-
-      const participantVoteCount = updateParticipant.event.find((event) => event.eventId.toString() === eventId).round.find((round) => round.roundNumber === parseInt(roundNumber)).voteCount;
-
-      console.log("updateParticipant:", updateParticipant)
-
-      if (updateParticipant) {
-        const newVoteRecord = new voteRecord({
-          roundNumber: roundNumber,
-          voteCount: voteCount,
-          participantVoteBofore: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount - voteCount : 0,
-          participantVoteAfter: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount : 0,
-          voterPhone: voterPhone,
-          votedAt: new Date(),
-          eventId: eventId,
-          userWWCCode: wewaClubId,
-          participantId: participantId
-        });
-        newVoteRecord.save();
-        res.send({ success: true });
-      } else {
-        //console.log("The participant is not found")
-        res.send({ success: false });
+    if (updateParticipant) {
+      const newVoteRecord = new voteRecord({
+        roundNumber: roundNumber,
+        voteCount: voteCount,
+        participantVoteBofore: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount - voteCount : 0,
+        participantVoteAfter: needUpDateParticipantEventIds.includes(eventId) ? participantVoteCount : 0,
+        voterPhone: voterPhone,
+        votedAt: new Date(),
+        eventId: eventId,
+        userWWCCode: wewaClubId,
+        participantId: participantId
+      });
+      newVoteRecord.save();
+      res.send({ success: true });
+    } else {
+      //console.log("The participant is not found")
+      res.send({ success: false });
     }
 
   } catch (e) {
@@ -626,7 +720,7 @@ app.get('/api/participant/:event_id/:round_number/:limit/:isAdmin', cors(corsOpt
   try {
     console.log("get list")
     const isFromDomain = checkIsFromDomain(req, res);
-   if (!isFromDomain) {
+    if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
     const eventId = req.params.event_id?.split(',');
@@ -776,12 +870,10 @@ const getParticipants = async (eventId, roundNumber, limit, sortBy, needPhoto) =
 app.get('/api/vote-record/:event_id/:round_number/:limit/', cors(corsOptions), async (req, res) => {
   try {
     if (req.query.pw !== process.env.ADMIN_PW) {
-      console.log("Unauthorized access to vote records")
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
-      console.log("Unauthorized access to vote records from invalid domain")
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
     const eventId = req.params.event_id;

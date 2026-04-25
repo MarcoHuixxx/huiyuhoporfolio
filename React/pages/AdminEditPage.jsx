@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import icmaIcon from "../assets/icma.svg";
+import icmaIcon from "../assets/ICMA2026-Footer.png";
 import Input from "@mui/material/Input";
 import Select from "@mui/material/Select";
 
@@ -32,7 +32,7 @@ const AdminEditPage = () => {
       const participantListResult = await axios.get(
         `/participant/${eventId}/${roundNumber}/100/true?pw=${
           windowLocation.split("?")?.[1]?.split("=")?.[1]
-        }`
+        }`,
       );
       setParticipantList(participantListResult?.data?.participants);
     };
@@ -69,7 +69,7 @@ const AdminEditPage = () => {
         participantId: selectedParticipant?.id,
         voteItem,
         voteCount,
-      }
+      },
     );
 
     console.log(editResult);

@@ -32,7 +32,7 @@ import wewaIcon from "./assets/wewa.svg";
 import checkedIcon from "./assets/checked.svg";
 import sponsorIcon from "./assets/sponsor.png";
 import voteMethodImage from "./assets/voteMethod.png";
-import icmaIcon from "./assets/icma.svg";
+import icmaIcon from "./assets/ICMA2026-Footer.png";
 import Dialog from "./src/components/dialog";
 import YoutubeEmbed from "./src/components/youtubeEmbed";
 import MuiPhoneNumber from "mui-phone-number";
@@ -97,6 +97,9 @@ function App() {
   const [isAgree, setIsAgree] = useState(false);
   const [showUserAgreement, setShowUserAgreement] = useState(false);
   const [canSendAfterSeconds, setCanSendAfterSeconds] = useState(60);
+  const [isMember, setIsMember] = useState(false);
+  const [isMemberChecked, setIsMemberChecked] = useState(false);
+  const [isMemberLoading, setIsMemberLoading] = useState(false);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -212,7 +215,7 @@ function App() {
       if (iswewaClubIdUsedToday) {
         setIsConfirmVoteLoading(false);
         setWewaClubId("");
-        setErrorMessage("華盛證券會員編號今天已經使用過，請明天再使用");
+        setErrorMessage("華盛証券會員編號今天已經使用過，請明天再使用");
         return;
       }
 
@@ -221,11 +224,7 @@ function App() {
       if (isPhoneVerified.success) {
         setIsPhoneVerified(true);
         setErrorMessage("");
-
-        setTimeout(() => {
-          setIsConfirmVoteLoading(false);
-          setShowOptDialog(true);
-        }, 500);
+        setIsConfirmVoteLoading(false);
         return;
       } else if (isPhoneVerified.error) {
         setIsConfirmVoteLoading(false);
@@ -309,7 +308,7 @@ function App() {
             參賽者投票後票數: item.participantVoteAfter,
             投票時間: moment(item.votedAt).format("YYYY-MM-DD HH:mm:ss"),
             投票者電話: item.voterPhone,
-            "投票者 華盛證券會員編號":
+            "投票者 華盛証券會員編號":
               item.userWWCCode?.includes("WWC") &&
               item.userWWCCode?.length === 11
                 ? item.userWWCCode.toUpperCase()
@@ -511,19 +510,44 @@ function App() {
             wewaClubId.toLocaleUpperCase().startsWith("WWC")
           : false;
 
-      if (iswewaClubIdValidVar) {
-        //console.log("setVotes 2");
-        setVotes(2);
-      } else {
-        //console.log("setVotes 0");
-        setVotes(0);
-      }
-
       setIswewaClubIdValid(iswewaClubIdValidVar);
     };
 
     iswewaClubIdValidHandler();
   }, [wewaClubId]);
+
+  // When phone becomes valid, call check-member-number and set vote count accordingly
+  useEffect(() => {
+    const checkMember = async () => {
+      if (!isPhoneValid) {
+        setIsMember(false);
+        setIsMemberChecked(false);
+        setVotes(0);
+        return;
+      }
+      if (phoneNumber.length !== 14) {
+        return;
+      }
+
+      try {
+        setIsMemberLoading(true);
+        const result = await axios.post("/check-member-number", {
+          phone: phoneNumber,
+        });
+        const memberStatus = result.data.success === true;
+        setIsMember(memberStatus);
+        setIsMemberChecked(true);
+        setVotes(memberStatus ? 2 : 1);
+      } catch {
+        setIsMember(false);
+        setIsMemberChecked(true);
+        setVotes(1);
+      } finally {
+        setIsMemberLoading(false);
+      }
+    };
+    checkMember();
+  }, [isPhoneValid, phoneNumber]);
 
   useEffect(() => {
     const isPhoneValidHandler = () => {
@@ -563,6 +587,9 @@ function App() {
       setIswewaClubIdValid(false);
       setShowOptDialog(false);
       setConfirmVoteIsClicked(false);
+      setIsMember(false);
+      setIsMemberChecked(false);
+      setIsMemberLoading(false);
       if (!votePageIsOpen) {
         setSelectedParticipant({});
         setVoteDialogIsOpen(false);
@@ -1070,34 +1097,6 @@ function App() {
               ) : (
                 ""
               )}
-              <Typography
-                sx={{
-                  fontSize: "16px",
-                  color: "#32BF72",
-                  fontWeight: "500",
-                  marginTop: "20px",
-                }}
-              >
-                華盛證券會員編號 (如有)
-              </Typography>
-              <Input
-                id="my-input"
-                aria-describedby="my-helper-text"
-                value={wewaClubId}
-                onChange={(e) => setWewaClubId(e.target.value)}
-                sx={{
-                  width: "100%",
-                }}
-              />
-              {wewaClubId !== "" ? (
-                !iswewaClubIdValid ? (
-                  <p className="inputErrorText">華盛證券會員編號無效</p>
-                ) : (
-                  <p className="inputSuccessText">華盛證券會員編號有效</p>
-                )
-              ) : (
-                ""
-              )}
 
               <Typography
                 sx={{
@@ -1108,32 +1107,39 @@ function App() {
                   marginBottom: "10px",
                 }}
               >
-                投取票數 <span>*</span>
+                投取票數
               </Typography>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={votes}
-                onChange={(e) => setVotes(e.target.value)}
+              <Box
                 sx={{
                   width: "100%",
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor:
-                      votes === 0 && confirmVoteIsClicked ? "red" : "#32BF72",
-                    borderWidth: votes === 0 && confirmVoteIsClicked ? 2 : 1,
-                  },
+                  padding: "10px 14px",
+                  border: "1px solid #32BF72",
+                  borderRadius: "5px",
+                  minHeight: "40px",
+                  display: "flex",
+                  alignItems: "center",
                 }}
-                disabled={iswewaClubIdValid && wewaClubId !== ""}
               >
-                <MenuItem value={0}>-請選擇-</MenuItem>
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2} disabled={!iswewaClubIdValid}>
-                  2 (華盛證券會員)
-                </MenuItem>
-              </Select>
-              <p className="inputErrorText">
-                {votes === 0 && confirmVoteIsClicked ? "請選擇投票數" : ""}
-              </p>
+                {isMemberLoading ? (
+                  <Typography sx={{ color: "#888", fontSize: "14px" }}>
+                    查詢會員資格中…
+                  </Typography>
+                ) : isMemberChecked ? (
+                  <Typography
+                    sx={{
+                      color: "#32BF72",
+                      fontWeight: "700",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {votes} {isMember ? "（華盛証券會員）" : "（非會員）"}
+                  </Typography>
+                ) : (
+                  <Typography sx={{ color: "#888", fontSize: "14px" }}>
+                    請先輸入電話號碼
+                  </Typography>
+                )}
+              </Box>
 
               <Box
                 sx={{
@@ -1415,7 +1421,7 @@ function App() {
             }}
           >
             個人資料收集及用途 <br />
-            1.1投選者在參與復活賽投票時需提供的個人資料包括但不限於電話號碼、華盛證券會員編號等。這些資料將用於管理和組織投票活動，確保活動順利進行。
+            1.1投選者在參與復活賽投票時需提供的個人資料包括但不限於電話號碼、華盛証券會員編號等。這些資料將用於管理和組織投票活動，確保活動順利進行。
             <br />
             <br />
             1.2 投選者明白並同意其提供的個人資料可能會用於以下用途：
@@ -1715,7 +1721,7 @@ function App() {
                           minWidth: 0,
                         }}
                       >
-                        成為華盛證券會員每日可投選兩票 (只限同一名參賽者)
+                        成為華盛証券會員可額外獲得一票，即每日可投選兩票（只限同一名參賽者）
                       </Typography>
                     </Box>
 
@@ -1737,6 +1743,13 @@ function App() {
                           textTransform: "none",
                           px: 3,
                           py: 1,
+                        }}
+                        onClick={() => {
+                          //open a new tab to the registration page without the base url
+
+                          const href =
+                            "https://www.vbkr.com/hd/account-open-promotion/scnl/ZPCQ/index";
+                          window.open(href, "_blank", "noopener,noreferrer");
                         }}
                       >
                         <Typography
@@ -1790,7 +1803,7 @@ function App() {
                           lineHeight: 1.4,
                         }}
                       >
-                        得票最高的前兩名將獲得復活資格，並可參加決賽
+                        總得票最高的前兩名將獲得復活資格
                       </Typography>
                     </Box>
                   </Box>
