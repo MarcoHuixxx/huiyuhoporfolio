@@ -9,6 +9,9 @@ const expressLayouts = require('express-ejs-layouts');
 const mongoose = require("mongoose");
 require("dotenv").config();
 var geoip = require('geoip-lite');
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
 // InfoBip configuration (used instead of Twilio)
 // Updated to use the new account/hostname/token and sender per provided snippet
 const INFOBIP_AUTH = process.env.INFOBIP_AUTH || 'App 9091320201669aa97f23c31c300d3e4e-32df4cd4-4539-4711-8df5-37cc1a7c8346';
@@ -273,12 +276,16 @@ const buildOtpMessagePayload = (phone, otp) => {
 
 
 app.get('/api/send-otp/:phone', async (req, res, next) => {
+   const phone = req.params.phone;
+    const random6Digits = Math.floor(100000 + Math.random() * 900000);
+    console.log("random6Digits:", random6Digits)
+
   try {
     const isFromDomain = checkIsFromDomain(req, res);
     if (!isFromDomain) {
       return res.status(400).send({ success: false, message: 'Invalid Request' });
     }
-    const phone = req.params.phone;
+   
     //console.log("phone:", phone)
     //console.log("phone.length:", phone.length)
     //console.log("phone.startsWith(+852):", phone.startsWith("+852"))
@@ -287,16 +294,57 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
       return res.status(400).send({ success: false, message: 'Invalid Phone Number' });
     }
 
-    // const result = await client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
-    //   .verifications
-    //   .create({
-    //     to: phone, channel: 'sms', codeLength: 4,
-    //     // customFriendlyName: "ICMA Verification"
-    //   });
-    const random6Digits = Math.floor(100000 + Math.random() * 900000);
-    console.log("random6Digits:", random6Digits)
+   
+   
+     const twillioResult = await client.messages
+      .create({
+        body: 'ICMA2026 Verification Code: ' + random6Digits,
+        from: '+12073092281',
+        to: phone
+      });
 
-    const messagePayload = buildOtpMessagePayload(phone, random6Digits);
+      console.log("twillioResult:", twillioResult)
+    
+
+      if (twillioResult.errorMessage!== null) {
+        throw new Error(`Twilio error: ${twillioResult.errorMessage}`);
+        }
+    
+
+    
+
+    //find if the phone is already in the database, if yes, update the otp, if not, create a new record
+
+    const optVerifyRecord = await optVerify.findOneAndUpdate(
+      {
+        phone
+      },
+      {
+        phone: phone,
+        otp: random6Digits,
+        status: "pending",
+        time: new Date()
+      }
+    );
+
+    if (!optVerifyRecord) {
+      const newOptVerify = new optVerify({
+        phone: phone,
+        otp: random6Digits,
+        status: "pending",
+        time: new Date()
+      });
+      newOptVerify.save();
+    }
+
+    console.log("sender phone:", phone)
+
+
+    return res.send({ success: true });
+  } catch (error) {
+    console.error('Error sending OTP22:', error);
+    errorLog.create({ error: error?.toString() || "Error sending OTP", time: new Date() });
+     const messagePayload = buildOtpMessagePayload(phone, random6Digits);
 
     // send via InfoBip HTTP API using follow-redirects `https`
     const postData = JSON.stringify(messagePayload);
@@ -365,13 +413,10 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
 
 
 
-    res.send({ success: true });
-  } catch (error) {
-    errorLog.create({ error: error?.toString() || "Error sending OTP", time: new Date() });
-    console.error('Error sending OTP:', error);
-    res.status(500).send({ success: false, message: error?.message || 'Error sending OTP' });
-  }
-});
+    return res.send({ success: true });
+
+   
+}});
 
 app.post('/api/check-member-number', async (req, res) => {
   try {
