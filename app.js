@@ -10,8 +10,9 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 var geoip = require('geoip-lite');
 // InfoBip configuration (used instead of Twilio)
-const INFOBIP_AUTH = process.env.INFOBIP_AUTH || 'App 95e9ac22f773b087482afb7b154f3c33-a39f2b76-9295-4e11-bd5b-f94c62e8909f';
-const INFOBIP_URL = process.env.INFOBIP_URL || 'https://d884dr.api.infobip.com/sms/3/messages';
+// Updated to use the new account/hostname/token and sender per provided snippet
+const INFOBIP_AUTH = process.env.INFOBIP_AUTH || 'App 9091320201669aa97f23c31c300d3e4e-32df4cd4-4539-4711-8df5-37cc1a7c8346';
+const INFOBIP_URL = process.env.INFOBIP_URL || 'https://x11z8q.api.infobip.com/sms/3/messages';
 // Optional: set a sender name/number via env `INFOBIP_SENDER`
 const INFOBIP_SENDER = process.env.INFOBIP_SENDER || 'ICMA';
 const HSTONG_SANDBOX_URL = process.env.HSTONG_SANDBOX_URL || 'http://mp-open.hstong.com';
@@ -356,7 +357,11 @@ app.get('/api/send-otp/:phone', async (req, res, next) => {
       newOptVerify.save();
     }
 
-    console.log("result:", result)
+    console.log("sender phone:", phone)
+    console.log("message payload:", JSON.stringify(messagePayload))
+    console.log("auth id:", INFOBIP_AUTH)
+    console.log("url:", INFOBIP_URL)
+    console.log("result:", JSON.stringify(result))
 
 
 
