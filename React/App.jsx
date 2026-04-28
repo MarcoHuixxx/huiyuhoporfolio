@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -100,6 +101,9 @@ function App() {
   const [isMember, setIsMember] = useState(false);
   const [isMemberChecked, setIsMemberChecked] = useState(false);
   const [isMemberLoading, setIsMemberLoading] = useState(false);
+  const recaptchaRef = useRef(null);
+  const recaptchaResendRef = useRef(null);
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -200,6 +204,14 @@ function App() {
         setIsConfirmVoteLoading(false);
         return;
       }
+
+      // reCAPTCHA check
+      const captchaToken = recaptchaRef.current?.getValue();
+      if (!captchaToken) {
+        setIsConfirmVoteLoading(false);
+        setErrorMessage("請先完成 reCAPTCHA 驗證");
+        return;
+      }
       //checking if the user is voted today
       const isVotedToday = await checkIsVotedToday();
       // const isVotedToday = false;
@@ -231,7 +243,10 @@ function App() {
         setErrorMessage("發送驗證碼失敗, 請重試一次");
         return;
       }
-      const senOptResult = await sendOtp();
+      const senOptResult = await sendOtp(captchaToken);
+      // reset reCAPTCHA so the next send requires a new check
+      recaptchaRef.current?.reset();
+      setRecaptchaToken("");
       // const senOptResult = { success: true };
       //console.log("senOptResult:", senOptResult);
 
@@ -430,11 +445,11 @@ function App() {
     }
   };
 
-  const sendOtp = async () => {
+  const sendOtp = async (captchaToken) => {
     try {
       setCanSendAfterSeconds(60);
       const result = await axios.get(`/send-otp/${phoneNumber}`, {
-        phoneNumber: phoneNumber,
+        params: { captchaToken },
       });
       // const result = {
       //   data: {
@@ -1212,6 +1227,27 @@ function App() {
                 {!isAgree && confirmVoteIsClicked ? "請同意條款細則" : ""}
               </p>
 
+              {/* reCAPTCHA widget — must be checked before sending OTP */}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                  onChange={(token) => setRecaptchaToken(token || "")}
+                  onExpired={() => setRecaptchaToken("")}
+                />
+              </Box>
+              {confirmVoteIsClicked && !recaptchaToken && (
+                <p className="inputErrorText" style={{ textAlign: "center" }}>
+                  請先完成 reCAPTCHA 驗證
+                </p>
+              )}
+
               <Box
                 sx={{
                   marginTop: "40px",
@@ -1323,7 +1359,17 @@ function App() {
                           fontSize: "12px",
                           fontWeight: "800",
                         }}
-                        onClick={sendOtp}
+                        onClick={async () => {
+                          const resendToken =
+                            recaptchaResendRef.current?.getValue();
+                          if (!resendToken) {
+                            setErrorMessage("請先完成 reCAPTCHA 驗證");
+                            return;
+                          }
+                          setErrorMessage("");
+                          await sendOtp(resendToken);
+                          recaptchaResendRef.current?.reset();
+                        }}
                       >
                         重新發送
                       </span>
@@ -1342,6 +1388,24 @@ function App() {
                 autoFocus
                 // validateChar={validateChar}
               />
+              {/* reCAPTCHA for resend — only shows when resend is available */}
+              {canSendAfterSeconds <= 0 && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "12px",
+                  }}
+                >
+                  <ReCAPTCHA
+                    ref={recaptchaResendRef}
+                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                    onChange={() => {}}
+                    onExpired={() => {}}
+                    size="normal"
+                  />
+                </Box>
+              )}
               <Box
                 sx={{
                   marginTop: "20px",

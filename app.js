@@ -467,6 +467,28 @@ app.get("/api/send-otp/:phone", async (req, res, next) => {
         .send({ success: false, message: "Invalid Request" });
     }
 
+    // ── reCAPTCHA verification ──────────────────────────────────────────────
+    const captchaToken = req.query.captchaToken;
+    if (!captchaToken) {
+      return res.status(400).send({ success: false, message: "reCAPTCHA token is required" });
+    }
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+    if (!recaptchaSecret) {
+      console.error("RECAPTCHA_SECRET_KEY is not set in environment variables");
+      return res.status(500).send({ success: false, message: "Server reCAPTCHA config error" });
+    }
+    const captchaVerifyRes = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify`,
+      null,
+      { params: { secret: recaptchaSecret, response: captchaToken } }
+    );
+    if (!captchaVerifyRes.data?.success) {
+      console.warn("reCAPTCHA verification failed:", captchaVerifyRes.data);
+      return res.status(400).send({ success: false, message: "reCAPTCHA verification failed. Please try again." });
+    }
+    console.log("reCAPTCHA verification passed");
+    // ───────────────────────────────────────────────────────────────────────
+
     const ipThrottleStatus = await registerOtpAttemptByIp(senderIp);
     if (ipThrottleStatus.blocked) {
       console.warn(
