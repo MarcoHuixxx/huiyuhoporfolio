@@ -497,7 +497,7 @@ app.get("/api/send-otp/:phone", async (req, res, next) => {
     const existingOptVerify = await optVerify.findOne({ phone });
     const twilioSendCount = existingOptVerify?.twilioSendCount || 0;
     const infobipSendCount = existingOptVerify?.infobipSendCount || 0;
-    const shouldSkipTwilio = twilioSendCount >= 2;
+    const shouldSkipTwilio = twilioSendCount >= 1;
 
     if (!shouldSkipTwilio) {
       await upsertOptVerifyRecord({
