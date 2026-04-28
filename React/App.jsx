@@ -873,7 +873,7 @@ function App() {
                       fontSize: { xs: "28px", md: "28px" },
                     }}
                   >
-                    參賽者
+                    {selectedParticipant.chineseName}
                   </Typography>
 
                   {/* Third line: university | studying year | IG icon | IG handle */}
