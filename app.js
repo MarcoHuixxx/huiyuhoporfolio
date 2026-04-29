@@ -26,7 +26,7 @@ const HSTONG_APP_ID = process.env.HSTONG_APP_ID || "50000";
 const HSTONG_APP_SECRET =
   process.env.HSTONG_APP_SECRET;
 const OTP_IP_LIMIT_WINDOW_MS = 30 * 60 * 1000;
-const OTP_IP_LIMIT_MAX_ATTEMPTS = 5;
+const OTP_IP_LIMIT_MAX_ATTEMPTS = 4;
 
 // Initialise the client SDK once (ESM via dynamic import).
 // Node 16 has no built-in fetch, so we patch the client's post() to use axios.
@@ -195,6 +195,7 @@ const participantSchema = new mongoose.Schema({
 const optVerifySchema = new mongoose.Schema({
   phone: String,
   otp: String,
+  deviceFingerprint: String,
   senderIp: String,
   status: String,
   time: Date,
@@ -214,6 +215,8 @@ const otpIpThrottleSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  senderIp: String,
+  deviceFingerprint: String,
   attemptCount: {
     type: Number,
     default: 0,
@@ -314,14 +317,32 @@ const getSenderIp = (req) => {
   );
 };
 
-const registerOtpAttemptByIp = async (ip) => {
+const getDeviceFingerprint = (req) => {
+  const fingerprintFromQuery = req.query?.deviceFingerprint;
+  const fingerprintFromHeader = req.headers["x-device-fingerprint"];
+
+  if (Array.isArray(fingerprintFromQuery)) {
+    return fingerprintFromQuery[0] || "unknown-device";
+  }
+
+  if (Array.isArray(fingerprintFromHeader)) {
+    return fingerprintFromHeader[0] || "unknown-device";
+  }
+
+  return fingerprintFromQuery || fingerprintFromHeader || "unknown-device";
+};
+
+const registerOtpAttemptByIp = async ({ senderIp, deviceFingerprint }) => {
   const now = new Date();
   const windowStart = new Date(now.getTime() - OTP_IP_LIMIT_WINDOW_MS);
-  let ipThrottleRecord = await otpIpThrottle.findOne({ ip });
+  const throttleKey = `${senderIp}:${deviceFingerprint}`;
+  let ipThrottleRecord = await otpIpThrottle.findOne({ ip: throttleKey });
 
   if (!ipThrottleRecord) {
     await otpIpThrottle.create({
-      ip,
+      ip: throttleKey,
+      senderIp,
+      deviceFingerprint,
       attemptCount: 1,
       firstAttemptAt: now,
       lastAttemptAt: now,
@@ -378,6 +399,7 @@ const registerOtpAttemptByIp = async (ip) => {
 const upsertOptVerifyRecord = async ({
   phone,
   otp,
+  deviceFingerprint,
   senderIp,
   twilioSendCount,
   infobipSendCount,
@@ -388,6 +410,7 @@ const upsertOptVerifyRecord = async ({
     {
       phone,
       otp,
+      deviceFingerprint,
       senderIp,
       provider,
       status: "pending",
@@ -455,9 +478,11 @@ const sendOtpViaInfoBip = async (phone, otp) => {
 app.get("/api/send-otp/:phone", async (req, res, next) => {
   const phone = req.params.phone;
   const senderIp = getSenderIp(req);
+  const deviceFingerprint = getDeviceFingerprint(req);
   const random6Digits = Math.floor(100000 + Math.random() * 900000);
   console.log("random6Digits:", random6Digits);
   console.log("sender ip:", senderIp);
+  console.log("device fingerprint:", deviceFingerprint);
 
   try {
     const isFromDomain = checkIsFromDomain(req, res);
@@ -467,19 +492,23 @@ app.get("/api/send-otp/:phone", async (req, res, next) => {
         .send({ success: false, message: "Invalid Request" });
     }
 
-    const ipThrottleStatus = await registerOtpAttemptByIp(senderIp);
+    const ipThrottleStatus = await registerOtpAttemptByIp({
+      senderIp,
+      deviceFingerprint,
+    });
     if (ipThrottleStatus.blocked) {
       console.warn(
-        `Blocked OTP request from IP ${senderIp}. Attempts: ${ipThrottleStatus.attemptCount}, Blocked Until: ${ipThrottleStatus.blockedUntil}`,
+        `Blocked OTP request from IP ${senderIp} and device fingerprint ${deviceFingerprint}. Attempts: ${ipThrottleStatus.attemptCount}, Blocked Until: ${ipThrottleStatus.blockedUntil}`,
       );
       errorLog.create({
-        error: `Blocked OTP request from IP ${senderIp}. Attempts: ${ipThrottleStatus.attemptCount}, Blocked Until: ${ipThrottleStatus.blockedUntil}`,
+        error: `Blocked OTP request from IP ${senderIp} and device fingerprint ${deviceFingerprint}. Attempts: ${ipThrottleStatus.attemptCount}, Blocked Until: ${ipThrottleStatus.blockedUntil}`,
         time: new Date(),
       });
        return res.status(429).send({
          success: false,
-         message: "Too many OTP requests from this IP. Try again in 30 minutes.",
+         message: "Too many OTP requests from this IP and device. Try again in 30 minutes.",
          senderIp,
+         deviceFingerprint,
          blockedUntil: ipThrottleStatus.blockedUntil,
        });
     }
@@ -503,6 +532,7 @@ app.get("/api/send-otp/:phone", async (req, res, next) => {
       await upsertOptVerifyRecord({
         phone,
         otp: random6Digits,
+        deviceFingerprint,
         senderIp,
         twilioSendCount: twilioSendCount + 1,
         provider: "twilio",
@@ -529,6 +559,7 @@ app.get("/api/send-otp/:phone", async (req, res, next) => {
           error: error?.toString() || "Error sending OTP",
           time: new Date(),
         });
+
       }
     } else {
       console.log(
@@ -543,6 +574,7 @@ app.get("/api/send-otp/:phone", async (req, res, next) => {
     await upsertOptVerifyRecord({
       phone,
       otp: random6Digits,
+      deviceFingerprint,
       senderIp,
       twilioSendCount,
       infobipSendCount: infobipSendCount + 1,

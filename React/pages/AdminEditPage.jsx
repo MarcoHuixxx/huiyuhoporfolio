@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -25,25 +26,36 @@ const AdminEditPage = () => {
   const [voteItem, setVoteItem] = useState("");
   const [voteCount, setVoteCount] = useState(1);
   const [resultMessage, setResultMessage] = useState("");
+  const adminPw = new URLSearchParams(window.location.search).get("pw") || "";
 
   useEffect(() => {
     const getParticipantList = async () => {
-      const windowLocation = window.location.href;
+      if (!adminPw) {
+        setResultMessage("Missing pw query parameter");
+        return;
+      }
+
       const participantListResult = await axios.get(
-        `/participant/${eventId}/${roundNumber}/100/true?pw=${
-          windowLocation.split("?")?.[1]?.split("=")?.[1]
-        }`,
+        `/participant/${eventId}/${roundNumber}/100/true`,
+        {
+          params: { pw: adminPw },
+        },
       );
       setParticipantList(participantListResult?.data?.participants);
     };
     getParticipantList();
-  }, []);
+  }, [adminPw]);
 
   const handleParticipantChange = (event) => {
     setSelectedParticipant(event.target.value);
   };
 
   const onSaveClick = async () => {
+    if (!adminPw) {
+      setResultMessage("Missing pw query parameter");
+      return;
+    }
+
     if (!selectedParticipant) {
       setResultMessage("Please select a participant");
       return;
@@ -60,12 +72,10 @@ const AdminEditPage = () => {
     }
 
     const editResult = await axios.post(
-      `/admin/edit/${eventId}/${roundNumber}?pw=${
-        window.location.href.split("?")?.[1]?.split("=")?.[1]
-      }`,
+      `/admin/edit/${eventId}/${roundNumber}?pw=${adminPw}`,
 
       {
-        pw: window.location.href.split("?")?.[1]?.split("=")?.[1],
+        pw: adminPw,
         participantId: selectedParticipant?.id,
         voteItem,
         voteCount,

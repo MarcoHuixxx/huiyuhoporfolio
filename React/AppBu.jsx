@@ -53,7 +53,6 @@ import { set } from "mongoose";
 import Checkbox from "@mui/material/Checkbox";
 import huashengIcon from "./assets/huansheng.svg";
 import sponsor2Icon from "./assets/sponsor2.svg";
-import getBrowserFingerprint from "get-browser-fingerprint";
 
 //set axios default url
 axios.defaults.baseURL = serverUrl;
@@ -101,11 +100,6 @@ function App() {
   const [isMember, setIsMember] = useState(false);
   const [isMemberChecked, setIsMemberChecked] = useState(false);
   const [isMemberLoading, setIsMemberLoading] = useState(false);
-  const [deviceFingerprint, setDeviceFingerprint] = useState("");
-
-  useEffect(() => {
-    setDeviceFingerprint(getBrowserFingerprint({ hardwareOnly: true }));
-  }, []);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -440,9 +434,7 @@ function App() {
     try {
       setCanSendAfterSeconds(60);
       const result = await axios.get(`/send-otp/${phoneNumber}`, {
-        params: {
-          deviceFingerprint,
-        },
+        phoneNumber: phoneNumber,
       });
       // const result = {
       //   data: {
@@ -2346,4 +2338,3 @@ function App() {
 }
 
 export default App;
-
