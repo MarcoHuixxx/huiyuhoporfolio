@@ -223,12 +223,21 @@ const otpIpThrottleSchema = new mongoose.Schema({
   blockedUntil: Date,
 });
 
+// Controls display settings for a specific event visible to non-admin users.
+// showVoteTrend: whether to show vote bars in the 投票走勢 section.
+const eventDisplaySettingSchema = new mongoose.Schema({
+  eventId: { type: String, unique: true, required: true },
+  showVoteTrend: { type: Boolean, default: false },
+  updatedAt: { type: Date, default: Date.now },
+});
+
 const voteRecord = mongoose.model("voteRecord", voteRecordSchema);
 const event = mongoose.model("event", eventSchema);
 const participant = mongoose.model("participant", participantSchema);
 const errorLog = mongoose.model("errorLog", errorLogSchema);
 const optVerify = mongoose.model("optVerify", optVerifySchema);
 const otpIpThrottle = mongoose.model("otpIpThrottle", otpIpThrottleSchema);
+const eventDisplaySetting = mongoose.model("eventDisplaySetting", eventDisplaySettingSchema);
 
 // const participantCount = await participant.countDocuments();
 
@@ -1028,6 +1037,10 @@ app.get(
           .send({ success: false, message: "Missing Parameters" });
       }
 
+      // Fetch the display setting for the first event in the list
+      const displaySetting = await eventDisplaySetting.findOne({ eventId: eventId[0] });
+      const showVoteTrend = isAdmin ? true : (displaySetting ? displaySetting.showVoteTrend : false);
+
       let participants;
 
       if (eventId.length === 1) {
@@ -1067,10 +1080,13 @@ app.get(
             };
           });
 
+          // Always strip the absolute vote count from firstThree for non-admins;
+          // the bar still uses the relative firstThreeRaningPercent percentages.
+          // The vote number text is only revealed when showVoteTrend is true.
           firstThree = firstThree.map((participant) => {
             return {
               ...participant,
-              votes: undefined,
+              votes: showVoteTrend ? participant.votes : undefined,
             };
           });
         } else if (isAdmin && countVoteByRecordEvent.includes(eventId[0])) {
@@ -1089,7 +1105,15 @@ app.get(
           );
         }
 
-        return res.send({ participants, firstThreeRaningPercent, firstThree });
+        // Always send real percentages — the bar is always visible.
+        const safeFirstThreeRaningPercent = firstThreeRaningPercent;
+
+        return res.send({
+          participants,
+          firstThreeRaningPercent: safeFirstThreeRaningPercent,
+          firstThree,
+          showVoteTrend,
+        });
       }
 
       participants = await Promise.all(
@@ -1288,6 +1312,111 @@ app.post("/api/admin/edit/:eventId/:roundNumber", async (req, res) => {
     }
   } catch (e) {
     errorLog.create({ error: e, time: new Date() });
+  }
+});
+
+// ── Event Display Settings ─────────────────────────────────────────────────
+// GET: returns current display settings for an event (public, no pw needed)
+app.get("/api/event-display-setting/:eventId", async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const setting = await eventDisplaySetting.findOne({ eventId });
+    res.send({
+      success: true,
+      showVoteTrend: setting ? setting.showVoteTrend : false,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).send({ success: false, showVoteTrend: false });
+  }
+});
+
+// POST: admin toggles the showVoteTrend flag
+app.post("/api/admin/event-display-setting/:eventId", async (req, res) => {
+  try {
+    if (req.query.pw !== process.env.ADMIN_PW) {
+      return res.status(401).send({ success: false, message: "Authorization Failed" });
+    }
+    const { eventId } = req.params;
+    const { showVoteTrend } = req.body;
+    if (typeof showVoteTrend !== "boolean") {
+      return res.status(400).send({ success: false, message: "showVoteTrend must be a boolean" });
+    }
+    const updated = await eventDisplaySetting.findOneAndUpdate(
+      { eventId },
+      { showVoteTrend, updatedAt: new Date() },
+      { upsert: true, new: true },
+    );
+    res.send({ success: true, showVoteTrend: updated.showVoteTrend });
+  } catch (e) {
+    console.error(e);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+});
+// ──────────────────────────────────────────────────────────────────────────
+
+// Deduct votes — identical to edit but uses a negative increment and marks
+// the voteRecord with a negative voteCount to act as an audit trail.
+app.post("/api/admin/deduct/:eventId/:roundNumber", async (req, res) => {
+  try {
+    if (req.query.pw !== process.env.ADMIN_PW) {
+      return res
+        .status(401)
+        .send({ success: false, message: "Authorization Failed" });
+    }
+    const isFromDomain = checkIsFromDomain(req, res);
+    if (!isFromDomain) {
+      return res
+        .status(400)
+        .send({ success: false, message: "Invalid Request" });
+    }
+    const { participantId, voteItem, voteCount } = req.body;
+    const eventId = req.params.eventId;
+    const roundNumber = req.params.roundNumber;
+    if (!participantId || !voteItem || !voteCount || !eventId || !roundNumber) {
+      return res
+        .status(400)
+        .send({ success: false, message: "Missing Parameters" });
+    }
+
+    const deductAmount = -Math.abs(Number(voteCount));
+
+    const updateParticipant = await participant.findOneAndUpdate(
+      { _id: participantId },
+      {
+        $inc: { [`event.$[event].round.$[round].voteCount`]: deductAmount },
+      },
+      {
+        arrayFilters: [
+          { "event.eventId": new mongodb.ObjectId(eventId) },
+          { "round.roundNumber": parseInt(roundNumber) },
+        ],
+        new: true,
+      },
+    );
+
+    if (updateParticipant) {
+      // store a negative voteCount record for full audit trail
+      const deductRecord = new voteRecord({
+        roundNumber: roundNumber,
+        voteCount: deductAmount,
+        participantVoteBofore:
+          updateParticipant.event[0].round[0].voteCount - deductAmount,
+        participantVoteAfter: updateParticipant.event[0].round[0].voteCount,
+        voterPhone: voteItem,
+        votedAt: new Date(),
+        eventId: eventId,
+        participantId: participantId,
+      });
+      await deductRecord.save();
+      res.send({ success: true });
+    } else {
+      res.send({ success: false });
+    }
+  } catch (e) {
+    console.error("Error deducting votes:", e);
+    errorLog.create({ error: e, time: new Date() });
+    res.status(500).send({ success: false, message: "Internal server error" });
   }
 });
 

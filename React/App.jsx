@@ -100,6 +100,7 @@ function App() {
   const [isMember, setIsMember] = useState(false);
   const [isMemberChecked, setIsMemberChecked] = useState(false);
   const [isMemberLoading, setIsMemberLoading] = useState(false);
+  const [showVoteTrend, setShowVoteTrend] = useState(false);
 
   useEffect(() => {
     const fetchRankingList = async () => {
@@ -159,6 +160,10 @@ function App() {
             setRankingList(participantListResult?.data?.participants);
             setFirstThreeVotes(
               participantListResult?.data?.firstThreeRaningPercent,
+            );
+            // read the server-side display setting flag
+            setShowVoteTrend(
+              participantListResult?.data?.showVoteTrend === true,
             );
           }
           setIsListLoaded(true);
@@ -1927,6 +1932,20 @@ function App() {
                                   }}
                                 />
                               </Box>
+                              {/* Vote count shown only when admin enables it */}
+                              {showVoteTrend && item.votes != null && (
+                                <Typography
+                                  sx={{
+                                    fontSize: { xs: "11px", sm: "13px" },
+                                    color: "#32BF72",
+                                    fontWeight: "600",
+                                    mt: 0.5,
+                                    ml: "54px",
+                                  }}
+                                >
+                                  {item.votes} 票
+                                </Typography>
+                              )}
                               {/* <Box className="nameTextBox">
                                 <Stack direction="row" spacing={0.4}>
                                   <Typography
